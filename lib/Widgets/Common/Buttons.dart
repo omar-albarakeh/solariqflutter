@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-
 import '../../Config/AppColor.dart';
 import '../../Config/AppText.dart';
 
@@ -26,6 +25,25 @@ class Buttons extends StatelessWidget {
     this.onTap,
   }) : super(key: key);
 
+  void _showInformationDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text(dialogTitle!),
+          content: Text(dialogContent!),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: const Text("Close"),
+            ),
+          ],
+        );
+      },
+    );
+  }
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
