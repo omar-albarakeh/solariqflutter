@@ -14,5 +14,19 @@ class AuthService {
     }
   }
 
+  Future<Map<String, dynamic>> login({required String email, required String password}) async {
+    final Uri url = Uri.parse('$baseUrl/login');
+    final Map<String, dynamic> requestBody = {
+      'email': email,
+      'password': password,
+    };
+    try {
+      final response = await HttpHelper.postRequest(url, requestBody);
+      return response;
+    } catch (e) {
+      return {'error': 'Network error: ${e.toString()}'};
+    }
+  }
+
 
 }
