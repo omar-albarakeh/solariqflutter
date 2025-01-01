@@ -21,6 +21,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _addressController = TextEditingController();
 
+  bool _isPasswordVisible = false;
   String? selectedType;
 
   @override
@@ -32,67 +33,80 @@ class _SignUpScreenState extends State<SignUpScreen> {
             gradient: AppColor.linearGradient,
           ),
           child: SingleChildScrollView(
-            padding: const EdgeInsets.all(16.0),
+            padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 20.0),
             child: Form(
               key: _formKey,
               child: Column(
                 mainAxisSize: MainAxisSize.min,
-                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   _buildLogo(),
-                  const SizedBox(height: 10),
+                  const SizedBox(height: 7),
                   const Text("Hello, Sign Up!", style: AppTextStyles.title),
-                  const SizedBox(height: 5),
+                  const SizedBox(height: 8),
                   _buildTextField(
                     label: 'Username',
                     icon: Icons.person,
                     controller: _usernameController,
                     validator: _validateUsername,
                   ),
-                  const SizedBox(height: 8),
+                  const SizedBox(height: 12),
                   _buildTextField(
                     label: 'Email',
                     icon: Icons.email,
                     controller: _emailController,
+                    keyboardType: TextInputType.emailAddress,
                     validator: _validateEmail,
                   ),
-                  const SizedBox(height: 8),
+                  const SizedBox(height: 12),
                   _buildTextField(
                     label: 'Password',
                     icon: Icons.lock,
                     controller: _passwordController,
+                    obscureText: !_isPasswordVisible,
+                    suffixIcon: IconButton(
+                      icon: Icon(
+                        _isPasswordVisible ? Icons.visibility : Icons.visibility_off,
+                        color: AppColor.textWhite,
+                      ),
+                      onPressed: () {
+                        setState(() {
+                          _isPasswordVisible = !_isPasswordVisible;
+                        });
+                      },
+                    ),
                     validator: _validatePassword,
                   ),
-                  const SizedBox(height: 8),
+                  const SizedBox(height: 12),
                   _buildTextField(
                     label: 'Phone Number',
                     icon: Icons.phone,
                     controller: _phoneController,
+                    keyboardType: TextInputType.phone,
                     validator: _validatePhone,
                   ),
-                  const SizedBox(height: 8),
+                  const SizedBox(height: 12),
                   _buildTextField(
                     label: 'Address',
                     icon: Icons.home,
                     controller: _addressController,
                   ),
-                  const SizedBox(height: 8),
+                  const SizedBox(height: 12),
                   _buildTypeDropdown(),
-                  const SizedBox(height: 16),
+                  const SizedBox(height: 20),
                   Buttons(
                     hasBorder: false,
                     backgroundColor: AppColor.buttonPrimary,
                     buttonText: "Sign Up",
                     onTap: _handleSubmit,
                   ),
-                  const SizedBox(height: 16),
+                  const SizedBox(height: 20),
                   Text(
                     "Or sign in using",
                     style: AppTextStyles.bodyText.copyWith(color: AppColor.textWhite),
                   ),
                   const SizedBox(height: 16),
                   _buildSocialButtons(),
-                  const SizedBox(height: 30),
+                  const SizedBox(height: 20),
                   _buildLoginRedirect(context),
                 ],
               ),
@@ -104,7 +118,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
   }
 
   Widget _buildLogo() {
-    return Image.asset("assets/images/LOGO.png", width: 234, height: 150);
+    return Image.asset("assets/images/LOGO.png", width: 200, height: 150);
   }
 
   Widget _buildTextField({
@@ -112,12 +126,17 @@ class _SignUpScreenState extends State<SignUpScreen> {
     required IconData icon,
     required TextEditingController controller,
     String? Function(String?)? validator,
+    TextInputType keyboardType = TextInputType.text,
+    bool obscureText = false,
+    Widget? suffixIcon,
   }) {
     return CustomTextField(
       label: label,
       icon: icon,
       controller: controller,
       validator: validator,
+      keyboardType: keyboardType,
+      obscureText: obscureText,
     );
   }
 
@@ -144,18 +163,23 @@ class _SignUpScreenState extends State<SignUpScreen> {
             selectedType = newValue;
           });
         },
-        items: <String>['Engineer', 'User']
-            .map<DropdownMenuItem<String>>((String value) {
-          return DropdownMenuItem<String>(
-            value: value,
-            child: Text(
-              value,
-              style: AppTextStyles.bodyText.copyWith(color: Colors.white),
-            ),
-          );
-        }).toList(),
+        items: _getDropdownItems(),
       ),
     );
+  }
+
+  List<DropdownMenuItem<String>> _getDropdownItems() {
+    return <String>['Engineer', 'User']
+        .map<DropdownMenuItem<String>>(
+          (String value) => DropdownMenuItem<String>(
+        value: value,
+        child: Text(
+          value,
+          style: AppTextStyles.bodyText.copyWith(color: Colors.white),
+        ),
+      ),
+    )
+        .toList();
   }
 
   Widget _buildSocialButtons() {
@@ -192,7 +216,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
             Navigator.push(
               context,
               MaterialPageRoute(
-                builder: (context) => const Loginscreen(),
+                builder: (context) => const LoginScreen(),
               ),
             );
           },
@@ -210,7 +234,19 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
   void _handleSubmit() {
     if (_formKey.currentState?.validate() ?? false) {
-      // Handle signup logic
+      // Display success message and clear form
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Sign up successful!')),
+      );
+      _formKey.currentState?.reset();
+      _usernameController.clear();
+      _emailController.clear();
+      _passwordController.clear();
+      _phoneController.clear();
+      _addressController.clear();
+      setState(() {
+        selectedType = null;
+      });
     }
   }
 

@@ -1,22 +1,25 @@
 import 'package:flutter/material.dart';
-
 import '../../Config/AppColor.dart';
 import '../../Config/AppText.dart';
+import '../../Services/AuthServices.dart';
 import '../../Widgets/Common/Buttons.dart';
 import '../../Widgets/Common/CustomTextField.dart';
 import '../../Widgets/Common/SocialButtons.dart';
 import 'SignUpScreen.dart';
 
-class Loginscreen extends StatefulWidget {
-  const Loginscreen({super.key});
+class LoginScreen extends StatefulWidget {
+  const LoginScreen({super.key});
 
   @override
-  State<Loginscreen> createState() => _LoginscreenState();
+  State<LoginScreen> createState() => _LoginScreenState();
 }
 
-class _LoginscreenState extends State<Loginscreen> {
+class _LoginScreenState extends State<LoginScreen> {
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
+  final AuthService _authService = AuthService();
+  bool _isPasswordVisible = false;
 
   @override
   Widget build(BuildContext context) {
@@ -29,7 +32,10 @@ class _LoginscreenState extends State<Loginscreen> {
         width: double.infinity,
         child: Center(
           child: SingleChildScrollView(
-            child: Column(
+            padding: const EdgeInsets.symmetric(horizontal: 24.0),
+            child: Form(
+              key: _formKey,
+              child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
@@ -37,21 +43,41 @@ class _LoginscreenState extends State<Loginscreen> {
                   Text("Hello, Sign In!", style: AppTextStyles.title),
                   const SizedBox(height: 24),
                   _buildTextField(
-                      label: 'Email',
-                      icon: Icons.email,
-                      controller: _emailController),
+                    label: 'Email',
+                    icon: Icons.email,
+                    controller: _emailController,
+                    validator: _validateEmail,
+                  ),
                   const SizedBox(height: 16),
                   _buildTextField(
-                      label: 'Password',
-                      icon: Icons.lock,
-                      controller: _passwordController),
+                    label: 'Password',
+                    icon: Icons.lock,
+                    controller: _passwordController,
+                    validator: _validatePassword,
+                    isObscure: !_isPasswordVisible,
+                    suffixIcon: IconButton(
+                      icon: Icon(
+                        _isPasswordVisible
+                            ? Icons.visibility
+                            : Icons.visibility_off,
+                        color: AppColor.textWhite,
+                      ),
+                      onPressed: () {
+                        setState(() {
+                          _isPasswordVisible = !_isPasswordVisible;
+                        });
+                      },
+                    ),
+                  ),
                   const SizedBox(height: 8),
                   Align(
                     alignment: Alignment.centerRight,
                     child: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 24.0),
+                      padding: const EdgeInsets.only(right: 8.0),
                       child: TextButton(
-                        onPressed: () {},
+                        onPressed: () {
+                          // Forgot password functionality
+                        },
                         child: Text(
                           "Forgot Password?",
                           style: AppTextStyles.subtitleText
@@ -60,16 +86,16 @@ class _LoginscreenState extends State<Loginscreen> {
                       ),
                     ),
                   ),
-                  const SizedBox(height: 14),
+                  const SizedBox(height: 16),
                   Buttons(
                     hasBorder: false,
                     backgroundColor: AppColor.buttonPrimary,
                     buttonText: "Login",
-                    onTap: () {},
+                    onTap: _handleLogin,
                   ),
                   const SizedBox(height: 16),
                   Text(
-                    "Or continue with ",
+                    "Or continue with",
                     style: AppTextStyles.bodyText
                         .copyWith(color: AppColor.textWhite),
                   ),
@@ -102,42 +128,117 @@ class _LoginscreenState extends State<Loginscreen> {
                       ),
                     ],
                   ),
-                ]),
+                ],
+              ),
+            ),
           ),
         ),
       ),
     );
   }
-}
 
-Widget _buildLogo() {
-  return Image.asset("assets/images/LOGO.png", width: 234, height: 224);
-}
+  Widget _buildLogo() {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 16.0),
+      child: Image.asset("assets/images/LOGO.png", width: 234, height: 224),
+    );
+  }
 
-Widget _buildTextField(
-    {required String label,
+  Widget _buildTextField({
+    required String label,
     required IconData icon,
-    required TextEditingController controller}) {
-  return CustomTextField(label: label, icon: icon, controller: controller);
-}
+    required TextEditingController controller,
+    String? Function(String?)? validator,
+    bool isObscure = false,
+    Widget? suffixIcon,
+  }) {
+    return CustomTextField(
+      label: label,
+      icon: icon,
+      controller: controller,
+      validator: validator,
+      obscureText: isObscure,
+      suffixIcon: suffixIcon,
+      width: MediaQuery.of(context).size.width - 48,
+    );
+  }
 
-Widget _buildSocialButtons() {
-  return Row(
-    mainAxisAlignment: MainAxisAlignment.center,
-    children: [
-      SocialButton(
-        icon: Icons.email,
-        color: Colors.redAccent,
-        text: "Gmail",
-        onTap: () {},
-      ),
-      const SizedBox(width: 16),
-      SocialButton(
-        icon: Icons.facebook,
-        color: Colors.blueAccent,
-        text: "Facebook",
-        onTap: () {},
-      ),
-    ],
-  );
+  Widget _buildSocialButtons() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        SocialButton(
+          icon: Icons.email,
+          color: Colors.redAccent,
+          text: "Gmail",
+          onTap: () {
+            // Gmail login functionality
+          },
+        ),
+        const SizedBox(width: 16),
+        SocialButton(
+          icon: Icons.facebook,
+          color: Colors.blueAccent,
+          text: "Facebook",
+          onTap: () {
+            // Facebook login functionality
+          },
+        ),
+      ],
+    );
+  }
+
+  String? _validateEmail(String? value) {
+    if (value == null || value.isEmpty) {
+      return "Email is required";
+    }
+    if (!RegExp(r'\S+@\S+\.\S+').hasMatch(value)) {
+      return "Please enter a valid email address";
+    }
+    return null;
+  }
+
+  String? _validatePassword(String? value) {
+    if (value == null || value.isEmpty) {
+      return "Password is required";
+    }
+    if (value.length < 6) {
+      return "Password must be at least 6 characters long";
+    }
+    return null;
+  }
+
+  Future<void> _handleLogin() async {
+    if (_formKey.currentState?.validate() ?? false) {
+      try {
+        final response = await _authService.login(
+          email: _emailController.text,
+          password: _passwordController.text,
+        );
+        if (response.containsKey('error')) {
+          throw Exception(response['error']);
+        }
+        final accessToken = response['accessToken'];
+        if (accessToken == null) {
+          throw Exception('No access token returned.');
+        }
+        final userInfo = await _authService.getUserInfo(accessToken);
+        print(userInfo);
+
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Login successful!')),
+        );
+
+        Navigator.pushReplacementNamed(
+          context,
+          '/home',
+          arguments: userInfo,
+        );
+      } catch (e) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text(e.toString())),
+        );
+      }
+    }
+  }
 }

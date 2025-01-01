@@ -35,14 +35,14 @@ class SplashScreen extends StatelessWidget {
                 const SizedBox(height: 16),
                 Buttons(
                   buttonText: "Get Started",
-                  navigateTo: const Loginscreen(),
+                  navigateTo: const LoginScreen(),
                   hasBorder: false,
                   backgroundColor: AppColor.buttonPrimary,
                   onTap: () {
                     Navigator.pushReplacement(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => const Loginscreen()),
+                          builder: (context) => const LoginScreen()),
                     );
                   },
                 ),
