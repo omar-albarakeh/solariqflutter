@@ -2,7 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:solariqflutter/Config/AppText.dart';
 
 import '../../Config/AppColor.dart';
+import '../../Widgets/Common/Buttons.dart';
 import '../../Widgets/Common/CustomTextField.dart';
+import '../../Widgets/Common/SocialButtons.dart';
+import 'LoginScreen.dart';
 
 class SignUpScreen extends StatefulWidget {
   const SignUpScreen({super.key});
@@ -24,15 +27,16 @@ class _SignUpScreenState extends State<SignUpScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Container(
-        decoration: const BoxDecoration(
-          gradient: AppColor.linearGradient,
-        ),
-        height: double.infinity,
-        width: double.infinity,
-        child: Center(
-          child: SingleChildScrollView(
-            child: Column(
+      body: SafeArea(
+        child: Container(
+          decoration: const BoxDecoration(
+            gradient: AppColor.linearGradient,
+          ),
+          height: double.infinity,
+          width: double.infinity,
+          child: Center(
+            child: SingleChildScrollView(
+              child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
@@ -72,7 +76,23 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   const SizedBox(height: 8),
                   _buildTypeDropdown(),
                   const SizedBox(height: 16),
-                ]
+                  Buttons(
+                    hasBorder: false,
+                    backgroundColor: AppColor.buttonPrimary,
+                    buttonText: "Sign Up",
+                    onTap: (){},
+                  ),
+                  const SizedBox(height: 16),
+                  Text(
+                    "Or sign in using",
+                    style: AppTextStyles.bodyText.copyWith(color: AppColor.textWhite),
+                  ),
+                  const SizedBox(height: 16),
+                  _buildSocialButtons(),
+                  const SizedBox(height: 30),
+                  _buildLoginRedirect(context),
+                ],
+              ),
             ),
           ),
         ),
@@ -81,12 +101,13 @@ class _SignUpScreenState extends State<SignUpScreen> {
   }
 
   Widget _buildLogo() {
-    return Image.asset("assets/images/LOGO.png", width: 234, height: 224);
+    return Image.asset("assets/images/LOGO.png", width: 234, height: 150);
   }
 
   Widget _buildTextField({required String label, required IconData icon, required TextEditingController controller}) {
     return CustomTextField(label: label, icon: icon, controller: controller);
   }
+
   Widget _buildTypeDropdown() {
     return Container(
       width: 350,
@@ -123,4 +144,54 @@ class _SignUpScreenState extends State<SignUpScreen> {
       ),
     );
   }
+}
+
+Widget _buildLoginRedirect(context) {
+  return Row(
+    mainAxisAlignment: MainAxisAlignment.center,
+    children: [
+      const Text(
+        "Already have an account?",
+        style: TextStyle(color: Colors.white),
+      ),
+      InkWell(
+        onTap: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => const Loginscreen(),
+            ),
+          );
+        },
+        child: const Text(
+          " Login",
+          style: TextStyle(
+            color: Colors.blue,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+      ),
+    ],
+  );
+}
+
+Widget _buildSocialButtons() {
+  return Row(
+    mainAxisAlignment: MainAxisAlignment.center,
+    children: [
+      SocialButton(
+        icon: Icons.email,
+        color: Colors.redAccent,
+        text: "Gmail",
+        onTap: () {},
+      ),
+      const SizedBox(width: 16),
+      SocialButton(
+        icon: Icons.facebook,
+        color: Colors.blueAccent,
+        text: "Facebook",
+        onTap: () {},
+      ),
+    ],
+  );
 }
