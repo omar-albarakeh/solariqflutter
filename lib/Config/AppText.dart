@@ -14,4 +14,11 @@ class AppTextStyles {
     fontSize: 30,
     fontWeight: FontWeight.w700,
   );
+
+  static const TextStyle subtitleText = TextStyle(
+    fontFamily: 'Poppins',
+    color: AppColor.textGray,
+    fontSize: 12,
+    fontWeight: FontWeight.w300,
+  );
 }
