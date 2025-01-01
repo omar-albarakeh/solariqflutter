@@ -26,4 +26,14 @@ class HttpHelper {
     }
   }
 
+  static Future<Map<String, dynamic>> getRequest(Uri url,
+      {Map<String, String>? headers}) async {
+    try {
+      final response = await http.get(url, headers: headers);
+      return _processResponse(response);
+    } catch (e) {
+      return {'error': 'Network error: ${e.toString()}'};
+    }
+  }
+
 }
