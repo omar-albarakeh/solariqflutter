@@ -7,4 +7,11 @@ class AppTextStyles {
     color: AppColor.textWhite,
     fontSize: 20,
     fontWeight: FontWeight.w700,
-  );}
+  );
+  static const TextStyle title = TextStyle(
+    fontFamily: 'Poppins',
+    color: AppColor.textWhite,
+    fontSize: 30,
+    fontWeight: FontWeight.w700,
+  );
+}
