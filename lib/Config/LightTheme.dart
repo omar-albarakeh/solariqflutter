@@ -3,7 +3,6 @@ import 'package:solariqflutter/Config/AppColor.dart';
 import 'package:solariqflutter/Config/AppText.dart';
 
 class AppTheme {
-  // Light Theme
   static ThemeData get lightTheme {
     return ThemeData(
       brightness: Brightness.light,
