@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'Screens/Auth/SplashScreen.dart';
 
 
 class SolarIQ extends StatelessWidget {
@@ -9,6 +10,6 @@ class SolarIQ extends StatelessWidget {
 
     return MaterialApp(
       title: 'SolarIQ',
-      home:,
+      home: const SplashScreen(),
     );
 }
