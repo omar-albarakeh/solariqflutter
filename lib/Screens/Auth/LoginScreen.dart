@@ -17,7 +17,23 @@ class _LoginscreenState extends State<Loginscreen> {
         decoration: const BoxDecoration(
           gradient: AppColor.linearGradient,
         ),
+        height: double.infinity,
+        width: double.infinity,
+        child: Center(
+          child: SingleChildScrollView(
+            child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  _buildLogo(),
+                ]),
+          ),
+        ),
       ),
     );
   }
+}
+
+Widget _buildLogo() {
+  return Image.asset("assets/images/LOGO.png", width: 234, height: 224);
 }
