@@ -12,6 +12,11 @@ class SplashScreen extends StatelessWidget {
         decoration: BoxDecoration(
           gradient: AppColor.linearGradient,
         ),
+        child: Column(
+          children: [
+
+          ],
+        ),
       ),
     );
   }
