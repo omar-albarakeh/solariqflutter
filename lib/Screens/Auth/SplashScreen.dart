@@ -28,6 +28,17 @@ class SplashScreen extends StatelessWidget {
                 );
               },
             ),
+            const SizedBox(height: 16),
+            const Buttons(
+              buttonText: "About Us",
+              navigateTo: SizedBox(),
+              hasBorder: false,
+              backgroundColor: AppColor.buttonSecondary,
+              showDialogOnTap: true,
+              dialogTitle: "SolarIQ",
+              dialogContent: "This is SolarIQ, a platform designed to help manage your solar solutions efficiently.",
+            ),
+            const SizedBox(height: 30),
           ],
         ),
       ),
