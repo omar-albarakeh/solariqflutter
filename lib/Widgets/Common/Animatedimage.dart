@@ -12,6 +12,9 @@ class AnimatedImage extends StatefulWidget {
 }
 
 class _AnimatedImageState extends State<AnimatedImage> {
+  late AnimationController _controller;
+  late Animation<double> _opacityAnimation;
+  late Animation<Offset> _slideAnimation;
   @override
   Widget build(BuildContext context) {
     return const Placeholder();
