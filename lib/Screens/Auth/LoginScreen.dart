@@ -5,7 +5,7 @@ import '../../Config/AppText.dart';
 import '../../Widgets/Common/Buttons.dart';
 import '../../Widgets/Common/CustomTextField.dart';
 import '../../Widgets/Common/SocialButtons.dart';
-import 'SignUp.dart';
+import 'SignUpScreen.dart';
 
 class Loginscreen extends StatefulWidget {
   const Loginscreen({super.key});

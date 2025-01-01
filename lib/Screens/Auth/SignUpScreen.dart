@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:solariqflutter/Config/AppText.dart';
-
+import 'package:solariqflutter/Screens/Auth/LoginScreen.dart';
 import '../../Config/AppColor.dart';
 import '../../Widgets/Common/Buttons.dart';
 import '../../Widgets/Common/CustomTextField.dart';
 import '../../Widgets/Common/SocialButtons.dart';
-import 'LoginScreen.dart';
 
 class SignUpScreen extends StatefulWidget {
   const SignUpScreen({super.key});
@@ -15,7 +14,7 @@ class SignUpScreen extends StatefulWidget {
 }
 
 class _SignUpScreenState extends State<SignUpScreen> {
-
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final TextEditingController _usernameController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _phoneController = TextEditingController();
@@ -32,46 +31,50 @@ class _SignUpScreenState extends State<SignUpScreen> {
           decoration: const BoxDecoration(
             gradient: AppColor.linearGradient,
           ),
-          height: double.infinity,
-          width: double.infinity,
-          child: Center(
-            child: SingleChildScrollView(
+          child: SingleChildScrollView(
+            padding: const EdgeInsets.all(16.0),
+            child: Form(
+              key: _formKey,
               child: Column(
+                mainAxisSize: MainAxisSize.min,
                 mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   _buildLogo(),
                   const SizedBox(height: 10),
                   const Text("Hello, Sign Up!", style: AppTextStyles.title),
                   const SizedBox(height: 5),
                   _buildTextField(
-                      label: 'Username',
-                      icon: Icons.person,
-                      controller: _usernameController
+                    label: 'Username',
+                    icon: Icons.person,
+                    controller: _usernameController,
+                    validator: _validateUsername,
                   ),
                   const SizedBox(height: 8),
                   _buildTextField(
-                      label: 'Email',
-                      icon: Icons.email,
-                      controller: _emailController
+                    label: 'Email',
+                    icon: Icons.email,
+                    controller: _emailController,
+                    validator: _validateEmail,
                   ),
                   const SizedBox(height: 8),
                   _buildTextField(
-                      label: 'Password',
-                      icon: Icons.lock,
-                      controller: _passwordController
+                    label: 'Password',
+                    icon: Icons.lock,
+                    controller: _passwordController,
+                    validator: _validatePassword,
                   ),
                   const SizedBox(height: 8),
                   _buildTextField(
-                      label: 'Phone Number',
-                      icon: Icons.phone,
-                      controller: _phoneController
+                    label: 'Phone Number',
+                    icon: Icons.phone,
+                    controller: _phoneController,
+                    validator: _validatePhone,
                   ),
                   const SizedBox(height: 8),
                   _buildTextField(
-                      label: 'Address',
-                      icon: Icons.home,
-                      controller: _addressController
+                    label: 'Address',
+                    icon: Icons.home,
+                    controller: _addressController,
                   ),
                   const SizedBox(height: 8),
                   _buildTypeDropdown(),
@@ -80,7 +83,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     hasBorder: false,
                     backgroundColor: AppColor.buttonPrimary,
                     buttonText: "Sign Up",
-                    onTap: (){},
+                    onTap: _handleSubmit,
                   ),
                   const SizedBox(height: 16),
                   Text(
@@ -104,13 +107,23 @@ class _SignUpScreenState extends State<SignUpScreen> {
     return Image.asset("assets/images/LOGO.png", width: 234, height: 150);
   }
 
-  Widget _buildTextField({required String label, required IconData icon, required TextEditingController controller}) {
-    return CustomTextField(label: label, icon: icon, controller: controller);
+  Widget _buildTextField({
+    required String label,
+    required IconData icon,
+    required TextEditingController controller,
+    String? Function(String?)? validator,
+  }) {
+    return CustomTextField(
+      label: label,
+      icon: icon,
+      controller: controller,
+      validator: validator,
+    );
   }
 
   Widget _buildTypeDropdown() {
     return Container(
-      width: 350,
+      width: double.infinity,
       padding: const EdgeInsets.symmetric(horizontal: 16.0),
       decoration: BoxDecoration(
         border: Border.all(color: Colors.grey, width: 1),
@@ -144,54 +157,94 @@ class _SignUpScreenState extends State<SignUpScreen> {
       ),
     );
   }
-}
 
-Widget _buildLoginRedirect(context) {
-  return Row(
-    mainAxisAlignment: MainAxisAlignment.center,
-    children: [
-      const Text(
-        "Already have an account?",
-        style: TextStyle(color: Colors.white),
-      ),
-      InkWell(
-        onTap: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => const Loginscreen(),
+  Widget _buildSocialButtons() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        SocialButton(
+          icon: Icons.email,
+          color: Colors.redAccent,
+          text: "Gmail",
+          onTap: () {},
+        ),
+        const SizedBox(width: 16),
+        SocialButton(
+          icon: Icons.facebook,
+          color: Colors.blueAccent,
+          text: "Facebook",
+          onTap: () {},
+        ),
+      ],
+    );
+  }
+
+  Widget _buildLoginRedirect(BuildContext context) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        const Text(
+          "Already have an account?",
+          style: TextStyle(color: Colors.white),
+        ),
+        InkWell(
+          onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => const Loginscreen(),
+              ),
+            );
+          },
+          child: const Text(
+            " Login",
+            style: TextStyle(
+              color: Colors.blue,
+              fontWeight: FontWeight.bold,
             ),
-          );
-        },
-        child: const Text(
-          " Login",
-          style: TextStyle(
-            color: Colors.blue,
-            fontWeight: FontWeight.bold,
           ),
         ),
-      ),
-    ],
-  );
-}
+      ],
+    );
+  }
 
-Widget _buildSocialButtons() {
-  return Row(
-    mainAxisAlignment: MainAxisAlignment.center,
-    children: [
-      SocialButton(
-        icon: Icons.email,
-        color: Colors.redAccent,
-        text: "Gmail",
-        onTap: () {},
-      ),
-      const SizedBox(width: 16),
-      SocialButton(
-        icon: Icons.facebook,
-        color: Colors.blueAccent,
-        text: "Facebook",
-        onTap: () {},
-      ),
-    ],
-  );
+  void _handleSubmit() {
+    if (_formKey.currentState?.validate() ?? false) {
+      // Handle signup logic
+    }
+  }
+
+  String? _validateUsername(String? value) {
+    if (value == null || value.isEmpty) {
+      return "Username is required";
+    }
+    return null;
+  }
+
+  String? _validateEmail(String? value) {
+    if (value == null || value.isEmpty) {
+      return "Email is required";
+    }
+    if (!RegExp(r'\S+@\S+\.\S+').hasMatch(value)) {
+      return "Please enter a valid email address";
+    }
+    return null;
+  }
+
+  String? _validatePassword(String? value) {
+    if (value == null || value.isEmpty) {
+      return "Password is required";
+    }
+    if (value.length < 6) {
+      return "Password must be at least 6 characters long";
+    }
+    return null;
+  }
+
+  String? _validatePhone(String? value) {
+    if (value == null || value.isEmpty) {
+      return "Phone number is required";
+    }
+    return null;
+  }
 }
