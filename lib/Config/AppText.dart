@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:solariqflutter/Config/AppColor.dart';
 
 class AppTextStyles {
+
+
   static const TextStyle appBarTitle = TextStyle(
     fontFamily: 'Poppins',
     color: AppColor.textWhite,
@@ -20,5 +22,12 @@ class AppTextStyles {
     color: AppColor.textGray,
     fontSize: 12,
     fontWeight: FontWeight.w300,
+  );
+
+  static const TextStyle bodyText = TextStyle(
+    fontFamily: 'Poppins',
+    color: AppColor.textBlack,
+    fontSize: 14,
+    fontWeight: FontWeight.w400,
   );
 }
