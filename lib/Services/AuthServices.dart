@@ -28,5 +28,15 @@ class AuthService {
     }
   }
 
-
+  Future<Map<String, dynamic>> getUserInfo(String accessToken) async {
+    final Uri url = Uri.parse('$baseUrl/me');
+    try {
+      final response = await HttpHelper.getRequest(url, headers: {
+        'Authorization': 'Bearer $accessToken',
+      });
+      return response;
+    } catch (e) {
+      return {'error': 'Network error: ${e.toString()}'};
+    }
+  }
 }
