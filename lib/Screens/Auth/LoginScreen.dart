@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../../Config/AppColor.dart';
+
 class Loginscreen extends StatefulWidget {
   const Loginscreen({super.key});
 
@@ -10,6 +12,12 @@ class Loginscreen extends StatefulWidget {
 class _LoginscreenState extends State<Loginscreen> {
   @override
   Widget build(BuildContext context) {
-    return const Placeholder();
+    return Scaffold(
+      body: Container(
+        decoration: const BoxDecoration(
+          gradient: AppColor.linearGradient,
+        ),
+      ),
+    );
   }
 }
