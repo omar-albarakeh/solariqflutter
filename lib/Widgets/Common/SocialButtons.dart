@@ -6,7 +6,8 @@ class SocialButton extends StatelessWidget {
   final String text;
   final VoidCallback onTap;
 
-  const SocialButton({
+  const SocialButton(
+      {super.key,
     required this.icon,
     required this.color,
     required this.text,
@@ -15,7 +16,24 @@ class SocialButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // TODO: implement build
-    throw UnimplementedError();
+    return ElevatedButton.icon(
+      onPressed: onTap,
+      icon: Icon(
+        icon,
+        color: Colors.white,
+        size: 20,
+      ),
+      label: Text(
+        text,
+        style: const TextStyle(color: Colors.white, fontSize: 16),
+      ),
+      style: ElevatedButton.styleFrom(
+        backgroundColor: color,
+        minimumSize: const Size(150, 50),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(30),
+        ),
+      ),
+    );
   }
 }
