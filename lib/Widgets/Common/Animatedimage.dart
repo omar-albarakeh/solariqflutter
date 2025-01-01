@@ -11,7 +11,6 @@ class AnimatedImage extends StatefulWidget {
   _AnimatedImageState createState() => _AnimatedImageState();
 }
 
-
 class _AnimatedImageState extends State<AnimatedImage>
     with SingleTickerProviderStateMixin {
   late AnimationController _controller;
@@ -50,7 +49,33 @@ class _AnimatedImageState extends State<AnimatedImage>
   }
 
   @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return const Placeholder();
+    return AnimatedBuilder(
+      animation: _controller,
+      builder: (context, child) {
+        return Opacity(
+          opacity: _opacityAnimation.value,
+          child: SlideTransition(
+            position: _slideAnimation,
+            child: child,
+          ),
+        );
+      },
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(16),
+        child: Image.asset(
+          widget.imagePath,
+          width: 120,
+          height: 120,
+          fit: BoxFit.cover,
+        ),
+      ),
+    );
   }
 }
