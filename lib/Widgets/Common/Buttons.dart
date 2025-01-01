@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import '../../Config/AppColor.dart';
+import 'package:solariqflutter/Config/AppColor.dart';
+
 import '../../Config/AppText.dart';
 
 
@@ -44,11 +45,37 @@ class Buttons extends StatelessWidget {
       },
     );
   }
+
   @override
   Widget build(BuildContext context) {
-    // TODO: implement build
-    throw UnimplementedError();
+    return GestureDetector(
+      onTap: () {
+        if (onTap != null) {
+          onTap!();
+        } else if (showDialogOnTap) {
+          _showInformationDialog(context);
+        } else if (navigateTo != null) {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => navigateTo!),
+          );
+        }
+      },
+      child: Container(
+        height: 60,
+        width: 320,
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(30),
+          color: backgroundColor ?? AppColor.buttonPrimary,
+          border: hasBorder ? Border.all(color: AppColor.buttonBorder) : null,
+        ),
+        child: Center(
+          child: Text(
+            buttonText,
+            style: AppTextStyles.buttonText,
+          ),
+        ),
+      ),
+    );
   }
-
-  }
-
+}
