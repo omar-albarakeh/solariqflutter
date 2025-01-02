@@ -2,11 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:solariqflutter/Config/AppText.dart';
 import 'package:solariqflutter/Screens/Auth/LoginScreen.dart';
 import '../../Config/AppColor.dart';
-import '../../Services/AuthServices.dart';
+import '../../Controllers/AuthController.dart';
 import '../../Widgets/Common/Buttons.dart';
 import '../../Widgets/Common/CustomTextField.dart';
 import '../../Widgets/Common/SocialButtons.dart';
-import '../../model/Auth/Users.dart';
 
 class SignUpScreen extends StatefulWidget {
   const SignUpScreen({super.key});
@@ -25,7 +24,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
   bool _isPasswordVisible = false;
   String? selectedType;
-  final AuthService _authService = AuthService();
 
   @override
   Widget build(BuildContext context) {
@@ -236,46 +234,57 @@ class _SignUpScreenState extends State<SignUpScreen> {
   }
 
   Future<void> _handleSignUp() async {
-    if (_usernameController.text.isEmpty ||
-        _emailController.text.isEmpty ||
-        _phoneController.text.isEmpty ||
-        _passwordController.text.isEmpty ||
-        _addressController.text.isEmpty ||
-        selectedType == null) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Please fill all fields and select a type.')),
+    if (_formKey.currentState?.validate() ?? false) {
+      final AuthController authController = AuthController();
+
+      // Show loading indicator
+      showDialog(
+        context: context,
+        barrierDismissible: false,
+        builder: (BuildContext context) => const Center(
+          child: CircularProgressIndicator(),
+        ),
       );
-      return;
-    }
 
-    // Create a Users object
-    final newUser = Users(
-      username: _usernameController.text,
-      email: _emailController.text,
-      password: _passwordController.text,
-      type: selectedType!,
-      phoneNumber: _phoneController.text,
-      address: _addressController.text,
-    );
+      try {
+        final response = await authController.signupController(
+          username: _usernameController.text.trim(),
+          email: _emailController.text.trim(),
+          password: _passwordController.text,
+          type: selectedType!,
+          phoneNumber: _phoneController.text.trim(),
+          address: _addressController.text.trim(),
+        );
 
-    try {
-      final response = await _authService.signup(newUser);
+        Navigator.of(context).pop();
 
-      if (response.containsKey('error')) {
-        throw Exception(response['error']);
+        if (response['status'] == 'success') {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text(response['message'])),
+          );
+
+          // Redirect to login
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(builder: (context) => const LoginScreen()),
+          );
+        } else {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text(response['message'] ?? 'Signup failed')),
+          );
+        }
+      } catch (e) {
+        Navigator.of(context).pop();
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Signup failed: ${e.toString()}')),
+        );
       }
-
+    } else {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Signup successful: ${response['message']}')),
-      );
-      Navigator.pushReplacementNamed(context, '/login');
-    } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(e.toString())),
+        const SnackBar(content: Text('Please fill all fields correctly.')),
       );
     }
   }
-
 
   String? _validateUsername(String? value) {
     if (value == null || value.isEmpty) {
