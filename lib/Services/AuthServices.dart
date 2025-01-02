@@ -2,47 +2,34 @@ import '../model/Auth/Users.dart';
 import '../utils/helpers.dart';
 
 class AuthService {
-  static const String baseUrl = "http://192.168.0.103:3000/user";
+  final String _baseUrl = "http://192.168.0.103:3001";
 
   Future<Map<String, dynamic>> signup(Users user) async {
-    final Uri url = Uri.parse('$baseUrl/signup');
-    try {
-      final response = await HttpHelper.postRequest(url, user.toJson());
-      return response;
-    } catch (e) {
-      print("Signup Error: ${e.toString()}");
-      return {'error': 'Network error: ${e.toString()}'};
-    }
+    final url = Uri.parse('$_baseUrl/auth/signup');
+    return HttpHelper.postRequest(url, {
+      'email': user.email,
+      'password': user.password,
+      'name': user.name,
+      'type': user.type,
+      'phone': user.phoneNumber,
+      'address': user.address,
+    });
   }
 
-  Future<Map<String, dynamic>> login({required String email, required String password}) async {
-    final Uri url = Uri.parse('$baseUrl/login');
-    final Map<String, dynamic> requestBody = {
+  Future<Map<String, dynamic>> login({
+    required String email,
+    required String password,
+  }) async {
+    final url = Uri.parse('$_baseUrl/auth/login');
+    return HttpHelper.postRequest(url, {
       'email': email,
       'password': password,
-    };
-    try {
-      final response = await HttpHelper.postRequest(url, requestBody);
-      return response;
-    } catch (e) {
-      print("Login Error: ${e.toString()}"); // Debugging
-      return {'error': 'Network error: ${e.toString()}'};
-    }
+    });
   }
 
   Future<Map<String, dynamic>> getUserInfo(String accessToken) async {
-    final Uri url = Uri.parse('$baseUrl/me');
-    try {
-      final response = await HttpHelper.getRequest(
-        url,
-        headers: {
-          'Authorization': 'Bearer $accessToken',
-        },
-      );
-      return response;
-    } catch (e) {
-      print("Get User Info Error: ${e.toString()}"); // Debugging
-      return {'error': 'Network error: ${e.toString()}'};
-    }
+    final url = Uri.parse('$_baseUrl/auth/user');
+    final headers = {'Authorization': 'Bearer $accessToken'};
+    return HttpHelper.getRequest(url, headers: headers);
   }
 }
