@@ -1,4 +1,3 @@
-
 import '../Services/AuthServices.dart';
 import '../model/Auth/Users.dart';
 
@@ -14,7 +13,7 @@ class AuthController {
     String? address,
   }) async {
     Users user = Users(
-      username: username,
+      name: username,
       email: email,
       password: password,
       type: type,
@@ -22,20 +21,53 @@ class AuthController {
       address: address,
     );
 
-    return await _authService.signup(user);
+    try {
+      final response = await _authService.signup(user);
+      return {
+        'status': 'success',
+        'message': 'User signed up successfully',
+        'data': response,
+      };
+    } catch (e) {
+      return {
+        'status': 'error',
+        'message': 'Signup failed: ${e.toString()}',
+      };
+    }
   }
 
   Future<Map<String, dynamic>> loginController({
     required String email,
     required String password,
   }) async {
-    return await _authService.login(
-      email: email,
-      password: password,
-    );
+    try {
+      final response = await _authService.login(email: email, password: password);
+      return {
+        'status': 'success',
+        'message': 'Login successful',
+        'data': response,
+      };
+    } catch (e) {
+      return {
+        'status': 'error',
+        'message': 'Login failed: ${e.toString()}',
+      };
+    }
   }
 
   Future<Map<String, dynamic>> getUserInfoController(String accessToken) async {
-    return await _authService.getUserInfo(accessToken);
+    try {
+      final response = await _authService.getUserInfo(accessToken);
+      return {
+        'status': 'success',
+        'message': 'User information retrieved successfully',
+        'data': response,
+      };
+    } catch (e) {
+      return {
+        'status': 'error',
+        'message': 'Failed to retrieve user info: ${e.toString()}',
+      };
+    }
   }
 }
