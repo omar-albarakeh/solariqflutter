@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'Screens/Auth/HomeScreen.dart';
+import 'Screens/Home/HomeScreen.dart';
 import 'Screens/Auth/SplashScreen.dart';
 
 
