@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "310949939924",
+    "project_id": "solariq-180e0",
+    "storage_bucket": "solariq-180e0.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:310949939924:android:80fa9d102bae3003074941",
+        "android_client_info": {
+          "package_name": "com.company.mycompany"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "310949939924-0kc4pnik7em1mh8jul2t80v7u5l663ht.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.company.mycompany",
+            "certificate_hash": "78c7daf726b855d4a5f6f76676c98746403c0887"
+          }
+        },
+        {
+          "client_id": "310949939924-qb1r4urhl7rg27b6r5c7muhj3lvivm44.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDq_59Q9B2TJxclpie1fh_foqqACX4wWQ0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "310949939924-qb1r4urhl7rg27b6r5c7muhj3lvivm44.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
