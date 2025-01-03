@@ -21,7 +21,35 @@ class FloatingActionButtonWidget extends StatelessWidget {
           constraints: BoxConstraints(
             maxHeight: MediaQuery.of(context).size.height * 0.8,
           ),
-    ),
-    ]);
+          child: SingleChildScrollView(
+            reverse: true,
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.end,
+              children: [
+                ...subButtons.asMap().entries.map((entry) {
+                  int index = entry.key;
+                  Widget button = entry.value;
+
+                  return AnimatedContainer(
+                    duration: const Duration(milliseconds: 300),
+                    curve: Curves.easeOut,
+                    height: isExpanded ? 56.0 : 0.0,
+                    margin: EdgeInsets.only(
+                      bottom: isExpanded ? (index + 1) * 10.0 : 0.0,
+                    ),
+                    child: Opacity(
+                      opacity: isExpanded ? 1.0 : 0.0,
+                      child: button,
+                    ),
+                  );
+                }).toList(),
+                mainButton,
+              ],
+            ),
+          ),
+        ),
+      ],
+    );
   }
 }
