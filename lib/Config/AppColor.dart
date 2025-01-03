@@ -21,4 +21,6 @@ class AppColor{
   static const Color textWhite = Color(0xFFFFFFFF);
   static const Color textBlack = Color(0xFF000000);
   static const Color textGray = Color(0xFFB0B0B0);
+
+  static const Color IconWhite = Color(0xFFFFFFFF);
 }

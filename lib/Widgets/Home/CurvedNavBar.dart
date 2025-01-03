@@ -1,5 +1,6 @@
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:flutter/material.dart';
+import '../../Config/AppColor.dart';
 import '../../Screens/Home/Pages/ChatPage.dart';
 import '../../Screens/Home/Pages/CommunityPage.dart';
 import '../../Screens/Home/Pages/Homepage.dart';
@@ -46,10 +47,10 @@ class _NavBarState extends State<NavBar> {
             });
           },
           items: const [
-            Icon(Icons.home, color: Colors.white),
-            Icon(Icons.shop, color: Colors.white),
-            Icon(Icons.people, color: Colors.white),
-            Icon(Icons.message, color: Colors.white),
+            Icon(Icons.home, color:AppColor.IconWhite),
+            Icon(Icons.shop, color:AppColor.IconWhite),
+            Icon(Icons.people, color:AppColor.IconWhite),
+            Icon(Icons.message, color:AppColor.IconWhite),
           ],
         ),
       ],
