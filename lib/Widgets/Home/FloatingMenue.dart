@@ -17,7 +17,21 @@ class _FloatingMenuState extends State<FloatingMenu> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.transparent,
-      
+      floatingActionButton: FloatingActionButtonWidget(
+        subButtons: [
+        ],
+        mainButton: FloatingActionButton(
+          heroTag: 'mainButton',
+          onPressed: () {
+            setState(() {
+              isExpanded = !isExpanded;
+            });
+          },
+          backgroundColor: AppColor.primary,
+          child: Icon(isExpanded ? Icons.close : FontAwesomeIcons.microchip),
+        ),
+        isExpanded: isExpanded,
+      ),
     );
   }
 }
