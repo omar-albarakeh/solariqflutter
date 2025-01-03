@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 
 class MessageCard extends StatelessWidget {
-
   final String message;
   final String time;
   final Alignment alignment;
@@ -27,10 +26,37 @@ class MessageCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Align(
       alignment: alignment,
-      child: ConstrainedBox(constraints: BoxConstraints(
-        maxWidth: MediaQuery.of(context).size.width*0.75,
-      ))
-      
+      child: ConstrainedBox(
+        constraints: BoxConstraints(
+          maxWidth: MediaQuery.of(context).size.width * 0.75,
+        ),
+        child: Card(
+          elevation: 3,
+          margin: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+          shape: RoundedRectangleBorder(
+            side: BorderSide(color: borderColor),
+            borderRadius: borderRadius,
+          ),
+          color: cardColor,
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 12),
+            child: Column(
+                crossAxisAlignment: alignment == Alignment.centerRight
+                    ? CrossAxisAlignment.end
+                    : CrossAxisAlignment.start,
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Text(
+                    message,
+                    style: TextStyle(
+                      fontSize: 16,
+                      color: textColor,
+                    ),
+                  ),
+                ]),
+          ),
+        ),
+      ),
     );
   }
 }
