@@ -12,7 +12,7 @@ class AuthService {
       'name': user.name,
       'type': user.type,
       'phone': user.phoneNumber,
-      'address': user.address,
+      'address': user.address ?? '',  // Handling null address
     });
   }
 
@@ -27,14 +27,13 @@ class AuthService {
     });
   }
 
-  Future<Map<String, dynamic>> getUserInfo(String token, String name) async {
-    final url = Uri.parse('$_baseUrl/auth/user/$name');
+  Future<Map<String, dynamic>> getUserInfo(String token) async {
+    final url = Uri.parse('$_baseUrl/auth/user');
     final headers = {
       'Authorization': 'Bearer $token',
       'Content-Type': 'application/json',
     };
     final response = await HttpHelper.getRequest(url, headers: headers);
-
     return response;
   }
 }

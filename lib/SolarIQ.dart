@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:solariqflutter/Screens/Auth/LoginScreen.dart';
 import 'package:solariqflutter/Screens/Auth/SignUpScreen.dart';
+import 'package:solariqflutter/Screens/Auth/UserProfileScreen.dart';
 import 'Screens/Home/HomeScreen.dart';
 import 'Screens/Auth/SplashScreen.dart';
 
