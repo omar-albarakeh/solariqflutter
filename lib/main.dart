@@ -1,9 +1,17 @@
-import 'package:firebase_core/firebase_core.dart' show Firebase;
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'SolarIQ.dart';
+import 'Widgets/Home/ThemeNotifier.dart';
 
-void main() async {
-  WidgetsFlutterBinding.ensureInitialized();
+
+Future<void> main() async {
   await Firebase.initializeApp();
-  runApp(const SolarIQ());
+
+  runApp(
+    ChangeNotifierProvider(
+      create: (_) => ThemeNotifier(),
+      child: const SolarIQ(),
+    ),
+  );
 }
