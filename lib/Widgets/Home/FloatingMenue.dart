@@ -22,6 +22,9 @@ class _FloatingMenuState extends State<FloatingMenu> {
           FloatingActionButton(
             heroTag: 'button1',
             onPressed: () {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context)=>TextInputScreen()));
             },
             backgroundColor: AppColor.primary,
             child: FaIcon(FontAwesomeIcons.robot),
