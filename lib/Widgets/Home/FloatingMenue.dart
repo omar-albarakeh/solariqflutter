@@ -26,6 +26,13 @@ class _FloatingMenuState extends State<FloatingMenu> {
             backgroundColor: AppColor.primary,
             child: FaIcon(FontAwesomeIcons.robot),
           ),
+          FloatingActionButton(
+            heroTag: 'button2',
+            onPressed: () {
+            },
+            backgroundColor: AppColor.primary,
+            child: Icon(Icons.document_scanner),
+          ),
 
         ],
         mainButton: FloatingActionButton(
