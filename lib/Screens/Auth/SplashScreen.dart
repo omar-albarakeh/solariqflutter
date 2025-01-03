@@ -4,7 +4,7 @@ import 'package:solariqflutter/Screens/Auth/LoginScreen.dart';
 import 'package:solariqflutter/Widgets/Common/Buttons.dart';
 
 import '../../Config/AppColor.dart';
-import '../../Widgets/Common/Animatedimage.dart';
+import '../../Widgets/Auth/Animatedimage.dart';
 
 class SplashScreen extends StatelessWidget {
   const SplashScreen({super.key});

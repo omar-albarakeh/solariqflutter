@@ -6,7 +6,7 @@ import '../../Controllers/AuthController.dart';
 import '../../Services/GoogleServices.dart';
 import '../../Widgets/Common/Buttons.dart';
 import '../../Widgets/Common/CustomTextField.dart';
-import '../../Widgets/Common/SocialButtons.dart';
+import '../../Widgets/Auth/SocialButtons.dart';
 import 'SignUpScreen.dart';
 
 class LoginScreen extends StatefulWidget {

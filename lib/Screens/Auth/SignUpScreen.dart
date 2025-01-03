@@ -5,7 +5,7 @@ import '../../Config/AppColor.dart';
 import '../../Controllers/AuthController.dart';
 import '../../Widgets/Common/Buttons.dart';
 import '../../Widgets/Common/CustomTextField.dart';
-import '../../Widgets/Common/SocialButtons.dart';
+import '../../Widgets/Auth/SocialButtons.dart';
 
 class SignUpScreen extends StatefulWidget {
   const SignUpScreen({super.key});
