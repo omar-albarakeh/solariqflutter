@@ -1,15 +1,31 @@
 import 'package:flutter/material.dart';
 
-class MessageCard extends StatefulWidget {
-  const MessageCard({super.key});
+class MessageCard extends StatelessWidget {
 
-  @override
-  State<MessageCard> createState() => _MessageCardState();
-}
+  final String message;
+  final String time;
+  final Alignment alignment;
+  final Color borderColor;
+  final Color cardColor;
+  final Color textColor;
+  final Color timeColor;
+  final BorderRadius borderRadius;
+  
+  const MessageCard({
+    super.key,
+    required this.message,
+    required this.time,
+    required this.alignment,
+    required this.borderColor,
+    required this.cardColor,
+    required this.textColor,
+    required this.timeColor,
+    required this.borderRadius,
+  });
 
-class _MessageCardState extends State<MessageCard> {
   @override
   Widget build(BuildContext context) {
-    return const Placeholder();
+    // TODO: implement build
+    throw UnimplementedError();
   }
 }
