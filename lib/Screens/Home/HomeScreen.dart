@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../Widgets/Home/CurvedNavBar.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -11,11 +12,16 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Container(
-        decoration: BoxDecoration(
-          color: Colors.white,
-        ),
-      ),
+      body: Stack(
+          children: [
+            const Column(
+              children: [
+                Expanded(
+                  child: NavBar(),
+                ),
+              ],
+            ),
+          ]),
     );
   }
 }
