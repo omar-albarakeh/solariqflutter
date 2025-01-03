@@ -18,47 +18,50 @@ class _HomeScreenState extends State<HomeScreen> {
     final theme = Theme.of(context);
 
     return SafeArea(
-        child: Scaffold(
-      appBar: AppBar(
-        backgroundColor:
-            theme.appBarTheme.backgroundColor ?? theme.primaryColor,
-        title: const Text(
-          'Home',
-          style: AppTextStyles.appBarTitle,
-        ),
-        actions: [
-          IconButton(
-            icon: Icon(
-              theme.brightness == Brightness.dark
-                  ? Icons.dark_mode
-                  : Icons.light_mode,
-            ),
-            onPressed: () {
-              Provider.of<ThemeNotifier>(context, listen: false).toggleTheme();
-            },
+      child: Scaffold(
+        appBar: AppBar(
+          backgroundColor: theme.primaryColor,
+          title: const Text(
+            'Home',
+            style: AppTextStyles.appBarTitle,
           ),
-        ],
-      ),
-      body: Stack(children: [
-        const Column(
-          children: [
-            Expanded(
-              child: NavBar(),
+          actions: [
+            IconButton(
+              icon: Icon(
+                theme.brightness == Brightness.dark
+                    ? Icons.dark_mode
+                    : Icons.light_mode,
+              ),
+              onPressed: () {
+                Provider.of<ThemeNotifier>(context, listen: false)
+                    .toggleTheme();
+              },
             ),
           ],
         ),
-        Positioned(
-          bottom: 80,
-          right: 5,
-          child: ConstrainedBox(
-            constraints: const BoxConstraints(
-              maxWidth: 70,
-              maxHeight: 300,
+        body: Stack(
+          children: [
+            const Column(
+              children: [
+                Expanded(
+                  child: NavBar(),
+                ),
+              ],
             ),
-            child: const FloatingMenu(),
-          ),
+            Positioned(
+              bottom: 80,
+              right: 5,
+              child: ConstrainedBox(
+                constraints: const BoxConstraints(
+                  maxWidth: 70,
+                  maxHeight: 300,
+                ),
+                child: const FloatingMenu(),
+              ),
+            ),
+          ],
         ),
-      ]),
-    ));
+      ),
+    );
   }
 }
