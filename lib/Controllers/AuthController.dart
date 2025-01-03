@@ -1,3 +1,4 @@
+import '../Config/SharedPreferences.dart';
 import '../Services/AuthServices.dart';
 import '../model/Auth/Users.dart';
 
@@ -55,23 +56,27 @@ class AuthController {
     }
   }
 
-  Future<Map<String, dynamic>> getUserInfoController(String accessToken) async {
+  Future<Map<String, dynamic>> getUserInfoController() async {
     try {
-      final response = await _authService.getUserInfo(accessToken);
-      if (response['status'] == 'success') {
-        return {
-          'status': 'success',
-          'message': 'User information retrieved successfully',
-          'data': response['data'],
-        };
-      } else {
-        throw Exception(response['message']);
-      }
+      final response = await _authService.getUserInfo();
+      return {
+        'status': 'success',
+        'message': 'User info retrieved successfully',
+        'data': response,
+      };
     } catch (e) {
       return {
         'status': 'error',
         'message': 'Failed to retrieve user info: ${e.toString()}',
       };
+    }
+  }
+
+  Future<void> logoutController() async {
+    try {
+      await _authService.logout();
+    } catch (e) {
+      throw Exception('Logout failed: ${e.toString()}');
     }
   }
 }

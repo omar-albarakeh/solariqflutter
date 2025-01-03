@@ -192,39 +192,31 @@ class _LoginScreenState extends State<LoginScreen> {
 
 
   Future<void> _handleLogin() async {
+    if (_emailController.text.trim().isEmpty || _passwordController.text.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Please fill in all fields')),
+      );
+      return;
+    }
+
     try {
       final response = await _authController.loginController(
-        email: _emailController.text,
+        email: _emailController.text.trim(),
         password: _passwordController.text,
       );
 
       if (response['status'] == 'success') {
-        final accessToken = response['data']['token'];
-
+        final accessToken = response['data']['accessToken'];
         if (accessToken == null || accessToken.isEmpty) {
-          throw Exception('Token is null or empty');
+          throw Exception('Invalid token received');
         }
 
-        // Save the token securely
-        await saveToken(accessToken);
-
-        // Fetch user info
-        final userInfoResponse = await _authController.getUserInfoController(accessToken);
-
-        if (userInfoResponse['status'] != 'success') {
-          throw Exception('Failed to fetch user info after login.');
-        }
-
+        await TokenStorage.saveToken(accessToken);
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text('Login successful!')),
         );
 
-        // Navigate to the home screen with user info
-        Navigator.pushReplacementNamed(
-          context,
-          '/home',
-          arguments: {'token': accessToken, 'userInfo': userInfoResponse['data']},
-        );
+        Navigator.pushReplacementNamed(context, '/home');
       } else {
         throw Exception(response['message'] ?? 'Login failed');
       }

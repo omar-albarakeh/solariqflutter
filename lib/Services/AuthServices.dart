@@ -1,3 +1,4 @@
+import '../Config/SharedPreferences.dart';
 import '../model/Auth/Users.dart';
 import '../utils/helpers.dart';
 
@@ -6,7 +7,7 @@ class AuthService {
 
   Future<Map<String, dynamic>> signup(Users user) async {
     final url = Uri.parse('$_baseUrl/auth/signup');
-    return HttpHelper.postRequest(url, {
+    final response = await HttpHelper.postRequest(url, {
       'email': user.email,
       'password': user.password,
       'name': user.name,
@@ -14,6 +15,12 @@ class AuthService {
       'phone': user.phoneNumber,
       'address': user.address ?? '',
     });
+
+    if (response['status'] == 'success') {
+      return response['data'];
+    } else {
+      throw Exception(response['message']);
+    }
   }
 
   Future<Map<String, dynamic>> login({
@@ -21,33 +28,41 @@ class AuthService {
     required String password,
   }) async {
     final url = Uri.parse('$_baseUrl/auth/login');
-    try {
-      final response = await HttpHelper.postRequest(url, {
-        'email': email,
-        'password': password,
-      });
-      print("Login Response: $response"); // Debugging line
-      return response;
-    } catch (e) {
-      throw Exception('Login error: ${e.toString()}');
+    final response = await HttpHelper.postRequest(url, {
+      'email': email,
+      'password': password,
+    });
+
+    if (response['status'] == 'success') {
+      final token = response['data']['accessToken'];
+      await TokenStorage.saveToken(token);
+      return response['data'];
+    } else {
+      throw Exception(response['message']);
     }
   }
 
-  Future<Map<String, dynamic>> getUserInfo(String token) async {
-    final url = Uri.parse('$_baseUrl/auth/user');
+  Future<Map<String, dynamic>> getUserInfo() async {
+    final token = await TokenStorage.getToken();
+    if (token == null) {
+      throw Exception('No token found');
+    }
+
+    final url = Uri.parse('$_baseUrl/auth/user-info');
     final headers = {
       'Authorization': 'Bearer $token',
       'Content-Type': 'application/json',
     };
 
-    try {
-      final response = await HttpHelper.getRequest(url, headers: headers);
-      if (response['status'] != 'success') {
-        throw Exception(response['message'] ?? 'Failed to fetch user info');
-      }
-      return response;
-    } catch (e) {
-      throw Exception('Error fetching user info: ${e.toString()}');
+    final response = await HttpHelper.getRequest(url, headers: headers);
+    if (response['status'] == 'success') {
+      return response['data'];
+    } else {
+      throw Exception(response['message']);
     }
+  }
+
+  Future<void> logout() async {
+    await TokenStorage.deleteToken();
   }
 }

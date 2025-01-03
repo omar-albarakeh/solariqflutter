@@ -18,7 +18,7 @@ class SolarIQ extends StatelessWidget {
         '/': (context) => const SplashScreen(),
         '/login': (context) => const LoginScreen(),
         '/signup': (context) => const SignUpScreen(),
-        '/home': (context) => const Homescreen(),
+        '/home': (context) => const HomeScreen(),
       },
     );
   }

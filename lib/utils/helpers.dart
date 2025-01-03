@@ -3,15 +3,26 @@ import 'package:http/http.dart' as http;
 
 class HttpHelper {
   static Map<String, dynamic> _processResponse(http.Response response) {
-    if (response.statusCode == 200 || response.statusCode == 201) {
-      return jsonDecode(response.body);
-    } else {
+    try {
+      final decodedBody = jsonDecode(response.body);
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        return decodedBody;
+      } else {
+        return {
+          'status': 'error',
+          'message': decodedBody['message'] ?? 'Unexpected error occurred.',
+          'statusCode': response.statusCode,
+        };
+      }
+    } catch (e) {
       return {
-        'error': 'Request failed with status: ${response.statusCode}',
-        'status': response.statusCode,
+        'status': 'error',
+        'message': 'Failed to process response: ${e.toString()}',
+        'statusCode': response.statusCode,
       };
     }
   }
+
   static Future<Map<String, dynamic>> postRequest(
       Uri url, Map<String, dynamic> body, {Map<String, String>? headers}) async {
     try {
@@ -22,7 +33,10 @@ class HttpHelper {
       );
       return _processResponse(response);
     } catch (e) {
-      return {'error': 'Network error: ${e.toString()}'};
+      return {
+        'status': 'error',
+        'message': 'Network error: ${e.toString()}',
+      };
     }
   }
 
@@ -32,8 +46,10 @@ class HttpHelper {
       final response = await http.get(url, headers: headers);
       return _processResponse(response);
     } catch (e) {
-      return {'error': 'Network error: ${e.toString()}'};
+      return {
+        'status': 'error',
+        'message': 'Network error: ${e.toString()}',
+      };
     }
   }
-
 }

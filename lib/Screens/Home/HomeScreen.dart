@@ -1,39 +1,39 @@
 import 'package:flutter/material.dart';
-import '../../Config/SharedPreferences.dart';
-import '../../Controllers/AuthController.dart';
-import '../Auth/UserProfileScreen.dart';
 
-class Homescreen extends StatefulWidget {
-  const Homescreen({Key? key}) : super(key: key);
+import '../../Services/AuthServices.dart';
+
+class HomeScreen extends StatefulWidget {
+  const HomeScreen({Key? key}) : super(key: key);
 
   @override
-  State<Homescreen> createState() => _HomescreenState();
+  State<HomeScreen> createState() => _HomeScreenState();
 }
 
-class _HomescreenState extends State<Homescreen> {
-  String token = '';
+class _HomeScreenState extends State<HomeScreen> {
   Map<String, dynamic> userInfo = {};
-  bool isLoading = true; // For managing loading state
-  final AuthController _authController = AuthController();
+  bool isLoading = true;
+  final AuthService _authService = AuthService();
 
   @override
   void initState() {
     super.initState();
-    _loadTokenAndUserInfo();
+    _fetchUserInfo();
   }
 
-  // Load token from shared preferences and fetch user info
-  Future<void> _loadTokenAndUserInfo() async {
+  Future<void> _fetchUserInfo() async {
     try {
-      final storedToken = await getToken();
-      if (storedToken != null) {
-        token = storedToken;
-        await _fetchUserInfo(storedToken);
+      final response = await _authService.getUserInfo();
+      if (response['status'] == 'success' && response.containsKey('data')) {
+        setState(() {
+          userInfo = response['data'];
+        });
       } else {
-        _showErrorSnackBar('Token not found. Please login again.');
+        throw Exception(response['message'] ?? 'Failed to fetch user info');
       }
     } catch (e) {
-      _showErrorSnackBar('Error loading token: ${e.toString()}');
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Error: ${e.toString()}')),
+      );
     } finally {
       setState(() {
         isLoading = false;
@@ -41,67 +41,57 @@ class _HomescreenState extends State<Homescreen> {
     }
   }
 
-  // Fetch user info using the token
-  Future<void> _fetchUserInfo(String token) async {
-    try {
-      final response = await _authController.getUserInfoController(token);
-      if (response['status'] == 'success') {
-        setState(() {
-          userInfo = response['data'];
-        });
-      } else {
-        throw Exception(response['message'] ?? 'Failed to load user info');
-      }
-    } catch (e) {
-      _showErrorSnackBar('Error: ${e.toString()}');
-    }
-  }
-
-  // Show error message as a SnackBar
-  void _showErrorSnackBar(String message) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text(message)),
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text("Home Screen")),
-      body: Center(
-        child: isLoading
-            ? const CircularProgressIndicator()
-            : token.isEmpty
-            ? const Text(
-          "No token found. Please login.",
-          style: TextStyle(fontSize: 16),
-        )
-            : userInfo.isEmpty
-            ? const Text(
-          "Failed to load user info.",
-          style: TextStyle(fontSize: 16),
-        )
-            : Column(
+      appBar: AppBar(
+        title: const Text('Home Screen'),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.logout),
+            onPressed: () async {
+              await _authService.logout();
+              Navigator.pushReplacementNamed(context, '/login');
+            },
+          )
+        ],
+      ),
+      body: isLoading
+          ? const Center(child: CircularProgressIndicator())
+          : userInfo.isEmpty
+          ? const Center(child: Text('Failed to load user info'))
+          : Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              "Hello, ${userInfo['name'] ?? 'User'}",
-              style: const TextStyle(fontSize: 20),
+              'Welcome, ${userInfo['name']}!',
+              style: Theme.of(context).textTheme.headlineSmall,
             ),
-            const SizedBox(height: 20),
-            ElevatedButton(
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => UserProfileScreen(token: token),
-                  ),
-                );
-              },
-              child: const Text("Go to Profile"),
+            const SizedBox(height: 10),
+            Text(
+              'Email: ${userInfo['email']}',
+              style: Theme.of(context).textTheme.bodyLarge,
             ),
+            const SizedBox(height: 10),
+            if (userInfo.containsKey('phone'))
+              Text(
+                'Phone: ${userInfo['phone']}',
+                style: Theme.of(context).textTheme.bodyLarge,
+              ),
+            const SizedBox(height: 10),
+            if (userInfo.containsKey('address') &&
+                userInfo['address'] != null &&
+                userInfo['address'].isNotEmpty)
+              Text(
+                'Address: ${userInfo['address']}',
+                style: Theme.of(context).textTheme.bodyLarge,
+              ),
           ],
         ),
       ),
     );
-  }}
+  }
+}
