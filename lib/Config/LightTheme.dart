@@ -1,19 +1,25 @@
 import 'package:flutter/material.dart';
-import 'package:solariqflutter/Config/AppColor.dart';
-import 'package:solariqflutter/Config/AppText.dart';
+import 'AppColor.dart';
+import 'AppText.dart';
 
-class AppTheme {
+class LightTheme {
   static ThemeData get lightTheme {
     return ThemeData(
       brightness: Brightness.light,
       primaryColor: AppColor.primary,
       scaffoldBackgroundColor: AppColor.backgroundLight,
-      appBarTheme: const AppBarTheme(
+      colorScheme: ColorScheme.light(
+        primary: AppColor.blue,
+        secondary: AppColor.blue,
+        onPrimary: AppColor.textWhite,
+        onSecondary: AppColor.textWhite,
+      ),
+      appBarTheme: AppBarTheme(
         color: AppColor.primary,
         titleTextStyle: AppTextStyles.appBarTitle,
         iconTheme: IconThemeData(color: AppColor.textWhite),
       ),
-      textTheme: const TextTheme(
+      textTheme: TextTheme(
         displayLarge: AppTextStyles.appBarTitle,
         titleLarge: AppTextStyles.title,
         labelLarge: AppTextStyles.subtitleText,
@@ -34,7 +40,7 @@ class AppTheme {
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(8.0),
         ),
-        focusedBorder: const OutlineInputBorder(
+        focusedBorder: OutlineInputBorder(
           borderSide: BorderSide(color: AppColor.primary),
         ),
         labelStyle: AppTextStyles.subtitleText.copyWith(

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:solariqflutter/Config/AppColor.dart';
-
 import '../../Config/AppText.dart';
 
 

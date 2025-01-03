@@ -10,7 +10,7 @@ class CustomTextField extends StatelessWidget {
   final bool obscureText;
   final TextInputType keyboardType;
   final double? width;
-  final Widget? suffixIcon; // Added suffixIcon parameter
+  final Widget? suffixIcon;
 
   const CustomTextField({
     Key? key,
@@ -21,7 +21,7 @@ class CustomTextField extends StatelessWidget {
     this.obscureText = false,
     this.keyboardType = TextInputType.text,
     this.width,
-    this.suffixIcon, // Initialize suffixIcon
+    this.suffixIcon,
   }) : super(key: key);
 
   @override
@@ -38,7 +38,7 @@ class CustomTextField extends StatelessWidget {
             icon,
             color: AppColor.textWhite,
           ),
-          suffixIcon: suffixIcon, // Set suffixIcon in InputDecoration
+          suffixIcon: suffixIcon,
           labelText: label,
           labelStyle: AppTextStyles.subtitleText.copyWith(
             color: AppColor.textWhite,

@@ -28,18 +28,13 @@ class TokenStorage {
     }
   }
 
-  // Optional: Add a method to check if the token is valid (requires decoding the token to check expiry)
-  static Future<bool> isTokenValid() async {
+ static Future<bool> isTokenValid() async {
     try {
       final token = await getToken();
       if (token == null || token.isEmpty) {
         return false;
       }
-      // Example of decoding and validating token expiry (requires a JWT library)
-      // final decodedToken = JwtDecoder.decode(token);
-      // final expiryDate = DateTime.fromMillisecondsSinceEpoch(decodedToken['exp'] * 1000);
-      // return expiryDate.isAfter(DateTime.now());
-      return true; // Replace with actual validation logic
+      return true;
     } catch (e) {
       return false;
     }

@@ -1,6 +1,5 @@
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:flutter/material.dart';
-import '../../Config/AppColor.dart';
 import '../../Screens/Home/Pages/ChatPage.dart';
 import '../../Screens/Home/Pages/CommunityPage.dart';
 import '../../Screens/Home/Pages/Homepage.dart';
@@ -14,7 +13,6 @@ class NavBar extends StatefulWidget {
 }
 
 class _NavBarState extends State<NavBar> {
-
   int _currentIndex = 0;
 
   final List<Widget> _pages = [
@@ -27,6 +25,7 @@ class _NavBarState extends State<NavBar> {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final isLightMode = theme.brightness == Brightness.light;
 
     return Column(
       children: [
@@ -38,19 +37,19 @@ class _NavBarState extends State<NavBar> {
         ),
         CurvedNavigationBar(
           backgroundColor: Colors.transparent,
-          color: theme.appBarTheme.backgroundColor ?? theme.primaryColor,
-          buttonBackgroundColor: theme.primaryColorLight,
+          color: theme.primaryColor,
+          buttonBackgroundColor: theme.colorScheme.primary,
           animationDuration: const Duration(milliseconds: 300),
           onTap: (index) {
             setState(() {
               _currentIndex = index;
             });
           },
-          items: const [
-            Icon(Icons.home, color:AppColor.IconWhite),
-            Icon(Icons.shop, color:AppColor.IconWhite),
-            Icon(Icons.people, color:AppColor.IconWhite),
-            Icon(Icons.message, color:AppColor.IconWhite),
+          items: [
+            Icon(Icons.home, color: isLightMode ? Colors.white : Colors.black),
+            Icon(Icons.shop, color: isLightMode ? Colors.white : Colors.black),
+            Icon(Icons.people, color: isLightMode ? Colors.white : Colors.black),
+            Icon(Icons.message, color: isLightMode ? Colors.white : Colors.black),
           ],
         ),
       ],
