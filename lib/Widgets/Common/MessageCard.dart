@@ -1,15 +1,6 @@
 import 'package:flutter/material.dart';
 
 class MessageCard extends StatelessWidget {
-  final String message;
-  final String time;
-  final Alignment alignment;
-  final Color borderColor;
-  final Color cardColor;
-  final Color textColor;
-  final Color timeColor;
-  final BorderRadius borderRadius;
-
   const MessageCard({
     super.key,
     required this.message,
@@ -21,6 +12,15 @@ class MessageCard extends StatelessWidget {
     required this.timeColor,
     required this.borderRadius,
   });
+
+  final String message;
+  final String time;
+  final Alignment alignment;
+  final Color borderColor;
+  final Color cardColor;
+  final Color textColor;
+  final Color timeColor;
+  final BorderRadius borderRadius;
 
   @override
   Widget build(BuildContext context) {
@@ -41,19 +41,31 @@ class MessageCard extends StatelessWidget {
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 12),
             child: Column(
-                crossAxisAlignment: alignment == Alignment.centerRight
-                    ? CrossAxisAlignment.end
-                    : CrossAxisAlignment.start,
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Text(
-                    message,
+              crossAxisAlignment: alignment == Alignment.centerRight
+                  ? CrossAxisAlignment.end
+                  : CrossAxisAlignment.start,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text(
+                  message,
+                  style: TextStyle(
+                    fontSize: 16,
+                    color: textColor,
+                  ),
+                ),
+                const SizedBox(height: 8),
+                Align(
+                  alignment: Alignment.centerRight,
+                  child: Text(
+                    time,
                     style: TextStyle(
-                      fontSize: 16,
-                      color: textColor,
+                      fontSize: 12,
+                      color: timeColor,
                     ),
                   ),
-                ]),
+                ),
+              ],
+            ),
           ),
         ),
       ),
