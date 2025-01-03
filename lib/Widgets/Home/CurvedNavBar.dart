@@ -28,6 +28,31 @@ class _NavBarState extends State<NavBar> {
     final theme = Theme.of(context);
 
     return Column(
+      children: [
+        Expanded(
+          child: IndexedStack(
+            index: _currentIndex,
+            children: _pages,
+          ),
+        ),
+        CurvedNavigationBar(
+          backgroundColor: Colors.transparent,
+          color: theme.appBarTheme.backgroundColor ?? theme.primaryColor,
+          buttonBackgroundColor: theme.primaryColorLight,
+          animationDuration: const Duration(milliseconds: 300),
+          onTap: (index) {
+            setState(() {
+              _currentIndex = index;
+            });
+          },
+          items: const [
+            Icon(Icons.home, color: Colors.white),
+            Icon(Icons.shop, color: Colors.white),
+            Icon(Icons.people, color: Colors.white),
+            Icon(Icons.message, color: Colors.white),
+          ],
+        ),
+      ],
     );
   }
 }
