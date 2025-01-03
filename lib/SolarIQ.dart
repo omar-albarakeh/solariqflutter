@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:solariqflutter/Screens/Auth/LoginScreen.dart';
+import 'package:solariqflutter/Screens/Auth/SignUpScreen.dart';
 import 'Screens/Home/HomeScreen.dart';
 import 'Screens/Auth/SplashScreen.dart';
 
@@ -10,12 +12,13 @@ class SolarIQ extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'SolarIQ',
-      initialRoute: '/',  // This is where the app starts
+      initialRoute: '/',
       routes: {
         '/': (context) => const SplashScreen(),
-        '/home': (context) => const Homescreen(),  // Define your /home route here
+        '/login': (context) => const LoginScreen(),
+        '/signup': (context) => const SignUpScreen(),
+        '/home': (context) => const Homescreen(),
       },
     );
-    Navigator.pushReplacementNamed(context, '/home');
   }
 }

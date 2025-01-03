@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import '../../Config/AppColor.dart';
 import '../../Config/AppText.dart';
 import '../../Controllers/AuthController.dart';
+import '../../Services/GoogleServices.dart';
 import '../../Widgets/Common/Buttons.dart';
 import '../../Widgets/Common/CustomTextField.dart';
 import '../../Widgets/Common/SocialButtons.dart';
@@ -20,6 +21,19 @@ class _LoginScreenState extends State<LoginScreen> {
   final AuthController _authController = AuthController();
   bool _isPasswordVisible = false;
 
+  Future<void> _handleGoogleSignIn() async {
+    try {
+      final user = await GoogleAuthService().signInWithGoogle();
+      if (user != null) {
+        print("Google Sign-In successful: ${user.displayName}");
+        Navigator.pushReplacementNamed(context, '/home', arguments: user);
+      }
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text("Google sign-in failed: $e")),
+      );
+    }
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -160,9 +174,7 @@ class _LoginScreenState extends State<LoginScreen> {
           icon: Icons.email,
           color: Colors.redAccent,
           text: "Gmail",
-          onTap: () {
-            // Gmail login functionality
-          },
+         onTap: _handleGoogleSignIn,
         ),
         const SizedBox(width: 16),
         SocialButton(
