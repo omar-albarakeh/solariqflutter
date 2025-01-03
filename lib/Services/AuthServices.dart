@@ -27,9 +27,14 @@ class AuthService {
     });
   }
 
-  Future<Map<String, dynamic>> getUserInfo(String accessToken) async {
-    final url = Uri.parse('$_baseUrl/auth/user');
-    final headers = {'Authorization': 'Bearer $accessToken'};
-    return HttpHelper.getRequest(url, headers: headers);
+  Future<Map<String, dynamic>> getUserInfo(String token, String name) async {
+    final url = Uri.parse('$_baseUrl/auth/user/$name');
+    final headers = {
+      'Authorization': 'Bearer $token',
+      'Content-Type': 'application/json',
+    };
+    final response = await HttpHelper.getRequest(url, headers: headers);
+
+    return response;
   }
 }
