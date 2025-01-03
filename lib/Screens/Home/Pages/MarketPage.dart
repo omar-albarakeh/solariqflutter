@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 
-class Marketpage extends StatefulWidget {
-  const Marketpage({super.key});
+class MarketPage extends StatefulWidget {
+  const MarketPage({super.key});
 
   @override
-  State<Marketpage> createState() => _MarketpageState();
+  State<MarketPage> createState() => _MarketPageState();
 }
 
-class _MarketpageState extends State<Marketpage> {
+class _MarketPageState extends State<MarketPage> {
   @override
   Widget build(BuildContext context) {
     return const Placeholder();
