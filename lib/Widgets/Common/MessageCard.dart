@@ -10,7 +10,7 @@ class MessageCard extends StatelessWidget {
   final Color textColor;
   final Color timeColor;
   final BorderRadius borderRadius;
-  
+
   const MessageCard({
     super.key,
     required this.message,
@@ -25,7 +25,12 @@ class MessageCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // TODO: implement build
-    throw UnimplementedError();
+    return Align(
+      alignment: alignment,
+      child: ConstrainedBox(constraints: BoxConstraints(
+        maxWidth: MediaQuery.of(context).size.width*0.75,
+      ))
+      
+    );
   }
 }
