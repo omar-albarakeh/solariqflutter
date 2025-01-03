@@ -205,18 +205,34 @@ class _LoginScreenState extends State<LoginScreen> {
         password: _passwordController.text,
       );
 
+      // Debug log
+      print('Login response: $response');
+
+      // Validate response structure
+      if (response == null || !response.containsKey('status') || !response.containsKey('data')) {
+        throw Exception('Unexpected response structure');
+      }
+
       if (response['status'] == 'success') {
         final accessToken = response['data']['accessToken'];
+        print('Access Token: $accessToken');
         if (accessToken == null || accessToken.isEmpty) {
           throw Exception('Invalid token received');
         }
 
-        await TokenStorage.saveToken(accessToken);
+        // Save the token
+        try {
+          await TokenStorage.saveToken(accessToken);
+        } catch (e) {
+          throw Exception('Failed to save token: ${e.toString()}');
+        }
+
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text('Login successful!')),
         );
 
-        Navigator.pushReplacementNamed(context, '/home');
+        // Navigate to home screen
+        Navigator.of(context).pushReplacementNamed('/home');
       } else {
         throw Exception(response['message'] ?? 'Login failed');
       }
@@ -226,6 +242,8 @@ class _LoginScreenState extends State<LoginScreen> {
       );
     }
   }
+
+
 
 
 

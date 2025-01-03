@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-
+import '../../Config/SharedPreferences.dart';
 import '../../Services/AuthServices.dart';
+
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -22,15 +23,30 @@ class _HomeScreenState extends State<HomeScreen> {
 
   Future<void> _fetchUserInfo() async {
     try {
+      // Retrieve token from storage
+      final token = await TokenStorage.getToken();
+      print('Token Retrieved: $token');
+
+      if (token == null || token.isEmpty) {
+        throw Exception('No token found. Please log in again.');
+      }
+
+      // Fetch user info using the token
       final response = await _authService.getUserInfo();
-      if (response['status'] == 'success' && response.containsKey('data')) {
+      print('User Info Response: $response');
+
+      // Handle response structure
+      if (response.containsKey('status') &&
+          response['status'] == 'success' &&
+          response.containsKey('data')) {
         setState(() {
           userInfo = response['data'];
         });
       } else {
-        throw Exception(response['message'] ?? 'Failed to fetch user info');
+        throw Exception(response['message'] ?? 'Unexpected response structure');
       }
     } catch (e) {
+      print('Error fetching user info: $e');
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('Error: ${e.toString()}')),
       );

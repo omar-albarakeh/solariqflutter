@@ -55,12 +55,19 @@ class AuthService {
     };
 
     final response = await HttpHelper.getRequest(url, headers: headers);
-    if (response['status'] == 'success') {
-      return response['data'];
-    } else {
+
+    if (response.containsKey('status') && response['status'] == 'success' && response.containsKey('data')) {
+      return {
+        'status': response['status'],
+        'data': response['data'], // Ensure the `data` field exists and is passed correctly
+      };
+    } else if (response.containsKey('message')) {
       throw Exception(response['message']);
+    } else {
+      throw Exception('Unexpected response structure');
     }
   }
+
 
   Future<void> logout() async {
     await TokenStorage.deleteToken();
