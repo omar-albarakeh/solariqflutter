@@ -15,7 +15,13 @@ class FloatingActionButtonWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Stack(
-      
-    );
+      alignment: Alignment.bottomRight,
+      children: [
+        ConstrainedBox(
+          constraints: BoxConstraints(
+            maxHeight: MediaQuery.of(context).size.height * 0.8,
+          ),
+    ),
+    ]);
   }
 }
