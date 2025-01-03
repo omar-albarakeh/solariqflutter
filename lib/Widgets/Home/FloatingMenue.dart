@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import '../../Config/AppColor.dart';
+import '../../Screens/Home/Floating Menue Pages/FormPage.dart';
+import '../../Screens/Home/Floating Menue Pages/TextInputScreen.dart';
 import 'FloatingButton.dart';
 
 class FloatingMenu extends StatefulWidget {
@@ -32,6 +34,9 @@ class _FloatingMenuState extends State<FloatingMenu> {
           FloatingActionButton(
             heroTag: 'button2',
             onPressed: () {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context)=>FormPage()));
             },
             backgroundColor: AppColor.primary,
             child: Icon(Icons.document_scanner),
