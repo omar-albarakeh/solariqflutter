@@ -12,7 +12,7 @@ class AuthService {
       'name': user.name,
       'type': user.type,
       'phone': user.phoneNumber,
-      'address': user.address ?? '',  // Handling null address
+      'address': user.address ?? '',
     });
   }
 
@@ -21,10 +21,16 @@ class AuthService {
     required String password,
   }) async {
     final url = Uri.parse('$_baseUrl/auth/login');
-    return HttpHelper.postRequest(url, {
-      'email': email,
-      'password': password,
-    });
+    try {
+      final response = await HttpHelper.postRequest(url, {
+        'email': email,
+        'password': password,
+      });
+      print("Login Response: $response"); // Debugging line
+      return response;
+    } catch (e) {
+      throw Exception('Login error: ${e.toString()}');
+    }
   }
 
   Future<Map<String, dynamic>> getUserInfo(String token) async {
@@ -33,7 +39,15 @@ class AuthService {
       'Authorization': 'Bearer $token',
       'Content-Type': 'application/json',
     };
-    final response = await HttpHelper.getRequest(url, headers: headers);
-    return response;
+
+    try {
+      final response = await HttpHelper.getRequest(url, headers: headers);
+      if (response['status'] != 'success') {
+        throw Exception(response['message'] ?? 'Failed to fetch user info');
+      }
+      return response;
+    } catch (e) {
+      throw Exception('Error fetching user info: ${e.toString()}');
+    }
   }
 }

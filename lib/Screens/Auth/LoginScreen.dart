@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../../Config/AppColor.dart';
 import '../../Config/AppText.dart';
+import '../../Config/SharedPreferences.dart';
 import '../../Controllers/AuthController.dart';
 import '../../Services/GoogleServices.dart';
 import '../../Widgets/Common/Buttons.dart';
@@ -189,6 +190,7 @@ class _LoginScreenState extends State<LoginScreen> {
     );
   }
 
+
   Future<void> _handleLogin() async {
     try {
       final response = await _authController.loginController(
@@ -199,17 +201,32 @@ class _LoginScreenState extends State<LoginScreen> {
       if (response['status'] == 'success') {
         final accessToken = response['data']['token'];
 
+        if (accessToken == null || accessToken.isEmpty) {
+          throw Exception('Token is null or empty');
+        }
+
+        // Save the token securely
+        await saveToken(accessToken);
+
+        // Fetch user info
+        final userInfoResponse = await _authController.getUserInfoController(accessToken);
+
+        if (userInfoResponse['status'] != 'success') {
+          throw Exception('Failed to fetch user info after login.');
+        }
+
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Login successful!')),
+          const SnackBar(content: Text('Login successful!')),
         );
 
+        // Navigate to the home screen with user info
         Navigator.pushReplacementNamed(
           context,
           '/home',
-          arguments: {'token': accessToken},
+          arguments: {'token': accessToken, 'userInfo': userInfoResponse['data']},
         );
       } else {
-        throw Exception(response['message']);
+        throw Exception(response['message'] ?? 'Login failed');
       }
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
@@ -217,6 +234,10 @@ class _LoginScreenState extends State<LoginScreen> {
       );
     }
   }
+
+
+
+
 
   @override
   void dispose() {

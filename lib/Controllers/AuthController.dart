@@ -58,11 +58,15 @@ class AuthController {
   Future<Map<String, dynamic>> getUserInfoController(String accessToken) async {
     try {
       final response = await _authService.getUserInfo(accessToken);
-      return {
-        'status': 'success',
-        'message': 'User information retrieved successfully',
-        'data': response,
-      };
+      if (response['status'] == 'success') {
+        return {
+          'status': 'success',
+          'message': 'User information retrieved successfully',
+          'data': response['data'],
+        };
+      } else {
+        throw Exception(response['message']);
+      }
     } catch (e) {
       return {
         'status': 'error',
