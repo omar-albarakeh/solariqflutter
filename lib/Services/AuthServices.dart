@@ -59,7 +59,7 @@ class AuthService {
     if (response.containsKey('status') && response['status'] == 'success' && response.containsKey('data')) {
       return {
         'status': response['status'],
-        'data': response['data'], // Ensure the `data` field exists and is passed correctly
+        'data': response['data'],
       };
     } else if (response.containsKey('message')) {
       throw Exception(response['message']);

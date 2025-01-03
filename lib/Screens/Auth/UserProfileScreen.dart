@@ -1,30 +1,55 @@
 import 'package:flutter/material.dart';
+import '../../Config/SharedPreferences.dart';
 import '../../Services/AuthServices.dart';
-import '../../Config/SharedPreferences.dart'; // For TokenStorage
 
-class UserProfileScreen extends StatefulWidget {
+
+class Userprofilescreen extends StatefulWidget {
+  const Userprofilescreen({Key? key}) : super(key: key);
+
   @override
-  _UserProfileScreenState createState() => _UserProfileScreenState();
+  State<Userprofilescreen> createState() => _UserprofilescreenState();
 }
 
-class _UserProfileScreenState extends State<UserProfileScreen> {
-  late Future<Map<String, dynamic>> userInfo;
+class _UserprofilescreenState extends State<Userprofilescreen> {
+  Map<String, dynamic> userInfo = {};
+  bool isLoading = true;
+  final AuthService _authService = AuthService();
 
   @override
   void initState() {
     super.initState();
-    _initializeUserInfo();
+    _fetchUserInfo();
   }
 
-  Future<void> _initializeUserInfo() async {
-    final token = await TokenStorage.getToken();
-    if (token == null || token.isEmpty) {
+  Future<void> _fetchUserInfo() async {
+    try {
+      final token = await TokenStorage.getToken();
+      print('Token Retrieved: $token');
+
+      if (token == null || token.isEmpty) {
+        throw Exception('No token found. Please log in again.');
+      }
+
+      final response = await _authService.getUserInfo();
+      print('User Info Response: $response');
+
+      if (response.containsKey('status') &&
+          response['status'] == 'success' &&
+          response.containsKey('data')) {
+        setState(() {
+          userInfo = response['data'];
+        });
+      } else {
+        throw Exception(response['message'] ?? 'Unexpected response structure');
+      }
+    } catch (e) {
+      print('Error fetching user info: $e');
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Error: ${e.toString()}')),
+      );
+    } finally {
       setState(() {
-        userInfo = Future.error('No valid token found. Please log in again.');
-      });
-    } else {
-      setState(() {
-        userInfo = AuthService().getUserInfo();
+        isLoading = false;
       });
     }
   }
@@ -32,38 +57,53 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('User Profile')),
-      body: FutureBuilder<Map<String, dynamic>>(
-        future: userInfo,
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return const Center(child: CircularProgressIndicator());
-          } else if (snapshot.hasError) {
-            return Center(child: Text('Error: ${snapshot.error}'));
-          } else if (snapshot.hasData) {
-            final user = snapshot.data!;
-            if (user.containsKey('error')) {
-              return Center(child: Text(user['error']));
-            }
-
-            return Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text('Name: ${user['name'] ?? 'N/A'}', style: const TextStyle(fontSize: 18)),
-                  const SizedBox(height: 10),
-                  Text('Email: ${user['email'] ?? 'N/A'}', style: const TextStyle(fontSize: 18)),
-                  const SizedBox(height: 10),
-                  Text('Phone: ${user['phone'] ?? 'N/A'}', style: const TextStyle(fontSize: 18)),
-                  const SizedBox(height: 10),
-                  Text('Address: ${user['address'] ?? 'N/A'}', style: const TextStyle(fontSize: 18)),
-                ],
+      appBar: AppBar(
+        title: const Text('UseProfile'),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.logout),
+            onPressed: () async {
+              await _authService.logout();
+              Navigator.pushReplacementNamed(context, '/login');
+            },
+          )
+        ],
+      ),
+      body: isLoading
+          ? const Center(child: CircularProgressIndicator())
+          : userInfo.isEmpty
+          ? const Center(child: Text('Failed to load user info'))
+          : Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              'Welcome, ${userInfo['name']}!',
+              style: Theme.of(context).textTheme.headlineSmall,
+            ),
+            const SizedBox(height: 10),
+            Text(
+              'Email: ${userInfo['email']}',
+              style: Theme.of(context).textTheme.bodyLarge,
+            ),
+            const SizedBox(height: 10),
+            if (userInfo.containsKey('phone'))
+              Text(
+                'Phone: ${userInfo['phone']}',
+                style: Theme.of(context).textTheme.bodyLarge,
               ),
-            );
-          }
-          return const Center(child: Text('No data found'));
-        },
+            const SizedBox(height: 10),
+            if (userInfo.containsKey('address') &&
+                userInfo['address'] != null &&
+                userInfo['address'].isNotEmpty)
+              Text(
+                'Address: ${userInfo['address']}',
+                style: Theme.of(context).textTheme.bodyLarge,
+              ),
+          ],
+        ),
       ),
     );
   }
