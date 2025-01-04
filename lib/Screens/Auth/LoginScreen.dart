@@ -205,10 +205,8 @@ class _LoginScreenState extends State<LoginScreen> {
         password: _passwordController.text,
       );
 
-      // Debug log
       print('Login response: $response');
 
-      // Validate response structure
       if (response == null || !response.containsKey('status') || !response.containsKey('data')) {
         throw Exception('Unexpected response structure');
       }
@@ -220,7 +218,6 @@ class _LoginScreenState extends State<LoginScreen> {
           throw Exception('Invalid token received');
         }
 
-        // Save the token
         try {
           await TokenStorage.saveToken(accessToken);
         } catch (e) {
@@ -242,10 +239,6 @@ class _LoginScreenState extends State<LoginScreen> {
       );
     }
   }
-
-
-
-
 
 
 

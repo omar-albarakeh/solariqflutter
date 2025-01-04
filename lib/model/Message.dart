@@ -1,26 +1,28 @@
-class MessageModel{
+class Messagemodel {
+  final String type;
+  final String message;
+  final String time;
 
-  String message;
-  String time;
-  String type;
+  Messagemodel({
+    required this.type,
+    required this.message,
+    required this.time,
+  });
 
-  MessageModel({required this.message, required this.time, required this.type});
 
-
-  Map<String,dynamic> toJson(){
+  Map<String, dynamic> toMap() {
     return {
-      "type": this.type,
-      "message": this.message,
-      "time": this.time,
+      'type': type,
+      'message': message,
+      'time': time,
     };
   }
 
-  factory  MessageModel.fromJson(Map<String,dynamic> json){
-    return  MessageModel(
-    type : json["type"],
-    message : json["message"],
-    time : json["time"],
+  factory Messagemodel.fromMap(Map<String, dynamic> map) {
+    return Messagemodel(
+      type: map['type'] as String,
+      message: map['message'] as String,
+      time: map['time'] as String,
     );
   }
-
 }
