@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:rxdart/rxdart.dart';
 
-import '../model/Message.dart';
+import '../model/Home/Message.dart';
 
 class ChatService {
   final List<Messagemodel> _messages = [

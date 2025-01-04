@@ -5,7 +5,7 @@ import '../../../Services/ChatBotService.dart';
 import '../../../Widgets/Common/CustomTextField.dart';
 import '../../../Widgets/Common/Message/OwnMessage.dart';
 import '../../../Widgets/Common/Message/ReplyMessageCard.dart';
-import '../../../model/Message.dart';
+import '../../../model/Home/Message.dart';
 
 class ChatWithBot extends StatefulWidget {
   final Map<String, String>? initialMessage;
