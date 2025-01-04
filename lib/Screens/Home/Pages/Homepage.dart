@@ -43,7 +43,14 @@ class _HomepageState extends State<Homepage> {
         child: SingleChildScrollView(
           child: Column(children: [
             _buildWeatherCard(context),
-            _buildPowerUsageCard,
+            const SizedBox(height: 16.0),
+            Row(
+              children: [
+                Expanded(child: _buildPowerUsageCard(context)),
+                const SizedBox(width: 16.0),
+                Expanded(child: _buildBatteryCard(context)),
+              ],
+            )
           ]),
         ),
       ),
@@ -59,7 +66,7 @@ Widget _buildWeatherCard(context) {
           ),
       child: Container(
         width: 400,
-        height: 200,
+        height: 175,
         decoration: BoxDecoration(
           color: Colors.grey,
           borderRadius: BorderRadius.circular(20),
@@ -79,8 +86,28 @@ Widget  _buildPowerUsageCard(context){
         MaterialPageRoute(builder: (context) => RealTimeMonotering()),
       ),
       child: Container(
-        width: 400,
-        height: 200,
+        width: 175,
+        height: 150,
+        decoration: BoxDecoration(
+          color: Colors.grey,
+          borderRadius: BorderRadius.circular(20),
+        ),
+        child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+
+          const SizedBox(height: 8.0),
+        ]),
+      ));
+}
+
+Widget  _buildBatteryCard(context){
+  return GestureDetector(
+      onTap: () => Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => RealTimeMonotering()),
+      ),
+      child: Container(
+        width: 175,
+        height: 150,
         decoration: BoxDecoration(
           color: Colors.grey,
           borderRadius: BorderRadius.circular(20),
