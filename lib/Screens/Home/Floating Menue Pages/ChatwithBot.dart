@@ -69,3 +69,12 @@ Widget _buildInputArea() {
     ),
   );
 }
+String _formatTime(String? time) {
+  if (time == null || time.isEmpty) return 'Unknown';
+  try {
+    final parsedTime = DateTime.parse(time);
+    return '${parsedTime.hour.toString().padLeft(2, '0')}:${parsedTime.minute.toString().padLeft(2, '0')}';
+  } catch (e) {
+    return 'Invalid';
+  }
+}
