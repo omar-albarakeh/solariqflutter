@@ -51,14 +51,21 @@ class _HomepageState extends State<Homepage> {
 
 Widget _buildWeatherCard(context) {
   return GestureDetector(
-    onTap: () => Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) => Weatherprediction()),
-    ),
-    child: Container(
-      decoration: BoxDecoration(
-        color: Colors.grey,
-      ),
-    ),
-  );
+      onTap: () => Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => Weatherprediction()),
+          ),
+      child: Container(
+        decoration: BoxDecoration(
+          color: Colors.grey,
+          borderRadius: BorderRadius.circular(20),
+        ),
+        child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+          const Text(
+            '23 °C',
+            style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+          ),
+          const SizedBox(height: 8.0),
+        ]),
+      ));
 }
