@@ -48,7 +48,22 @@ Widget _buildInputArea() {
               suffixIcon: null,
             ),
           ),
-          
+          Container(
+            margin: const EdgeInsets.only(left: 8),
+            decoration: const BoxDecoration(
+              shape: BoxShape.circle,
+              color: AppColor.primary,
+            ),
+            child: IconButton(
+              icon: const Icon(Icons.send, color: Colors.white),
+              onPressed: () {
+                if (_controller.text.isNotEmpty) {
+                  print('Message sent: ${_controller.text}');
+                  _controller.clear();
+                }
+              },
+            ),
+          ),
         ],
       ),
     ),
