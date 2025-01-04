@@ -15,30 +15,8 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-
     return SafeArea(
       child: Scaffold(
-        appBar: AppBar(
-          backgroundColor: theme.primaryColor,
-          title: const Text(
-            'Home',
-            style: AppTextStyles.appBarTitle,
-          ),
-          actions: [
-            IconButton(
-              icon: Icon(
-                theme.brightness == Brightness.dark
-                    ? Icons.dark_mode
-                    : Icons.light_mode,
-              ),
-              onPressed: () {
-                Provider.of<ThemeNotifier>(context, listen: false)
-                    .toggleTheme();
-              },
-            ),
-          ],
-        ),
         body: Stack(
           children: [
             const Column(

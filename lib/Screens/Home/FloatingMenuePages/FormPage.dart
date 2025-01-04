@@ -74,6 +74,8 @@ class _FormPageState extends State<FormPage> {
           gradient: AppColor.linearGradient,
         ),
         padding: const EdgeInsets.all(30.0),
+        height: double.infinity,
+        width: double.infinity,
         child: Form(
           key: _formKey,
           child: ListView(
