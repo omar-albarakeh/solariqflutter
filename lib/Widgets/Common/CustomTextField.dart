@@ -4,7 +4,7 @@ import '../../Config/AppText.dart';
 
 class CustomTextField extends StatelessWidget {
   final String label;
-  final IconData icon;
+  final IconData? icon;
   final TextEditingController controller;
   final String? Function(String?)? validator;
   final bool obscureText;
@@ -15,7 +15,7 @@ class CustomTextField extends StatelessWidget {
   const CustomTextField({
     Key? key,
     required this.label,
-    required this.icon,
+     this.icon,
     required this.controller,
     this.validator,
     this.obscureText = false,

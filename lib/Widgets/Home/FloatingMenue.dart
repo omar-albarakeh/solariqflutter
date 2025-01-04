@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import '../../Config/AppColor.dart';
-import '../../Screens/Home/Floating Menue Pages/FormPage.dart';
-import '../../Screens/Home/Floating Menue Pages/TextInputScreen.dart';
+import '../../Screens/Home/FloatingMenuePages/ChatwithBot.dart';
+import '../../Screens/Home/FloatingMenuePages/FormPage.dart';
+import '../../Screens/Home/Pages/ChatPage.dart';
 import 'FloatingButton.dart';
 
 class FloatingMenu extends StatefulWidget {
@@ -26,7 +27,7 @@ class _FloatingMenuState extends State<FloatingMenu> {
             onPressed: () {
               Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context)=>TextInputScreen()));
+                  MaterialPageRoute(builder: (context)=>ChatWithBot()));
             },
             backgroundColor: AppColor.primary,
             child: FaIcon(FontAwesomeIcons.robot),
