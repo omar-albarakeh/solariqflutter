@@ -228,7 +228,6 @@ class _LoginScreenState extends State<LoginScreen> {
           const SnackBar(content: Text('Login successful!')),
         );
 
-        // Navigate to home screen
         Navigator.of(context).pushReplacementNamed('/home');
       } else {
         throw Exception(response['message'] ?? 'Login failed');
