@@ -4,6 +4,7 @@ import 'package:solariqflutter/Screens/Home/Pages/WeatherPrediction.dart';
 
 import '../../../Config/AppText.dart';
 import '../../../Widgets/Home/ThemeNotifier.dart';
+import 'RealTimeMonotering.dart';
 
 class Homepage extends StatefulWidget {
   const Homepage({super.key});
@@ -42,6 +43,7 @@ class _HomepageState extends State<Homepage> {
         child: SingleChildScrollView(
           child: Column(children: [
             _buildWeatherCard(context),
+            _buildPowerUsageCard,
           ]),
         ),
       ),
@@ -56,15 +58,35 @@ Widget _buildWeatherCard(context) {
             MaterialPageRoute(builder: (context) => Weatherprediction()),
           ),
       child: Container(
+        width: 400,
+        height: 200,
         decoration: BoxDecoration(
           color: Colors.grey,
           borderRadius: BorderRadius.circular(20),
         ),
         child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-          const Text(
-            '23 °C',
-            style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-          ),
+
+          const SizedBox(height: 8.0),
+        ]),
+      ));
+}
+
+
+Widget  _buildPowerUsageCard(context){
+  return GestureDetector(
+      onTap: () => Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => RealTimeMonotering()),
+      ),
+      child: Container(
+        width: 400,
+        height: 200,
+        decoration: BoxDecoration(
+          color: Colors.grey,
+          borderRadius: BorderRadius.circular(20),
+        ),
+        child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+
           const SizedBox(height: 8.0),
         ]),
       ));
