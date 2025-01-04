@@ -8,7 +8,9 @@ import '../../../Widgets/Common/Message/ReplyMessageCard.dart';
 import '../../../model/Message.dart';
 
 class ChatWithBot extends StatefulWidget {
-  const ChatWithBot({super.key});
+  final String? initialMessage;
+
+  const ChatWithBot({Key? key, this.initialMessage}) : super(key: key);
 
   @override
   State<ChatWithBot> createState() => _ChatWithBotState();
@@ -23,7 +25,14 @@ class _ChatWithBotState extends State<ChatWithBot> {
   void initState() {
     super.initState();
     _chatService = ChatService();
+
+    if (widget.initialMessage != null && widget.initialMessage!.isNotEmpty) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        _chatService.sendMessage(widget.initialMessage!);
+      });
+    }
   }
+
 
   @override
   Widget build(BuildContext context) {
