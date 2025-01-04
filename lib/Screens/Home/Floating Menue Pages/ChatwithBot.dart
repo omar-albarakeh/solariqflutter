@@ -25,8 +25,6 @@ class _ChatWithBotState extends State<ChatWithBot> {
     _chatService = ChatService();
   }
 
-
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -51,6 +49,11 @@ class _ChatWithBotState extends State<ChatWithBot> {
                     return const Center(child: CircularProgressIndicator());
                   }
                   final messages = snapshot.data ?? [];
+                  WidgetsBinding.instance.addPostFrameCallback((_) {
+                    if (_scrollController.hasClients) {
+                      _scrollController.jumpTo(_scrollController.position.maxScrollExtent);
+                    }
+                  });
                   return ListView.builder(
                     controller: _scrollController,
                     itemCount: messages.length,
