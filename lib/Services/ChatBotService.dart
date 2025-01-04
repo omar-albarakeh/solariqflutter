@@ -18,7 +18,7 @@ class ChatService {
   final BehaviorSubject<List<Messagemodel>> _messageController = BehaviorSubject.seeded([]);
 
   List<Map<String, dynamic>> _chatHistory = [];
-  String _defaultPrompt = "I am Sara ";
+  String _defaultPrompt = "I am Sara, and I only answer questions related to solar systems.";
 
   Stream<List<Messagemodel>> get messagesStream => _messageController.stream;
 
@@ -36,16 +36,32 @@ class ChatService {
   void sendMessage(String userMessage, {String? customPrompt}) {
     if (userMessage.isEmpty) return;
 
-
     _addMessage(Messagemodel(
       type: 'source',
       message: userMessage,
       time: DateTime.now().toIso8601String(),
     ));
 
-    generateResponse(userMessage, customPrompt: customPrompt);
+    if (_isSolarSystemRelated(userMessage)) {
+      generateResponse(userMessage, customPrompt: customPrompt);
+    } else {
+      _addMessage(Messagemodel(
+        type: 'target',
+        message: "I'm sorry, I only answer questions related to solar systems. Please ask something about solar systems.",
+        time: DateTime.now().toIso8601String(),
+      ));
+    }
   }
 
+  bool _isSolarSystemRelated(String userMessage) {
+    final keywords = [
+      "solar energy", "solar power", "solar panel", "solar system", "photovoltaic", "solar cells", "renewable energy",
+      "solar installation", "solar technology", "solar electricity", "solar farm", "solar system installation", "green energy",
+      "solar panels installation", "solar energy systems", "solar grid", "solar battery", "solar inverter"
+    ];
+
+    return keywords.any((keyword) => userMessage.toLowerCase().contains(keyword));
+  }
   Future<void> generateResponse(String userMessage, {String? customPrompt}) async {
     final url = Uri.parse('https://chatgem.onrender.com/generatethetext');
     final prompt = customPrompt?.trim().isNotEmpty == true ? customPrompt! : _defaultPrompt;
