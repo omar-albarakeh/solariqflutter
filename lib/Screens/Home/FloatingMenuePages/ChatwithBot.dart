@@ -8,7 +8,7 @@ import '../../../Widgets/Common/Message/ReplyMessageCard.dart';
 import '../../../model/Message.dart';
 
 class ChatWithBot extends StatefulWidget {
-  final String? initialMessage;
+  final Map<String, String>? initialMessage;
 
   const ChatWithBot({Key? key, this.initialMessage}) : super(key: key);
 
@@ -27,12 +27,11 @@ class _ChatWithBotState extends State<ChatWithBot> {
     _chatService = ChatService();
 
     if (widget.initialMessage != null && widget.initialMessage!.isNotEmpty) {
-      WidgetsBinding.instance.addPostFrameCallback((_) {
-        _chatService.sendMessage(widget.initialMessage!);
+      Future.microtask(() {
+        _sendMessage(widget.initialMessage!['message'] ?? '');
       });
     }
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -54,15 +53,23 @@ class _ChatWithBotState extends State<ChatWithBot> {
               child: StreamBuilder<List<Messagemodel>>(
                 stream: _chatService.messagesStream,
                 builder: (context, snapshot) {
-                  if (snapshot.connectionState == ConnectionState.waiting && (snapshot.data ?? []).isEmpty) {
+                  if (snapshot.connectionState == ConnectionState.waiting &&
+                      (snapshot.data ?? []).isEmpty) {
                     return const Center(child: CircularProgressIndicator());
                   }
+
                   final messages = snapshot.data ?? [];
+
                   WidgetsBinding.instance.addPostFrameCallback((_) {
                     if (_scrollController.hasClients) {
-                      _scrollController.jumpTo(_scrollController.position.maxScrollExtent);
+                      _scrollController.animateTo(
+                        _scrollController.position.maxScrollExtent,
+                        duration: const Duration(milliseconds: 300),
+                        curve: Curves.easeOut,
+                      );
                     }
                   });
+
                   return ListView.builder(
                     controller: _scrollController,
                     itemCount: messages.length,
@@ -119,8 +126,7 @@ class _ChatWithBotState extends State<ChatWithBot> {
                 onPressed: () {
                   final text = _controller.text.trim();
                   if (text.isNotEmpty) {
-                    _chatService.sendMessage(text);
-                    _controller.clear();
+                    _sendMessage(text);
                   }
                 },
               ),
@@ -129,6 +135,18 @@ class _ChatWithBotState extends State<ChatWithBot> {
         ),
       ),
     );
+  }
+
+  void _sendMessage(String messageText) async {
+    try {
+      _chatService.sendMessage(messageText);
+
+      _controller.clear();
+    } catch (error) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Failed to send message: $error')),
+      );
+    }
   }
 
   String _formatTime(String? time) {
