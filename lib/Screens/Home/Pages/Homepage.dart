@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:solariqflutter/Screens/Home/Pages/WeatherPrediction.dart';
 
 import '../../../Config/AppText.dart';
 import '../../../Widgets/Home/ThemeNotifier.dart';
@@ -31,12 +32,33 @@ class _HomepageState extends State<Homepage> {
                   : Icons.light_mode,
             ),
             onPressed: () {
-              Provider.of<ThemeNotifier>(context, listen: false)
-                  .toggleTheme();
+              Provider.of<ThemeNotifier>(context, listen: false).toggleTheme();
             },
           ),
         ],
       ),
+      body: Padding(
+        padding: EdgeInsets.all(20),
+        child: SingleChildScrollView(
+          child: Column(children: [
+            _buildWeatherCard(context),
+          ]),
+        ),
+      ),
     );
   }
+}
+
+Widget _buildWeatherCard(context) {
+  return GestureDetector(
+    onTap: () => Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => Weatherprediction()),
+    ),
+    child: Container(
+      decoration: BoxDecoration(
+        color: Colors.grey,
+      ),
+    ),
+  );
 }
