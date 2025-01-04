@@ -14,12 +14,17 @@ class _FormPageState extends State<FormPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: AppColor.primary,
-        title: const Text(
-          'SOLARIQ-Form',
-          style: AppTextStyles.appBarTitle,
+        appBar: AppBar(
+          backgroundColor: AppColor.primary,
+          title: const Text(
+            'SOLARIQ-Form',
+            style: AppTextStyles.appBarTitle,
+          ),
         ),
-      ),);
+        body: Container(
+          decoration: const BoxDecoration(
+            gradient: AppColor.linearGradient,
+          ),
+        ));
   }
 }
