@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import '../../Config/SharedPreferences.dart';
 import '../../Services/AuthServices.dart';
 
-
 class Userprofilescreen extends StatefulWidget {
   const Userprofilescreen({Key? key}) : super(key: key);
 
@@ -30,17 +29,23 @@ class _UserprofilescreenState extends State<Userprofilescreen> {
         throw Exception('No token found. Please log in again.');
       }
 
-      final response = await _authService.getUserInfo();
-      print('User Info Response: $response');
+      final isTokenValid = await TokenStorage.isTokenValid();
+      if (!isTokenValid) {
+        throw Exception('Token is invalid or expired. Please log in again.');
+      }
 
-      if (response.containsKey('status') &&
-          response['status'] == 'success' &&
-          response.containsKey('data')) {
+      final response = await _authService.getUserInfo();
+      print('User Info Response:');
+      response.forEach((key, value) {
+        print('$key: $value');
+      });
+
+      if (response.containsKey('name') && response.containsKey('email')) {
         setState(() {
-          userInfo = response['data'];
+          userInfo = response;
         });
       } else {
-        throw Exception(response['message'] ?? 'Unexpected response structure');
+        throw Exception('Unexpected response structure');
       }
     } catch (e) {
       print('Error fetching user info: $e');
@@ -58,7 +63,7 @@ class _UserprofilescreenState extends State<Userprofilescreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('UseProfile'),
+        title: const Text('User Profile'),
         actions: [
           IconButton(
             icon: const Icon(Icons.logout),
@@ -75,33 +80,36 @@ class _UserprofilescreenState extends State<Userprofilescreen> {
           ? const Center(child: Text('Failed to load user info'))
           : Padding(
         padding: const EdgeInsets.all(16.0),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.start,
+        child: ListView(
           children: [
             Text(
-              'Welcome, ${userInfo['name']}!',
-              style: Theme.of(context).textTheme.headlineSmall,
+              'User Information',
+              style: Theme.of(context).textTheme.headlineMedium,
             ),
             const SizedBox(height: 10),
-            Text(
-              'Email: ${userInfo['email']}',
-              style: Theme.of(context).textTheme.bodyLarge,
-            ),
-            const SizedBox(height: 10),
-            if (userInfo.containsKey('phone'))
+            ...userInfo.entries
+                .where((entry) => entry.key != 'solarInfo')
+                .map((entry) {
+              return ListTile(
+                title: Text('${entry.key}: ${entry.value}'),
+              );
+            }).toList(),
+
+            const SizedBox(height: 20),
+
+            if (userInfo.containsKey('solarInfo'))
               Text(
-                'Phone: ${userInfo['phone']}',
-                style: Theme.of(context).textTheme.bodyLarge,
+                'Solar Information',
+                style: Theme.of(context).textTheme.headlineMedium,
               ),
-            const SizedBox(height: 10),
-            if (userInfo.containsKey('address') &&
-                userInfo['address'] != null &&
-                userInfo['address'].isNotEmpty)
-              Text(
-                'Address: ${userInfo['address']}',
-                style: Theme.of(context).textTheme.bodyLarge,
-              ),
+            if (userInfo.containsKey('solarInfo'))
+              const SizedBox(height: 10),
+            if (userInfo.containsKey('solarInfo'))
+              ...userInfo['solarInfo'].entries.map((entry) {
+                return ListTile(
+                  title: Text('${entry.key}: ${entry.value}'),
+                );
+              }).toList(),
           ],
         ),
       ),

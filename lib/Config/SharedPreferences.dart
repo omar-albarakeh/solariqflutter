@@ -5,7 +5,7 @@ class TokenStorage {
   static const _storage = FlutterSecureStorage();
   static const _tokenKey = 'access_token';
 
-  /// Save JWT Token
+
   static Future<void> saveToken(String token) async {
     try {
       await _storage.write(key: _tokenKey, value: token);
@@ -50,6 +50,7 @@ class TokenStorage {
       return false;
     }
   }
+
 
   static Future<String?> getUserIdFromToken() async {
     try {

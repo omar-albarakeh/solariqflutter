@@ -4,6 +4,7 @@ import 'package:solariqflutter/Screens/Home/Pages/WeatherPrediction.dart';
 
 import '../../../Config/AppText.dart';
 import '../../../Widgets/Home/ThemeNotifier.dart';
+import '../../Auth/UserProfileScreen.dart';
 import 'RealTimeMonotering.dart';
 
 class Homepage extends StatefulWidget {
@@ -49,6 +50,12 @@ class _HomepageState extends State<Homepage> {
                 Expanded(child: _buildPowerUsageCard(context)),
                 const SizedBox(width: 16.0),
                 Expanded(child: _buildBatteryCard(context)),
+                ElevatedButton(
+                    onPressed: (){
+                      Navigator.push(context, 
+                          MaterialPageRoute(builder: (Context)=>Userprofilescreen()));
+                    },
+                    child: Text("hello")),
               ],
             )
           ]),
