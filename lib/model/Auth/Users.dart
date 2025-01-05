@@ -5,6 +5,7 @@ class Users {
   final String type;
   final String phoneNumber;
   final String? address;
+  late bool? hasFilledSolarInfo;
 
   Users({
     required this.name,
@@ -13,6 +14,7 @@ class Users {
     required this.type,
     required this.phoneNumber,
     this.address,
+    this.hasFilledSolarInfo,
   });
 
   factory Users.fromJson(Map<String, dynamic> json) {
@@ -23,9 +25,9 @@ class Users {
       type: json['type'],
       phoneNumber: json['phoneNumber'],
       address: json['address'],
+      hasFilledSolarInfo: json['hasFilledSolarInfo'] ?? false,
     );
   }
-
 
   Map<String, dynamic> toJson() {
     return {
@@ -35,6 +37,7 @@ class Users {
       'type': type,
       'phoneNumber': phoneNumber,
       if (address != null) 'address': address,
+      'hasFilledSolarInfo': hasFilledSolarInfo,
     };
   }
 }
