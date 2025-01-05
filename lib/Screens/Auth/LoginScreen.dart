@@ -26,7 +26,9 @@ class _LoginScreenState extends State<LoginScreen> {
     try {
       final user = await GoogleAuthService().signInWithGoogle();
       if (user != null) {
-        print("Google Sign-In successful: ${user.displayName}");
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text("Welcome, ${user.displayName}!")),
+        );
         Navigator.pushReplacementNamed(context, '/home', arguments: user);
       }
     } catch (e) {
@@ -35,6 +37,100 @@ class _LoginScreenState extends State<LoginScreen> {
       );
     }
   }
+
+  Future<void> _handleLogin() async {
+    if (_emailController.text.trim().isEmpty || _passwordController.text.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Please fill in all fields')),
+      );
+      return;
+    }
+
+    try {
+      final response = await _authController.loginController(
+        email: _emailController.text.trim(),
+        password: _passwordController.text,
+      );
+
+      if (response['status'] == 'success') {
+        final accessToken = response['data']['accessToken'];
+        final isSolarInfoComplete = response['data']['isSolarInfoComplete'] ?? false;
+
+        await TokenStorage.saveToken(accessToken);
+
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Login successful!')),
+        );
+
+        Navigator.of(context).pushReplacementNamed(
+          isSolarInfoComplete ? '/home' : '/solar-form',
+        );
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Login failed: ${response['message']}')),
+        );
+      }
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Error: ${e.toString()}')),
+      );
+    }
+  }
+
+  @override
+  void dispose() {
+    _emailController.dispose();
+    _passwordController.dispose();
+    super.dispose();
+  }
+
+  Widget _buildTextField({
+    required String label,
+    required IconData icon,
+    required TextEditingController controller,
+    bool isObscure = false,
+    Widget? suffixIcon,
+  }) {
+    return CustomTextField(
+      label: label,
+      icon: icon,
+      controller: controller,
+      obscureText: isObscure,
+      suffixIcon: suffixIcon,
+      width: MediaQuery.of(context).size.width - 48,
+    );
+  }
+
+  Widget _buildSocialButtons() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        SocialButton(
+          icon: Icons.email,
+          color: Colors.redAccent,
+          text: "Gmail",
+          onTap: _handleGoogleSignIn,
+        ),
+        const SizedBox(width: 16),
+        SocialButton(
+          icon: Icons.facebook,
+          color: Colors.blueAccent,
+          text: "Facebook",
+          onTap: () {
+            // Implement Facebook login functionality
+          },
+        ),
+      ],
+    );
+  }
+
+  Widget _buildLogo() {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 16.0),
+      child: Image.asset("assets/images/LOGO.png", width: 234, height: 224),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -84,7 +180,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   alignment: Alignment.centerRight,
                   child: TextButton(
                     onPressed: () {
-                      // Forgot password functionality
+                      // Implement Forgot Password functionality
                     },
                     child: Text(
                       "Forgot Password?",
@@ -141,110 +237,5 @@ class _LoginScreenState extends State<LoginScreen> {
         ),
       ),
     );
-  }
-
-  Widget _buildLogo() {
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 16.0),
-      child: Image.asset("assets/images/LOGO.png", width: 234, height: 224),
-    );
-  }
-
-  Widget _buildTextField({
-    required String label,
-    required IconData icon,
-    required TextEditingController controller,
-    bool isObscure = false,
-    Widget? suffixIcon,
-  }) {
-    return CustomTextField(
-      label: label,
-      icon: icon,
-      controller: controller,
-      obscureText: isObscure,
-      suffixIcon: suffixIcon,
-      width: MediaQuery.of(context).size.width - 48,
-    );
-  }
-
-  Widget _buildSocialButtons() {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        SocialButton(
-          icon: Icons.email,
-          color: Colors.redAccent,
-          text: "Gmail",
-         onTap: _handleGoogleSignIn,
-        ),
-        const SizedBox(width: 16),
-        SocialButton(
-          icon: Icons.facebook,
-          color: Colors.blueAccent,
-          text: "Facebook",
-          onTap: () {
-            // Facebook login functionality
-          },
-        ),
-      ],
-    );
-  }
-
-
-  Future<void> _handleLogin() async {
-    if (_emailController.text.trim().isEmpty || _passwordController.text.isEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Please fill in all fields')),
-      );
-      return;
-    }
-
-    try {
-      final response = await _authController.loginController(
-        email: _emailController.text.trim(),
-        password: _passwordController.text,
-      );
-
-      print('Login response: $response');
-
-      if (response == null || !response.containsKey('status') || !response.containsKey('data')) {
-        throw Exception('Unexpected response structure');
-      }
-
-      if (response['status'] == 'success') {
-        final accessToken = response['data']['accessToken'];
-        print('Access Token: $accessToken');
-        if (accessToken == null || accessToken.isEmpty) {
-          throw Exception('Invalid token received');
-        }
-
-        try {
-          await TokenStorage.saveToken(accessToken);
-        } catch (e) {
-          throw Exception('Failed to save token: ${e.toString()}');
-        }
-
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Login successful!')),
-        );
-
-        Navigator.of(context).pushReplacementNamed('/home');
-      } else {
-        throw Exception(response['message'] ?? 'Login failed');
-      }
-    } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Error: ${e.toString()}')),
-      );
-    }
-  }
-
-
-
-  @override
-  void dispose() {
-    _emailController.dispose();
-    _passwordController.dispose();
-    super.dispose();
   }
 }

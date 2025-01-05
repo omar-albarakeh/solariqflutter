@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'Config/DarkTheme.dart';
 import 'Config/LightTheme.dart';
+import 'Screens/Auth/SolarUnfoForm.dart';
 import 'Widgets/Home/ThemeNotifier.dart';
 import 'Screens/Auth/SplashScreen.dart';
 import 'Screens/Auth/LoginScreen.dart';
@@ -28,6 +29,7 @@ class SolarIQ extends StatelessWidget {
             '/signup': (context) => const SignUpScreen(),
             '/userprofile': (context) => const Userprofilescreen(),
             '/home': (context) => const HomeScreen(),
+            '/solar-form': (context) => SolarInfoForm(), // Add SolarInfoForm route
           },
         );
       },

@@ -4,6 +4,18 @@ import '../model/Auth/Users.dart';
 class AuthController {
   final AuthService _authService = AuthService();
 
+  Map<String, dynamic> _buildResponse({
+    required String status,
+    required String message,
+    Map<String, dynamic>? data,
+  }) {
+    return {
+      'status': status,
+      'message': message,
+      if (data != null) 'data': data,
+    };
+  }
+
   Future<Map<String, dynamic>> signupController({
     required String username,
     required String email,
@@ -12,27 +24,25 @@ class AuthController {
     required String phoneNumber,
     String? address,
   }) async {
-    Users user = Users(
-      name: username,
-      email: email,
-      password: password,
-      type: type,
-      phoneNumber: phoneNumber,
-      address: address,
-    );
-
     try {
-      final response = await _authService.signup(user);
-      return {
-        'status': 'success',
-        'message': 'User signed up successfully',
-        'data': response,
-      };
+      final response = await _authService.signup(Users(
+        name: username,
+        email: email,
+        password: password,
+        type: type,
+        phoneNumber: phoneNumber,
+        address: address,
+      ));
+      return _buildResponse(
+        status: 'success',
+        message: 'User signed up successfully',
+        data: response,
+      );
     } catch (e) {
-      return {
-        'status': 'error',
-        'message': 'Signup failed: ${e.toString()}',
-      };
+      return _buildResponse(
+        status: 'error',
+        message: 'Signup failed: ${e.toString()}',
+      );
     }
   }
 
@@ -42,32 +52,32 @@ class AuthController {
   }) async {
     try {
       final response = await _authService.login(email: email, password: password);
-      return {
-        'status': 'success',
-        'message': 'Login successful',
-        'data': response,
-      };
+      return _buildResponse(
+        status: 'success',
+        message: 'Login successful',
+        data: response,
+      );
     } catch (e) {
-      return {
-        'status': 'error',
-        'message': 'Login failed: ${e.toString()}',
-      };
+      return _buildResponse(
+        status: 'error',
+        message: 'Login failed: ${e.toString()}',
+      );
     }
   }
 
   Future<Map<String, dynamic>> getUserInfoController() async {
     try {
       final response = await _authService.getUserInfo();
-      return {
-        'status': 'success',
-        'message': 'User info retrieved successfully',
-        'data': response,
-      };
+      return _buildResponse(
+        status: 'success',
+        message: 'User info retrieved successfully',
+        data: response,
+      );
     } catch (e) {
-      return {
-        'status': 'error',
-        'message': 'Failed to retrieve user info: ${e.toString()}',
-      };
+      return _buildResponse(
+        status: 'error',
+        message: 'Failed to retrieve user info: ${e.toString()}',
+      );
     }
   }
 
@@ -76,6 +86,22 @@ class AuthController {
       await _authService.logout();
     } catch (e) {
       throw Exception('Logout failed: ${e.toString()}');
+    }
+  }
+
+  Future<Map<String, dynamic>> submitSolarInfo(Map<String, dynamic> formData) async {
+    try {
+      final response = await _authService.submitSolarInfo(formData);
+      return _buildResponse(
+        status: 'success',
+        message: 'Solar information submitted successfully',
+        data: response,
+      );
+    } catch (e) {
+      return _buildResponse(
+        status: 'error',
+        message: 'Failed to submit solar info: ${e.toString()}',
+      );
     }
   }
 }
