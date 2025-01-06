@@ -19,7 +19,18 @@ class MarketItem extends StatelessWidget {
               ),
             ),
           ),
-          
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Column(
+              children: [
+                Text(
+                  'Trina 550 W',
+                  style: TextStyle(fontWeight: FontWeight.bold),
+                ),
+                Text('\$99'),
+              ],
+            ),
+          ),
         ],
       ),
     );
