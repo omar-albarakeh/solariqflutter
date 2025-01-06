@@ -19,6 +19,8 @@ class _CartPageState extends State<CartPage> {
             buildCartItem(),
             SizedBox(height: 16.0),
             buildOrderSummary(),
+            SizedBox(height: 16.0),
+            buildAddressField(),
           ],
         ),
       ),
@@ -103,5 +105,20 @@ class _CartPageState extends State<CartPage> {
     );
   }
 
+  Widget buildAddressField() {
+    return TextField(
+      onChanged: (value) {
+        setState(() {
+          address = value;
+        });
+      },
+      decoration: InputDecoration(
+        labelText: 'Address',
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(16.0),
+        ),
+      ),
+    );
+  }
 
 }
