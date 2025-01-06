@@ -24,7 +24,7 @@ class _ChatPageState extends State<ChatPage> {
         ],
       ),
       body: Stack(children: [
-        Chatcard(),
+        ChatCard(),
         Positioned(
           bottom: 320,
           right: 20,
