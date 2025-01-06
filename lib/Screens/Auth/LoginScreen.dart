@@ -1,13 +1,16 @@
 import 'package:flutter/material.dart';
+
 import '../../Config/AppColor.dart';
 import '../../Config/AppText.dart';
 import '../../Config/SharedPreferences.dart';
 import '../../Controllers/AuthController.dart';
 import '../../Services/GoogleServices.dart';
+import '../../Widgets/Auth/Logo.dart';
+import '../../Widgets/Auth/SocialButoonRow.dart';
 import '../../Widgets/Common/Buttons.dart';
 import '../../Widgets/Common/CustomTextField.dart';
-import '../../Widgets/Auth/SocialButtons.dart';
 import 'SignUpScreen.dart';
+
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -84,53 +87,6 @@ class _LoginScreenState extends State<LoginScreen> {
     super.dispose();
   }
 
-  Widget _buildTextField({
-    required String label,
-    required IconData icon,
-    required TextEditingController controller,
-    bool isObscure = false,
-    Widget? suffixIcon,
-  }) {
-    return CustomTextField(
-      label: label,
-      icon: icon,
-      controller: controller,
-      obscureText: isObscure,
-      suffixIcon: suffixIcon,
-      width: MediaQuery.of(context).size.width - 48,
-    );
-  }
-
-  Widget _buildSocialButtons() {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        SocialButton(
-          icon: Icons.email,
-          color: Colors.redAccent,
-          text: "Gmail",
-          onTap: _handleGoogleSignIn,
-        ),
-        const SizedBox(width: 16),
-        SocialButton(
-          icon: Icons.facebook,
-          color: Colors.blueAccent,
-          text: "Facebook",
-          onTap: () {
-            // Implement Facebook login functionality
-          },
-        ),
-      ],
-    );
-  }
-
-  Widget _buildLogo() {
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 16.0),
-      child: Image.asset("assets/images/LOGO.png", width: 234, height: 224),
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -147,20 +103,21 @@ class _LoginScreenState extends State<LoginScreen> {
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                _buildLogo(),
+                const LogoWidget(),
                 Text("Hello, Sign In!", style: AppTextStyles.title),
                 const SizedBox(height: 24),
-                _buildTextField(
+                CustomTextField(
                   label: 'Email',
                   icon: Icons.email,
                   controller: _emailController,
+                  width: MediaQuery.of(context).size.width - 48,
                 ),
                 const SizedBox(height: 16),
-                _buildTextField(
+                CustomTextField(
                   label: 'Password',
                   icon: Icons.lock,
                   controller: _passwordController,
-                  isObscure: !_isPasswordVisible,
+                  obscureText: !_isPasswordVisible,
                   suffixIcon: IconButton(
                     icon: Icon(
                       _isPasswordVisible
@@ -174,6 +131,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       });
                     },
                   ),
+                  width: MediaQuery.of(context).size.width - 48,
                 ),
                 const SizedBox(height: 8),
                 Align(
@@ -203,7 +161,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       .copyWith(color: AppColor.textWhite),
                 ),
                 const SizedBox(height: 16),
-                _buildSocialButtons(),
+                SocialButtonsRow(handleGoogleSignIn: _handleGoogleSignIn),
                 const SizedBox(height: 40),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,

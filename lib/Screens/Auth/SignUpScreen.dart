@@ -3,9 +3,10 @@ import 'package:solariqflutter/Config/AppText.dart';
 import 'package:solariqflutter/Screens/Auth/LoginScreen.dart';
 import '../../Config/AppColor.dart';
 import '../../Controllers/AuthController.dart';
+import '../../Widgets/Auth/Logo.dart';
+import '../../Widgets/Auth/SocialButoonRow.dart';
 import '../../Widgets/Common/Buttons.dart';
 import '../../Widgets/Common/CustomTextField.dart';
-import '../../Widgets/Auth/SocialButtons.dart';
 
 class SignUpScreen extends StatefulWidget {
   const SignUpScreen({super.key});
@@ -40,18 +41,18 @@ class _SignUpScreenState extends State<SignUpScreen> {
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  _buildLogo(),
+                  const LogoWidget(),
                   const SizedBox(height: 7),
                   const Text("Hello, Sign Up!", style: AppTextStyles.title),
                   const SizedBox(height: 8),
-                  _buildTextField(
+                  CustomTextField(
                     label: 'Username',
                     icon: Icons.person,
                     controller: _usernameController,
                     validator: _validateUsername,
                   ),
                   const SizedBox(height: 12),
-                  _buildTextField(
+                  CustomTextField(
                     label: 'Email',
                     icon: Icons.email,
                     controller: _emailController,
@@ -59,7 +60,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     validator: _validateEmail,
                   ),
                   const SizedBox(height: 12),
-                  _buildTextField(
+                  CustomTextField(
                     label: 'Password',
                     icon: Icons.lock,
                     controller: _passwordController,
@@ -78,7 +79,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     validator: _validatePassword,
                   ),
                   const SizedBox(height: 12),
-                  _buildTextField(
+                  CustomTextField(
                     label: 'Phone Number',
                     icon: Icons.phone,
                     controller: _phoneController,
@@ -86,7 +87,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     validator: _validatePhone,
                   ),
                   const SizedBox(height: 12),
-                  _buildTextField(
+                  CustomTextField(
                     label: 'Address',
                     icon: Icons.home,
                     controller: _addressController,
@@ -106,7 +107,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     style: AppTextStyles.bodyText.copyWith(color: AppColor.textWhite),
                   ),
                   const SizedBox(height: 16),
-                  _buildSocialButtons(),
+                  SocialButtonsRow(handleGoogleSignIn: _handleGoogleSignIn),
                   const SizedBox(height: 20),
                   _buildLoginRedirect(context),
                 ],
@@ -115,29 +116,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
           ),
         ),
       ),
-    );
-  }
-
-  Widget _buildLogo() {
-    return Image.asset("assets/images/LOGO.png", width: 200, height: 150);
-  }
-
-  Widget _buildTextField({
-    required String label,
-    required IconData icon,
-    required TextEditingController controller,
-    String? Function(String?)? validator,
-    TextInputType keyboardType = TextInputType.text,
-    bool obscureText = false,
-    Widget? suffixIcon,
-  }) {
-    return CustomTextField(
-      label: label,
-      icon: icon,
-      controller: controller,
-      validator: validator,
-      keyboardType: keyboardType,
-      obscureText: obscureText,
     );
   }
 
@@ -164,43 +142,18 @@ class _SignUpScreenState extends State<SignUpScreen> {
             selectedType = newValue;
           });
         },
-        items: _getDropdownItems(),
+        items: <String>['Engineer', 'User']
+            .map<DropdownMenuItem<String>>(
+              (String value) => DropdownMenuItem<String>(
+            value: value,
+            child: Text(
+              value,
+              style: AppTextStyles.bodyText.copyWith(color: Colors.white),
+            ),
+          ),
+        )
+            .toList(),
       ),
-    );
-  }
-
-  List<DropdownMenuItem<String>> _getDropdownItems() {
-    return <String>['Engineer', 'User']
-        .map<DropdownMenuItem<String>>(
-          (String value) => DropdownMenuItem<String>(
-        value: value,
-        child: Text(
-          value,
-          style: AppTextStyles.bodyText.copyWith(color: Colors.white),
-        ),
-      ),
-    )
-        .toList();
-  }
-
-  Widget _buildSocialButtons() {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        SocialButton(
-          icon: Icons.email,
-          color: Colors.redAccent,
-          text: "Gmail",
-          onTap: () {},
-        ),
-        const SizedBox(width: 16),
-        SocialButton(
-          icon: Icons.facebook,
-          color: Colors.blueAccent,
-          text: "Facebook",
-          onTap: () {},
-        ),
-      ],
     );
   }
 
@@ -320,3 +273,5 @@ class _SignUpScreenState extends State<SignUpScreen> {
     return null;
   }
 }
+
+
