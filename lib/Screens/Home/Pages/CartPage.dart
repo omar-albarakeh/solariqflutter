@@ -60,7 +60,21 @@ class _CartPageState extends State<CartPage> {
   }
 
 
-
+  Widget buildSummaryRow(String label, String value, {bool isBold = false}) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Text(
+          label,
+          style: isBold ? TextStyle(fontWeight: FontWeight.bold) : null,
+        ),
+        Text(
+          value,
+          style: isBold ? TextStyle(fontWeight: FontWeight.bold) : null,
+        ),
+      ],
+    );
+  }
 
 
 
