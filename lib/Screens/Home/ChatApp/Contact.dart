@@ -12,10 +12,33 @@ class ContactsPage extends StatefulWidget {
 }
 
 class _ContactsPageState extends State<ContactsPage> {
+  late Future<List<dynamic>> contacts;
+  String searchQuery = "";
+
+  @override
+  void initState() {
+    super.initState();
+    contacts = ApiService().fetchContacts(widget.token);
+  }
+
+  void refreshContacts() {
+    setState(() {
+      contacts = ApiService().fetchContacts(widget.token);
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
-    // TODO: implement build
-    throw UnimplementedError();
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text("Select Contact"),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.refresh),
+            onPressed: refreshContacts,
+          ),
+        ],
+      )
+    );
   }
-  
 }
