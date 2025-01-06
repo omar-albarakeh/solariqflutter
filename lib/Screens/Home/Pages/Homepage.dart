@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../../Config/AppText.dart';
-import '../../../Widgets/Home/ReusableCard.dart';
+import '../../../Widgets/Home/homewidgets/ReusableCard.dart';
 import '../../../Widgets/Home/ThemeNotifier.dart';
 import '../../../model/Home/CardData.dart';
-import '../NewsCard.dart';
+import 'Community/NewsCard.dart';
 import 'BatteryDetailsPage.dart';
 import 'PowerUsageDetailsPage.dart';
 
