@@ -130,7 +130,7 @@ class _ContactsPageState extends State<ContactsPage> {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => Chatscreen(),
+                        builder: (context) => Chatscreen(contact: contact),
                       ),
                     );
                   },

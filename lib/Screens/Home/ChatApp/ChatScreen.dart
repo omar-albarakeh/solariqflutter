@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 
 class Chatscreen extends StatefulWidget {
-  const Chatscreen({super.key});
+  final Map<String, dynamic> contact;
+
+  const Chatscreen({Key? key, required this.contact}) : super(key: key);
 
   @override
   State<Chatscreen> createState() => _ChatscreenState();
@@ -10,6 +12,10 @@ class Chatscreen extends StatefulWidget {
 class _ChatscreenState extends State<Chatscreen> {
   @override
   Widget build(BuildContext context) {
-    return const Placeholder();
+    // TODO: implement build
+    throw UnimplementedError();
   }
+
+  
+
 }
