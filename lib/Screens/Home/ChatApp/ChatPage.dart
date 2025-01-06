@@ -22,12 +22,12 @@ class _ChatPageState extends State<ChatPage> {
           Icon(Icons.search),
         ],
       ),
-
+      body: _AddContacts(context),
     );
   }
 }
 
-Widget _AddContects(BuildContext context) {
+Widget _AddContacts(BuildContext context) {
   return FloatingActionButton(
     onPressed: () {
       Navigator.push(
