@@ -57,6 +57,54 @@ class _ContactsPageState extends State<ContactsPage> {
           ),
         ),
       ),
+      body: FutureBuilder<List<dynamic>>(
+        future: contacts,
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Center(child: CircularProgressIndicator());
+          } else if (snapshot.hasError) {
+            return Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const Icon(Icons.error, size: 48, color: Colors.red),
+                  const SizedBox(height: 10),
+                  Text(
+                    "Error: ${snapshot.error}",
+                    textAlign: TextAlign.center,
+                  ),
+                  const SizedBox(height: 10),
+                  ElevatedButton(
+                    onPressed: refreshContacts,
+                    child: const Text("Retry"),
+                  ),
+                ],
+              ),
+            );
+          } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+            return const Center(
+              child: Text(
+                "No contacts found",
+                style: TextStyle(fontSize: 16),
+              ),
+            );
+          } else {
+            final contactsList = snapshot.data!
+                .where((contact) => contact['name']
+                .toLowerCase()
+                .contains(searchQuery))
+                .toList();
+            if (contactsList.isEmpty) {
+              return const Center(
+                child: Text(
+                  "No contacts match your search",
+                  style: TextStyle(fontSize: 16),
+                ),
+              );
+            }
+          }
+        },
+      ),
     );
   }
 }
