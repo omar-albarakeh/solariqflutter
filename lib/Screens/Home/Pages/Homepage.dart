@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../../Config/AppText.dart';
+import '../../../Widgets/Home/ReusableCard.dart';
 import '../../../Widgets/Home/ThemeNotifier.dart';
+import '../../../model/Home/CardData.dart';
+import '../NewsCard.dart';
 import 'BatteryDetailsPage.dart';
-import 'Community/CommunityPage.dart';
 import 'PowerUsageDetailsPage.dart';
 
 class Homepage extends StatelessWidget {
@@ -29,8 +31,7 @@ class Homepage extends StatelessWidget {
                     : Icons.light_mode,
               ),
               onPressed: () {
-                Provider.of<ThemeNotifier>(context, listen: false)
-                    .toggleTheme();
+                Provider.of<ThemeNotifier>(context, listen: false).toggleTheme();
               },
             ),
           ],
@@ -66,166 +67,104 @@ class Homepage extends StatelessWidget {
   }
 
   Widget _buildWeatherCard(BuildContext context) {
-    return GestureDetector(
+    return ReusableCard(
       onTap: () => Navigator.push(
         context,
         MaterialPageRoute(builder: (context) => Homepage()),
       ),
-      child: Container(
-        padding: const EdgeInsets.all(16.0),
-        decoration: BoxDecoration(
-          color: Colors.grey[200],
-          borderRadius: BorderRadius.circular(12.0),
-        ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const Text(
-              '23 °C',
-              style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-            ),
-            const SizedBox(height: 8.0),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                const Text('Beirut, Lebanon\nPartially Cloudy'),
-                Icon(Icons.wb_sunny, size: 32, color: Colors.orange.shade700),
-              ],
-            ),
-            const SizedBox(height: 8.0),
-            const Text(
-              'You may have a thunderstorm in your location. Turn off your panels!',
-              style: TextStyle(color: Colors.red),
-            ),
-          ],
-        ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const Text(
+            '23 °C',
+            style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+          ),
+          const SizedBox(height: 8.0),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              const Text('Beirut, Lebanon\nPartially Cloudy'),
+              Icon(Icons.wb_sunny, size: 32, color: Colors.orange.shade700),
+            ],
+          ),
+          const SizedBox(height: 8.0),
+          const Text(
+            'You may have a thunderstorm in your location. Turn off your panels!',
+            style: TextStyle(color: Colors.red),
+          ),
+        ],
       ),
     );
   }
 
   Widget _buildPowerUsageCard(BuildContext context) {
-    return GestureDetector(
+    final data = CardData(
+      title: '6 kW Used',
+      description: '',
+      icon: Icons.bolt,
+      iconColor: Colors.yellow.shade700,
       onTap: () => Navigator.push(
         context,
         MaterialPageRoute(builder: (context) => PowerUsageDetailsPage()),
       ),
-      child: Container(
-        padding: const EdgeInsets.all(16.0),
-        decoration: BoxDecoration(
-          color: Colors.grey[200],
-          borderRadius: BorderRadius.circular(12.0),
-        ),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Icon(Icons.bolt, size: 32, color: Colors.yellow.shade700),
-            const SizedBox(height: 8.0),
-            const Text(
-              '6 kW Used',
-              style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
-            ),
-          ],
-        ),
-      ),
     );
+    return _buildCardFromData(data);
   }
 
   Widget _buildBatteryCard(BuildContext context) {
-    return GestureDetector(
+    final data = CardData(
+      title: '67% | 1 hour left',
+      description: '',
+      icon: Icons.battery_full,
+      iconColor: Colors.green.shade600,
       onTap: () => Navigator.push(
         context,
         MaterialPageRoute(builder: (context) => BatteryDetailsPage()),
       ),
-      child: Container(
-        padding: const EdgeInsets.all(16.0),
-        decoration: BoxDecoration(
-          color: Colors.grey[200],
-          borderRadius: BorderRadius.circular(12.0),
-        ),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Icon(Icons.battery_full, size: 32, color: Colors.green.shade600),
-            const SizedBox(height: 8.0),
-            const Text(
-              '67% | 1 hour left',
-              style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
-            ),
-          ],
-        ),
+    );
+    return _buildCardFromData(data);
+  }
+
+  Widget _buildCardFromData(CardData data) {
+    return ReusableCard(
+      onTap: data.onTap,
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Icon(data.icon, size: 32, color: data.iconColor),
+          const SizedBox(height: 8.0),
+          Text(
+            data.title,
+            style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
+          ),
+        ],
       ),
     );
   }
 
   Widget _buildNewsSection(BuildContext context) {
-    return GestureDetector(
-      onTap: () {
-        // Navigate to the desired page
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => CommunityPage()), // Replace with your target page
-        );
-      },
-      child: Container(
-        padding: const EdgeInsets.all(16.0),
-        decoration: BoxDecoration(
-          color: Colors.grey[100],
-          borderRadius: BorderRadius.circular(12.0),
-        ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const Text(
-              'Solar News',
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-            ),
-            const SizedBox(height: 8.0),
-            ListView.separated(
-              shrinkWrap: true,
-              physics: const NeverScrollableScrollPhysics(),
-              itemCount: 3,
-              separatorBuilder: (_, __) => const SizedBox(height: 8.0),
-              itemBuilder: (context, index) => _buildNewsCard(context, 'Eng Name', 'Description goes here...'),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
-
-  Widget _buildNewsCard(BuildContext context, String title, String description) {
-    return Container(
-      padding: const EdgeInsets.all(12.0),
-      decoration: BoxDecoration(
-        color: Colors.grey[200],
-        borderRadius: BorderRadius.circular(8.0),
-      ),
+    return ReusableCard(
+      onTap: () {},
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text(
-                title,
-                style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-              ),
-              ElevatedButton(
-                onPressed: () {
-                  // Action for "Ask Eng"
-                },
-                style: ElevatedButton.styleFrom(
-                  padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 5.0),
-                ),
-                child: const Text('Ask Eng',style: TextStyle(color: Colors.white),),
-              ),
-            ],
+          const Text(
+            'Solar News',
+            style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
           ),
           const SizedBox(height: 8.0),
-          Text(
-            description,
-            style: const TextStyle(fontSize: 14),
+          ListView.separated(
+            shrinkWrap: true,
+            physics: const NeverScrollableScrollPhysics(),
+            itemCount: 3,
+            separatorBuilder: (_, __) => const SizedBox(height: 8.0),
+            itemBuilder: (context, index) => NewsCard(
+              title: 'Eng Name',
+              description: 'Description goes here...',
+              onAskEngTap: () {
+                // Action for Ask Eng
+              },
+            ),
           ),
         ],
       ),
