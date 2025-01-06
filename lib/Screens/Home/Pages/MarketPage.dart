@@ -27,11 +27,11 @@ class _MarketPageState extends State<MarketPage> {
                     builder: (BuildContext context) {
                       return Dialog(
                         shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(16.0),
+                          borderRadius: BorderRadius.circular(50.0),
                         ),
                         child: SizedBox(
-                          width: MediaQuery.of(context).size.width * 0.8,
-                          height: MediaQuery.of(context).size.height * 0.6,
+                          width: MediaQuery.of(context).size.width * 0.9,
+                          height: MediaQuery.of(context).size.height * 0.8,
                           child: CartPage(),
                         ),
                       );
@@ -41,6 +41,8 @@ class _MarketPageState extends State<MarketPage> {
               ),
             ],
             bottom: TabBar(
+              labelColor: Colors.blue,
+              unselectedLabelColor: Colors.grey,
               tabs: [
                 Tab(text: 'All'),
                 Tab(text: 'Inverters'),
@@ -48,6 +50,7 @@ class _MarketPageState extends State<MarketPage> {
                 Tab(text: 'Batteries'),
               ],
             ),
+
           ),
           body: TabBarView(
             children: [
