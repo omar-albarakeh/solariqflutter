@@ -1,15 +1,21 @@
 import 'package:flutter/material.dart';
+import 'ApiService.dart';
+import 'ChatScreen.dart';
 
-class Contact extends StatefulWidget {
-  const Contact({super.key});
+class ContactsPage extends StatefulWidget {
+  final String token;
+
+  const ContactsPage({Key? key, required this.token}) : super(key: key);
 
   @override
-  State<Contact> createState() => _ContactState();
+  _ContactsPageState createState() => _ContactsPageState();
 }
 
-class _ContactState extends State<Contact> {
+class _ContactsPageState extends State<ContactsPage> {
   @override
   Widget build(BuildContext context) {
-    return const Placeholder();
+    // TODO: implement build
+    throw UnimplementedError();
   }
+  
 }
