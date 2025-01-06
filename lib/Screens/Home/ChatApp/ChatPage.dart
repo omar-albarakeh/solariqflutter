@@ -3,6 +3,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:solariqflutter/Config/AppText.dart';
 
 import '../../../Config/AppColor.dart';
+import '../../../Widgets/Common/Message/ChatCard.dart';
 import 'Contact.dart';
 
 class ChatPage extends StatefulWidget {
@@ -23,6 +24,7 @@ class _ChatPageState extends State<ChatPage> {
         ],
       ),
       body: Stack(children: [
+        Chatcard(),
         Positioned(
           bottom: 320,
           right: 20,

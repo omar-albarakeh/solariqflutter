@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:solariqflutter/Config/AppText.dart';
 
 class Chatcard extends StatefulWidget {
   const Chatcard({super.key});
@@ -10,6 +11,14 @@ class Chatcard extends StatefulWidget {
 class _ChatcardState extends State<Chatcard> {
   @override
   Widget build(BuildContext context) {
-    return const Placeholder();
+    return Scaffold(
+      body: ListTile(
+        leading: CircleAvatar(
+          radius: 25,
+        ),
+        title: Text("USERNAME",style: TextStyle(color: Colors.black),),
+        trailing: Text("18:04"),
+      )
+    );
   }
 }
