@@ -20,25 +20,30 @@ class _MarketPageState extends State<MarketPage> {
             title: Text('Market'),
             actions: [
               IconButton(
-                icon: Icon(Icons.shopping_cart),
-                onPressed: () {
-                  showDialog(
-                    context: context,
-                    builder: (BuildContext context) {
-                      return Dialog(
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(50.0),
-                        ),
-                        child: SizedBox(
-                          width: MediaQuery.of(context).size.width * 0.9,
-                          height: MediaQuery.of(context).size.height * 0.8,
-                          child: CartPage(),
-                        ),
-                      );
-                    },
-                  );
-                },
-              ),
+                  icon: Icon(Icons.shopping_cart),
+                  onPressed: () {
+                    showDialog(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return Dialog(
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(20),
+                            ),
+                            insetPadding: EdgeInsets.all(20),
+                            // Controls dialog margin from edges
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.circular(20),
+                              // Ensures content inside respects the shape
+                              child: SizedBox(
+                                width: MediaQuery.of(context).size.width * 0.9,
+                                height:
+                                    MediaQuery.of(context).size.height * 0.6,
+                                child: CartPage(),
+                              ),
+                            ),
+                          );
+                        });
+                  })
             ],
             bottom: TabBar(
               labelColor: Colors.blue,
@@ -50,7 +55,6 @@ class _MarketPageState extends State<MarketPage> {
                 Tab(text: 'Batteries'),
               ],
             ),
-
           ),
           body: TabBarView(
             children: [

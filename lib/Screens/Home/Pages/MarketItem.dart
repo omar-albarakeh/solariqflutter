@@ -40,7 +40,7 @@ class MarketItem extends StatelessWidget {
                   padding: EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
                   foregroundColor: Colors.white, backgroundColor: Colors.green,
                 ),
-                child: Text('Buy Now',style: TextStyle(fontSize: 12),),
+                child: Text('Add ',style: TextStyle(fontSize: 12),),
               ),
               TextButton(
                 onPressed: () {},
