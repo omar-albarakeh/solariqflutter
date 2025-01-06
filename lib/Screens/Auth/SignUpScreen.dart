@@ -40,23 +40,21 @@ class _SignUpScreenState extends State<SignUpScreen> {
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  const LogoWidget(),
-                  const SizedBox(height: 7),
+                  const LogoWidget(width: 300,height: 100,),
                   const Text("Hello, Sign Up!", style: AppTextStyles.title),
-                  const SizedBox(height: 8),
                   CustomTextField(
                     label: 'Username',
                     icon: Icons.person,
                     controller: _usernameController,
                   ),
-                  const SizedBox(height: 12),
+                  const SizedBox(height: 7),
                   CustomTextField(
                     label: 'Email',
                     icon: Icons.email,
                     controller: _emailController,
                     keyboardType: TextInputType.emailAddress,
                   ),
-                  const SizedBox(height: 12),
+                  const SizedBox(height: 7),
                   CustomTextField(
                     label: 'Password',
                     icon: Icons.lock,
@@ -74,19 +72,19 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       },
                     ),
                   ),
-                  const SizedBox(height: 12),
+                  const SizedBox(height: 7),
                   CustomTextField(
                     label: 'Phone Number',
                     icon: Icons.phone,
                     controller: _phoneController,
                   ),
-                  const SizedBox(height: 12),
+                  const SizedBox(height: 7),
                   CustomTextField(
                     label: 'Address',
                     icon: Icons.home,
                     controller: _addressController,
                   ),
-                  const SizedBox(height: 12),
+                  const SizedBox(height: 7),
                   _buildTypeDropdown(),
                   const SizedBox(height: 20),
                   Buttons(
