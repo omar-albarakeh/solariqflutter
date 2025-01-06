@@ -3,7 +3,6 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import '../../Config/AppColor.dart';
 import '../../Screens/Home/FloatingMenuePages/ChatwithBot.dart';
 import '../../Screens/Home/FloatingMenuePages/FormPage.dart';
-import '../../Screens/Home/Pages/ChatPage.dart';
 import 'FloatingButton.dart';
 
 class FloatingMenu extends StatefulWidget {
