@@ -1,9 +1,9 @@
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:flutter/material.dart';
 import '../../Screens/Home/Pages/ChatPage.dart';
-import '../../Screens/Home/Pages/CommunityPage.dart';
+import '../../Screens/Home/Pages/Community/CommunityPage.dart';
 import '../../Screens/Home/Pages/Homepage.dart';
-import '../../Screens/Home/Pages/MarketPage.dart';
+import '../../Screens/Home/Pages/Market/MarketPage.dart';
 
 class NavBar extends StatefulWidget {
   const NavBar({super.key});

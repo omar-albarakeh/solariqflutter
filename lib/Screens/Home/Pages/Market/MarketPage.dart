@@ -30,10 +30,8 @@ class _MarketPageState extends State<MarketPage> {
                               borderRadius: BorderRadius.circular(20),
                             ),
                             insetPadding: EdgeInsets.all(20),
-                            // Controls dialog margin from edges
                             child: ClipRRect(
                               borderRadius: BorderRadius.circular(20),
-                              // Ensures content inside respects the shape
                               child: SizedBox(
                                 width: MediaQuery.of(context).size.width * 0.9,
                                 height:
