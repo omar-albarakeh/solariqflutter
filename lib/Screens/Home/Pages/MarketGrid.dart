@@ -1,15 +1,22 @@
 import 'package:flutter/material.dart';
+import 'MarketItem.dart';
 
-class MarketGrid extends StatefulWidget {
-  const MarketGrid({super.key});
 
-  @override
-  State<MarketGrid> createState() => _MarketGridState();
-}
-
-class _MarketGridState extends State<MarketGrid> {
+class MarketGrid extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return const Placeholder();
+    return GridView.builder(
+      padding: EdgeInsets.all(16.0),
+      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+        crossAxisCount: 2,
+        crossAxisSpacing: 15.0,
+        mainAxisSpacing: 16.0,
+        childAspectRatio: 0.8,
+      ),
+      itemCount: 6,
+      itemBuilder: (context, index) {
+        return MarketItem();
+      },
+    );
   }
 }
