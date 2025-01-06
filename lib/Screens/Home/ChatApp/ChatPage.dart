@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:solariqflutter/Config/AppText.dart';
+
+import '../../../Config/AppColor.dart';
+import 'Contact.dart';
 
 class ChatPage extends StatefulWidget {
   const ChatPage({super.key});
@@ -21,4 +25,17 @@ class _ChatPageState extends State<ChatPage> {
 
     );
   }
+}
+
+Widget _AddContects(BuildContext context) {
+  return FloatingActionButton(
+    onPressed: () {
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => Contact()),
+      );
+    },
+    backgroundColor: AppColor.primary,
+    child: FaIcon(FontAwesomeIcons.plus),
+  );
 }
