@@ -17,12 +17,18 @@ class _ChatPageState extends State<ChatPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("ChatApp" ,style: AppTextStyles.appBarTitle),
+        title: Text("ChatApp", style: AppTextStyles.appBarTitle),
         actions: [
           Icon(Icons.search),
         ],
       ),
-      body: _AddContacts(context),
+      body: Stack(children: [
+        Positioned(
+          bottom: 320,
+          right: 20,
+          child: _AddContacts(context),
+        ),
+      ]),
     );
   }
 }
