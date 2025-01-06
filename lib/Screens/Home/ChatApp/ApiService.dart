@@ -7,7 +7,20 @@ class ApiService {
 
   get http => null;
 
-  
-  }
+  Future<List<dynamic>> fetchContacts(String token) async {
+    try {
+      final token = await TokenStorage.getToken();
 
+      if (token == null || token.isEmpty) {
+        throw Exception('No token found. Please login again.');
+      }
+
+      final isValid = await TokenStorage.isTokenValid();
+      if (!isValid) {
+        throw Exception('Token is invalid or expired. Please login again.');
+      }
+
+
+  }
+}
 
