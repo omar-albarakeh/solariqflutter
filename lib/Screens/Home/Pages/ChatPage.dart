@@ -4,10 +4,10 @@ class ChatPage extends StatefulWidget {
   const ChatPage({super.key});
 
   @override
-  State<ChatPage> createState() => _ChatPageState();
+  State<ChatPage> createState() => _ChatpageState();
 }
 
-class _ChatPageState extends State<ChatPage> {
+class _ChatpageState extends State<ChatPage> {
   @override
   Widget build(BuildContext context) {
     return const Placeholder();
