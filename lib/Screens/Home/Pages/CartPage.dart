@@ -21,6 +21,8 @@ class _CartPageState extends State<CartPage> {
             buildOrderSummary(),
             SizedBox(height: 16.0),
             buildAddressField(),
+            SizedBox(height: 16.0),
+            buildCheckoutButton(),
           ],
         ),
       ),
@@ -120,5 +122,17 @@ class _CartPageState extends State<CartPage> {
       ),
     );
   }
-
+  Widget buildCheckoutButton() {
+    return ElevatedButton(
+      onPressed: () {
+      },
+      child: Text('Check Out'),
+      style: ElevatedButton.styleFrom(
+        padding: EdgeInsets.symmetric(vertical: 16.0),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(16.0),
+        ),
+      ),
+    );
+  }
 }
