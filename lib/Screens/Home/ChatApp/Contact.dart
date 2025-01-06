@@ -38,7 +38,25 @@ class _ContactsPageState extends State<ContactsPage> {
             onPressed: refreshContacts,
           ),
         ],
-      )
+        bottom: PreferredSize(
+          preferredSize: const Size.fromHeight(50),
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+            child: TextField(
+              onChanged: (value) {
+                setState(() {
+                  searchQuery = value.toLowerCase();
+                });
+              },
+              decoration: const InputDecoration(
+                hintText: "Search contacts",
+                border: OutlineInputBorder(),
+                prefixIcon: Icon(Icons.search),
+              ),
+            ),
+          ),
+        ),
+      ),
     );
   }
 }
