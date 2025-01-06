@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:solariqflutter/Config/AppText.dart';
-import 'package:solariqflutter/Screens/Auth/LoginScreen.dart';
 import '../../Config/AppColor.dart';
+import '../../Config/AppText.dart';
 import '../../Controllers/AuthController.dart';
 import '../../Widgets/Auth/Logo.dart';
 import '../../Widgets/Auth/SocialButoonRow.dart';
 import '../../Widgets/Common/Buttons.dart';
 import '../../Widgets/Common/CustomTextField.dart';
+import 'Auth_Handlers.dart';
 
 class SignUpScreen extends StatefulWidget {
   const SignUpScreen({super.key});
@@ -22,7 +22,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
   final TextEditingController _phoneController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _addressController = TextEditingController();
-
   bool _isPasswordVisible = false;
   String? selectedType;
 
@@ -49,7 +48,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     label: 'Username',
                     icon: Icons.person,
                     controller: _usernameController,
-                    validator: _validateUsername,
                   ),
                   const SizedBox(height: 12),
                   CustomTextField(
@@ -57,7 +55,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     icon: Icons.email,
                     controller: _emailController,
                     keyboardType: TextInputType.emailAddress,
-                    validator: _validateEmail,
                   ),
                   const SizedBox(height: 12),
                   CustomTextField(
@@ -76,15 +73,12 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         });
                       },
                     ),
-                    validator: _validatePassword,
                   ),
                   const SizedBox(height: 12),
                   CustomTextField(
                     label: 'Phone Number',
                     icon: Icons.phone,
                     controller: _phoneController,
-                    keyboardType: TextInputType.phone,
-                    validator: _validatePhone,
                   ),
                   const SizedBox(height: 12),
                   CustomTextField(
@@ -99,7 +93,17 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     hasBorder: false,
                     backgroundColor: AppColor.buttonPrimary,
                     buttonText: "Sign Up",
-                    onTap: _handleSignUp,
+                    onTap: () => AuthHandlers.handleSignUp(
+                      context: context,
+                      formKey: _formKey,
+                      authController: AuthController(),
+                      usernameController: _usernameController,
+                      emailController: _emailController,
+                      passwordController: _passwordController,
+                      selectedType: selectedType,
+                      phoneController: _phoneController,
+                      addressController: _addressController,
+                    ),
                   ),
                   const SizedBox(height: 20),
                   Text(
@@ -107,7 +111,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     style: AppTextStyles.bodyText.copyWith(color: AppColor.textWhite),
                   ),
                   const SizedBox(height: 16),
-                  SocialButtonsRow(handleGoogleSignIn: _handleGoogleSignIn),
+                  SocialButtonsRow(handleGoogleSignIn: () => AuthHandlers.handleGoogleSignIn(context)),
                   const SizedBox(height: 20),
                   _buildLoginRedirect(context),
                 ],
@@ -121,7 +125,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
   Widget _buildTypeDropdown() {
     return Container(
-      width: double.infinity,
       padding: const EdgeInsets.symmetric(horizontal: 16.0),
       decoration: BoxDecoration(
         border: Border.all(color: Colors.grey, width: 1),
@@ -129,10 +132,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
       ),
       child: DropdownButton<String>(
         value: selectedType,
-        hint: Text(
-          "Select Type",
-          style: AppTextStyles.bodyText.copyWith(color: Colors.white),
-        ),
+        hint: Text("Select Type", style: AppTextStyles.bodyText.copyWith(color: Colors.white)),
         dropdownColor: Colors.blueGrey,
         icon: const Icon(Icons.arrow_drop_down, color: Colors.white),
         underline: const SizedBox(),
@@ -142,17 +142,12 @@ class _SignUpScreenState extends State<SignUpScreen> {
             selectedType = newValue;
           });
         },
-        items: <String>['Engineer', 'User']
-            .map<DropdownMenuItem<String>>(
-              (String value) => DropdownMenuItem<String>(
+        items: ['Engineer', 'User'].map((String value) {
+          return DropdownMenuItem<String>(
             value: value,
-            child: Text(
-              value,
-              style: AppTextStyles.bodyText.copyWith(color: Colors.white),
-            ),
-          ),
-        )
-            .toList(),
+            child: Text(value, style: AppTextStyles.bodyText.copyWith(color: Colors.white)),
+          );
+        }).toList(),
       ),
     );
   }
@@ -161,117 +156,12 @@ class _SignUpScreenState extends State<SignUpScreen> {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        const Text(
-          "Already have an account?",
-          style: TextStyle(color: Colors.white),
-        ),
+        const Text("Already have an account?", style: TextStyle(color: Colors.white)),
         InkWell(
-          onTap: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => const LoginScreen(),
-              ),
-            );
-          },
-          child: const Text(
-            " Login",
-            style: TextStyle(
-              color: Colors.blue,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
+          onTap: () => Navigator.pushNamed(context, '/login'),
+          child: const Text(" Login", style: TextStyle(color: Colors.blue, fontWeight: FontWeight.bold)),
         ),
       ],
     );
   }
-
-  Future<void> _handleSignUp() async {
-    if (_formKey.currentState?.validate() ?? false) {
-      final AuthController authController = AuthController();
-
-      // Show loading indicator
-      showDialog(
-        context: context,
-        barrierDismissible: false,
-        builder: (BuildContext context) => const Center(
-          child: CircularProgressIndicator(),
-        ),
-      );
-
-      try {
-        final response = await authController.signupController(
-          username: _usernameController.text.trim(),
-          email: _emailController.text.trim(),
-          password: _passwordController.text,
-          type: selectedType!,
-          phoneNumber: _phoneController.text.trim(),
-          address: _addressController.text.trim(),
-        );
-
-        Navigator.of(context).pop();
-
-        if (response['status'] == 'success') {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text(response['message'])),
-          );
-
-          // Redirect to login
-          Navigator.pushReplacement(
-            context,
-            MaterialPageRoute(builder: (context) => const LoginScreen()),
-          );
-        } else {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text(response['message'] ?? 'Signup failed')),
-          );
-        }
-      } catch (e) {
-        Navigator.of(context).pop();
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Signup failed: ${e.toString()}')),
-        );
-      }
-    } else {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Please fill all fields correctly.')),
-      );
-    }
-  }
-
-  String? _validateUsername(String? value) {
-    if (value == null || value.isEmpty) {
-      return "Username is required";
-    }
-    return null;
-  }
-
-  String? _validateEmail(String? value) {
-    if (value == null || value.isEmpty) {
-      return "Email is required";
-    }
-    if (!RegExp(r'\S+@\S+\.\S+').hasMatch(value)) {
-      return "Please enter a valid email address";
-    }
-    return null;
-  }
-
-  String? _validatePassword(String? value) {
-    if (value == null || value.isEmpty) {
-      return "Password is required";
-    }
-    if (value.length < 6) {
-      return "Password must be at least 6 characters long";
-    }
-    return null;
-  }
-
-  String? _validatePhone(String? value) {
-    if (value == null || value.isEmpty) {
-      return "Phone number is required";
-    }
-    return null;
-  }
 }
-
-

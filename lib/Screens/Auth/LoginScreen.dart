@@ -1,16 +1,13 @@
 import 'package:flutter/material.dart';
-
 import '../../Config/AppColor.dart';
 import '../../Config/AppText.dart';
-import '../../Config/SharedPreferences.dart';
 import '../../Controllers/AuthController.dart';
-import '../../Services/GoogleServices.dart';
 import '../../Widgets/Auth/Logo.dart';
 import '../../Widgets/Auth/SocialButoonRow.dart';
 import '../../Widgets/Common/Buttons.dart';
 import '../../Widgets/Common/CustomTextField.dart';
+import 'Auth_Handlers.dart';
 import 'SignUpScreen.dart';
-
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -25,59 +22,17 @@ class _LoginScreenState extends State<LoginScreen> {
   final AuthController _authController = AuthController();
   bool _isPasswordVisible = false;
 
-  Future<void> _handleGoogleSignIn() async {
-    try {
-      final user = await GoogleAuthService().signInWithGoogle();
-      if (user != null) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text("Welcome, ${user.displayName}!")),
-        );
-        Navigator.pushReplacementNamed(context, '/home', arguments: user);
-      }
-    } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text("Google sign-in failed: $e")),
-      );
-    }
+  Future<void> _handleLogin() async {
+    await AuthHandlers.handleLogin(
+      context: context,
+      authController: _authController,
+      emailController: _emailController,
+      passwordController: _passwordController,
+    );
   }
 
-  Future<void> _handleLogin() async {
-    if (_emailController.text.trim().isEmpty || _passwordController.text.isEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Please fill in all fields')),
-      );
-      return;
-    }
-
-    try {
-      final response = await _authController.loginController(
-        email: _emailController.text.trim(),
-        password: _passwordController.text,
-      );
-
-      if (response['status'] == 'success') {
-        final accessToken = response['data']['accessToken'];
-        final isSolarInfoComplete = response['data']['isSolarInfoComplete'] ?? false;
-
-        await TokenStorage.saveToken(accessToken);
-
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Login successful!')),
-        );
-
-        Navigator.of(context).pushReplacementNamed(
-          isSolarInfoComplete ? '/home' : '/solar-form',
-        );
-      } else {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Login failed: ${response['message']}')),
-        );
-      }
-    } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Error: ${e.toString()}')),
-      );
-    }
+  Future<void> _handleGoogleSignIn() async {
+    await AuthHandlers.handleGoogleSignIn(context);
   }
 
   @override
