@@ -1,7 +1,14 @@
 import 'package:flutter/material.dart';
 
 class LogoWidget extends StatelessWidget {
-  const LogoWidget({Key? key}) : super(key: key);
+  final double? width;
+  final double? height;
+
+  const LogoWidget({
+    Key? key,
+    this.width = 234,
+    this.height = 224,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -9,8 +16,8 @@ class LogoWidget extends StatelessWidget {
       padding: const EdgeInsets.only(bottom: 16.0),
       child: Image.asset(
         "assets/images/LOGO.png",
-        width: 234,
-        height: 224,
+        width: width,
+        height: height,
       ),
     );
   }
