@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'CartPage.dart';
+import 'MarketGrid.dart';
 
 class MarketPage extends StatefulWidget {
   const MarketPage({super.key});
@@ -36,6 +37,14 @@ class _MarketPageState extends State<MarketPage> {
               Tab(text: 'Batteries'),
             ],
           ),
-        )));
+        ),
+            body: TabBarView(
+            children: [
+            MarketGrid(),
+              MarketGrid(),
+            MarketGrid(),
+            MarketGrid(),
+      ],
+    ),));
   }
 }
