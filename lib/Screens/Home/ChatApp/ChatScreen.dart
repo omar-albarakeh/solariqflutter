@@ -6,16 +6,32 @@ class Chatscreen extends StatefulWidget {
   const Chatscreen({Key? key, required this.contact}) : super(key: key);
 
   @override
-  State<Chatscreen> createState() => _ChatscreenState();
+  _ChatScreenState createState() => _ChatScreenState();
 }
 
-class _ChatscreenState extends State<Chatscreen> {
+class _ChatScreenState extends State<Chatscreen> {
   @override
   Widget build(BuildContext context) {
-    // TODO: implement build
-    throw UnimplementedError();
+    return Scaffold(
+      appBar: AppBar(
+        title: Row(
+          children: [
+            CircleAvatar(
+              backgroundImage: widget.contact['profilePicture'] != null
+                  ? NetworkImage(widget.contact['profilePicture'])
+                  : null,
+              child: widget.contact['profilePicture'] == null
+                  ? Text(widget.contact['name'][0])
+                  : null,
+            ),
+            const SizedBox(width: 10),
+            Text(widget.contact['name']),
+          ],
+        ),
+      ),
+      body: Center(
+        child: Text("Chat with ${widget.contact['name']}"),
+      ),
+    );
   }
-
-  
-
 }
