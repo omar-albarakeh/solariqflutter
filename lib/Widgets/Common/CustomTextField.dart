@@ -27,7 +27,7 @@ class CustomTextField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: width ?? double.infinity,
+      width: double.infinity,
       child: TextFormField(
         controller: controller,
         validator: validator,
@@ -45,11 +45,11 @@ class CustomTextField extends StatelessWidget {
           ),
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(8.0),
-            borderSide: const BorderSide(color: Colors.black),
+            borderSide: const BorderSide(color: Colors.blue),
           ),
           focusedBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(8.0),
-            borderSide: BorderSide(color: AppColor.primary),
+            borderSide: BorderSide(color: AppColor.buttonPrimary),
           ),
           errorStyle: const TextStyle(color: Colors.redAccent),
         ),
