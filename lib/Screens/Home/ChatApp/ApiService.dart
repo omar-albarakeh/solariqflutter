@@ -1,10 +1,9 @@
 import 'dart:convert';
+import 'package:http/http.dart' as http;
 import '../../../Config/SharedPreferences.dart';
 
 class ApiService {
   static const String baseUrl = 'http://192.168.0.103:3001';
-
-  get http => null;
 
   Future<List<dynamic>> fetchContacts(String token) async {
     try {
@@ -25,12 +24,10 @@ class ApiService {
           'Authorization': 'Bearer $token',
         },
       );
-
       if (response.statusCode == 200) {
         final data = json.decode(response.body);
         return data['data'];
       } else if (response.statusCode == 401) {
-
         print('Token used: $token');
         throw Exception('Unauthorized: Please login again.');
       } else {
@@ -41,4 +38,3 @@ class ApiService {
     }
   }
 }
-
