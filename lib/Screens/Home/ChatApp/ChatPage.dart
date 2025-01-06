@@ -40,7 +40,7 @@ Widget _AddContacts(BuildContext context) {
     onPressed: () {
       Navigator.push(
         context,
-        MaterialPageRoute(builder: (context) => Contact()),
+        MaterialPageRoute(builder: (context) => ContactsPage(token: '',)),
       );
     },
     backgroundColor: AppColor.primary,
