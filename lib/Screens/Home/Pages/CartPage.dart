@@ -17,6 +17,8 @@ class _CartPageState extends State<CartPage> {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             buildCartItem(),
+            SizedBox(height: 16.0),
+            buildOrderSummary(),
           ],
         ),
       ),
@@ -77,6 +79,29 @@ class _CartPageState extends State<CartPage> {
   }
 
 
+  Widget buildOrderSummary() {
+    return Container(
+      decoration: BoxDecoration(
+        color: Colors.grey[200],
+        borderRadius: BorderRadius.circular(16.0),
+      ),
+      padding: EdgeInsets.all(16.0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            'Order Summary',
+            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18.0),
+          ),
+          SizedBox(height: 8.0),
+          buildSummaryRow('Order', '\$81'),
+          buildSummaryRow('Delivery', '\$6'),
+          Divider(),
+          buildSummaryRow('Total', '\$87', isBold: true),
+        ],
+      ),
+    );
+  }
 
 
 }
