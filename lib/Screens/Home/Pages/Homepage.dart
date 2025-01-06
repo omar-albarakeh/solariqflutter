@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:solariqflutter/Screens/Auth/UserProfileScreen.dart';
 import '../../../Config/AppText.dart';
 import '../../../Widgets/Home/homewidgets/ReusableCard.dart';
 import '../../../Widgets/Home/ThemeNotifier.dart';
@@ -58,6 +59,10 @@ class Homepage extends StatelessWidget {
 
                 // Solar News Section
                 _buildNewsSection(context),
+
+                ElevatedButton(onPressed: (){
+                  Navigator.push(context, MaterialPageRoute(builder: (context)=>Userprofilescreen()));
+                }, child:Text("userprofile"))
               ],
             ),
           ),

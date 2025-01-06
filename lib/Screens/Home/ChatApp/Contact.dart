@@ -38,24 +38,6 @@ class _ContactsPageState extends State<ContactsPage> {
             onPressed: refreshContacts,
           ),
         ],
-        bottom: PreferredSize(
-          preferredSize: const Size.fromHeight(50),
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-            child: TextField(
-              onChanged: (value) {
-                setState(() {
-                  searchQuery = value.toLowerCase();
-                });
-              },
-              decoration: const InputDecoration(
-                hintText: "Search contacts",
-                border: OutlineInputBorder(),
-                prefixIcon: Icon(Icons.search),
-              ),
-            ),
-          ),
-        ),
       ),
       body: FutureBuilder<List<dynamic>>(
         future: contacts,
@@ -102,40 +84,61 @@ class _ContactsPageState extends State<ContactsPage> {
                 ),
               );
             }
-            return ListView.builder(
-              itemCount: contactsList.length,
-              itemBuilder: (context, index) {
-                final contact = contactsList[index];
-                return ListTile(
-                  leading: CircleAvatar(
-                    backgroundImage: contact['profilePicture'] != null
-                        ? NetworkImage(contact['profilePicture'])
-                        : null,
-                    child: contact['profilePicture'] == null
-                        ? Text(contact['name'][0])
-                        : null,
-                  ),
-                  title: Text(
-                    contact['name'],
-                    style: const TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 16,
+            return Column(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+                  child: TextField(
+                    onChanged: (value) {
+                      setState(() {
+                        searchQuery = value.toLowerCase();
+                      });
+                    },
+                    decoration: const InputDecoration(
+                      hintText: "Search contacts",
+                      border: OutlineInputBorder(),
+                      prefixIcon: Icon(Icons.search),
                     ),
                   ),
-                  subtitle: Text(
-                    contact['status'] ?? "Hey there! I'm using WhatsApp.",
-                    style: const TextStyle(color: Colors.grey),
+                ),
+                Expanded(
+                  child: ListView.builder(
+                    itemCount: contactsList.length,
+                    itemBuilder: (context, index) {
+                      final contact = contactsList[index];
+                      return ListTile(
+                        leading: CircleAvatar(
+                          backgroundImage: contact['profilePicture'] != null
+                              ? NetworkImage(contact['profilePicture'])
+                              : null,
+                          child: contact['profilePicture'] == null
+                              ? Text(contact['name'][0])
+                              : null,
+                        ),
+                        title: Text(
+                          contact['name'],
+                          style: const TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 16,
+                          ),
+                        ),
+                        subtitle: Text(
+                          contact['status'] ?? "Hey there! I'm using WhatsApp.",
+                          style: const TextStyle(color: Colors.grey),
+                        ),
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => Chatscreen(contact: contact),
+                            ),
+                          );
+                        },
+                      );
+                    },
                   ),
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => Chatscreen(contact: contact),
-                      ),
-                    );
-                  },
-                );
-              },
+                ),
+              ],
             );
           }
         },
