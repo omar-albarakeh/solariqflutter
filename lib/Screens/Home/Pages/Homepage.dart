@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:solariqflutter/Screens/Auth/UserProfileScreen.dart';
+import 'package:solariqflutter/Screens/Home/Pages/WeatherPrediction.dart';
 import '../../../Config/AppText.dart';
 import '../../../Widgets/Home/homewidgets/ReusableCard.dart';
 import '../../../Widgets/Home/ThemeNotifier.dart';
@@ -75,7 +76,7 @@ class Homepage extends StatelessWidget {
     return ReusableCard(
       onTap: () => Navigator.push(
         context,
-        MaterialPageRoute(builder: (context) => Homepage()),
+        MaterialPageRoute(builder: (context) => Weatherprediction()),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
