@@ -2,17 +2,30 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 
 class WeatherService {
-  static const String _baseUrl = 'https://api.open-meteo.com/v1/forecast';
 
-  Future<Map<String, dynamic>> fetchWeather(double latitude, double longitude) async {
+  Future<List<Map<String, dynamic>>> fetchSolarRadiation(
+      double latitude, double longitude) async {
+    final String baseUrl = 'https://api.open-meteo.com/v1/forecast';
     final url = Uri.parse(
-        '$_baseUrl?latitude=$latitude&longitude=$longitude&hourly=shortwave_radiation');
-    final response = await http.get(url);
+        '$baseUrl?latitude=$latitude&longitude=$longitude&hourly=shortwave_radiation');
 
-    if (response.statusCode == 200) {
-      return json.decode(response.body);
-    } else {
-      throw Exception('Failed to load weather data');
+    try {
+      final response = await http.get(url);
+      if (response.statusCode == 200) {
+        final data = jsonDecode(response.body);
+        final radiationData = data['hourly']['shortwave_radiation'];
+
+        return radiationData
+            .asMap()
+            .entries
+            .map((entry) => {'time': data['hourly']['time'][entry.key], 'radiation': entry.value})
+            .toList();
+      } else {
+        throw Exception('Failed to load solar radiation data');
+      }
+    } catch (e) {
+      print('Error fetching solar radiation: $e');
+      return [];
     }
   }
 }
