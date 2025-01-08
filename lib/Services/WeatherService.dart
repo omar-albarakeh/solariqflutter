@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
@@ -7,7 +6,7 @@ class WeatherService {
 
   Future<Map<String, dynamic>> fetchWeather(double latitude, double longitude) async {
     final url = Uri.parse(
-        '$_baseUrl?latitude=$latitude&longitude=$longitude&current_weather=true');
+        '$_baseUrl?latitude=$latitude&longitude=$longitude&hourly=shortwave_radiation');
     final response = await http.get(url);
 
     if (response.statusCode == 200) {
