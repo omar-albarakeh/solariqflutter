@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+import 'package:xml/xml.dart';
 
 class WeatherService {
   final String apiKey;
@@ -17,7 +18,11 @@ class WeatherService {
     try {
       final response = await http.get(Uri.parse(_currentWeatherUrl));
       if (response.statusCode == 200) {
-        return jsonDecode(response.body);
+        final data = jsonDecode(response.body);
+        final temperature = data['main']['temp'];
+        final weatherCode = data['weather'][0]['id'];
+
+        return {'temperature': temperature, 'weatherCode': weatherCode};
       } else {
         throw Exception('Failed to load current weather data');
       }
@@ -27,17 +32,42 @@ class WeatherService {
     }
   }
 
-  Future<String> fetchFiveDayForecast() async {
+  Future<List<Map<String, dynamic>>> fetchFiveDayForecast() async {
     try {
       final response = await http.get(Uri.parse(_fiveDayForecastUrl));
       if (response.statusCode == 200) {
-        return response.body; // XML response as string
+        final xmlData = response.body;
+
+        final List<Map<String, dynamic>> parsedData = _parseFiveDayForecast(xmlData);
+
+        return parsedData;
       } else {
         throw Exception('Failed to load 5-day forecast data');
       }
     } catch (e) {
       print('Error fetching 5-day forecast: $e');
-      return '';
+      return [];
     }
+  }
+  List<Map<String, dynamic>> _parseFiveDayForecast(String xmlData) {
+    final document = XmlDocument.parse(xmlData);
+
+    final forecastData = <Map<String, dynamic>>[];
+
+    final timeNodes = document.findAllElements('time');
+    for (var timeNode in timeNodes) {
+      final fromTime = timeNode.getAttribute('from');
+      final symbol = timeNode.findElements('symbol').first;
+      final weatherCode = symbol.getAttribute('number');
+      final temperature = timeNode.findElements('temperature').first.getAttribute('value');
+
+      forecastData.add({
+        'time': fromTime,
+        'weatherCode': weatherCode,
+        'temperature': temperature,
+      });
+    }
+
+    return forecastData;
   }
 }
