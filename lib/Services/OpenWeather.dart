@@ -26,4 +26,18 @@ class WeatherService {
       return {};
     }
   }
+
+  Future<String> fetchFiveDayForecast() async {
+    try {
+      final response = await http.get(Uri.parse(_fiveDayForecastUrl));
+      if (response.statusCode == 200) {
+        return response.body; // XML response as string
+      } else {
+        throw Exception('Failed to load 5-day forecast data');
+      }
+    } catch (e) {
+      print('Error fetching 5-day forecast: $e');
+      return '';
+    }
+  }
 }
