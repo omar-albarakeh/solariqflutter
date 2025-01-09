@@ -455,17 +455,36 @@ class _WeatherPredictionState extends State<WeatherPrediction> {
                   Positioned.fill(
                     child: ClipRRect(
                       borderRadius: BorderRadius.circular(16),
-                      child: getCloudIcon(cloudCondition),
+                      child: getCloudIcon(cloudCondition), 
                     ),
                   ),
-                  ListTile(
-                    title: Text(
-                      'Time: ${forecast['time']}',
-                      style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white),
-                    ),
-                    subtitle: Text(
-                      'Temperature: ${temperatureInCelsius.toStringAsFixed(1)} °C\nClouds: ${forecast['cloudsValue']}',
-                      style: TextStyle(color: Colors.white70),
+                  Center(
+                    child: Padding(
+                      padding: const EdgeInsets.all(16.0),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Text(
+                            'Time: ${forecast['time']}',
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              color: Colors.white,
+                              fontSize: 18,
+                            ),
+                            textAlign: TextAlign.center,
+                          ),
+                          const SizedBox(height: 8),
+                          Text(
+                            'Temperature: ${temperatureInCelsius.toStringAsFixed(1)} °C\nClouds: ${forecast['cloudsValue']}',
+                            style: TextStyle(
+                              color: Colors.white70,
+                              fontSize: 16,
+                            ),
+                            textAlign: TextAlign.center,
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                 ],
@@ -476,6 +495,7 @@ class _WeatherPredictionState extends State<WeatherPrediction> {
       ),
     );
   }
+
 
 
 // Widget _buildSolarRadiationData() {
