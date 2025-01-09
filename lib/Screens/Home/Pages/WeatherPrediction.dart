@@ -152,38 +152,43 @@ class _WeatherPredictionState extends State<WeatherPrediction> {
   }
 
   Widget _buildCurrentWeather() {
-    return Card(
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-      elevation: 6,
-      child: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            _buildSectionTitle('Current Weather'),
-            SizedBox(height: 10),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+    return Stack(
+      children: [
+        Positioned.fill(
+          child: getCloudIcon(currentWeather['clouds'] ?? ''),
+        ),
+        Card(
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+          elevation: 6,
+          margin: const EdgeInsets.all(0),
+          color: Colors.white.withOpacity(0.1),
+          child: Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
-                  'Temperature: ${(currentWeather['temperature'] - 273.15).toStringAsFixed(1)} °C',
-                  style: TextStyle(fontSize: 16),
+                _buildSectionTitle('Current Weather'),
+                SizedBox(height: 10),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      'Temperature: ${(currentWeather['temperature'] - 273.15).toStringAsFixed(1)} °C',
+                      style: TextStyle(fontSize: 16),
+                    ),
+                  ],
                 ),
-                SizedBox(
-                  width: 100,
-                  height: 100,
-                  child: getCloudIcon(currentWeather['clouds'] ?? ''),
-                ),
+                Text('Weather: ${currentWeather['weatherMain'] ?? 'N/A'}'),
+                Text('Sunrise: ${_formatTimestamp(currentWeather['sunrise'])}'),
+                Text('Sunset: ${_formatTimestamp(currentWeather['sunset'])}'),
               ],
             ),
-            Text('Weather: ${currentWeather['weatherMain'] ?? 'N/A'}'),
-            Text('Sunrise: ${_formatTimestamp(currentWeather['sunrise'])}'),
-            Text('Sunset: ${_formatTimestamp(currentWeather['sunset'])}'),
-          ],
+          ),
         ),
-      ),
+      ],
     );
   }
+
 
   Widget _buildFiveDayForecast() {
     return ListView.builder(
