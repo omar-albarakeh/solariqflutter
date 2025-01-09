@@ -107,6 +107,11 @@ class _WeatherpredictionState extends State<Weatherprediction> {
                 _buildCurrentWeather(),
                 SizedBox(height: 20),
               ],
+              if (fiveDayForecast.isNotEmpty) ...[
+                _buildSectionTitle('5-Day Forecast'),
+                _buildFiveDayForecast(),
+                SizedBox(height: 20),
+              ],
 
             ],
           ),
@@ -142,7 +147,7 @@ class _WeatherpredictionState extends State<Weatherprediction> {
                 SizedBox(width: 10),
                 Text(
                   getCloudIcon(currentWeather['clouds'] ?? ''),
-                  style: TextStyle(fontSize: 24), // Adjust size for the icon
+                  style: TextStyle(fontSize: 24),
                 ),
               ],
             ), Text('Weather: ${currentWeather['weatherMain'] ?? 'N/A'}'),
