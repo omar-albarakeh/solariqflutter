@@ -121,13 +121,9 @@ class _WeatherPredictionState extends State<WeatherPrediction> {
                 ],
                 if (fiveDayForecast.isNotEmpty) ...[
                   _buildSectionTitle('5-Day Forecast'),
-                  _buildFiveDayForecast(),
+                  _buildDailyForecastAtNoon(),
                   SizedBox(height: 20),
                 ],
-                // if (solarRadiationData.isNotEmpty) ...[
-                //   _buildSectionTitle('Solar Radiation Data'),
-                //   _buildSolarRadiationData(),
-                // ],
               ],
             ),
           ),
@@ -223,7 +219,6 @@ class _WeatherPredictionState extends State<WeatherPrediction> {
 
     return Stack(
       children: [
-        // Background animation
         Positioned.fill(
           child: ClipRRect(
             borderRadius: BorderRadius.circular(16),
@@ -236,7 +231,6 @@ class _WeatherPredictionState extends State<WeatherPrediction> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                // Current Weather Section
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -429,7 +423,14 @@ class _WeatherPredictionState extends State<WeatherPrediction> {
     );
   }
 
-  Widget _buildFiveDayForecast() {
+  Widget _buildDailyForecastAtNoon() {
+    final now = DateTime.now();
+
+    final dailyNoonForecast = fiveDayForecast.where((forecast) {
+      final forecastTime = DateTime.parse(forecast['time']);
+      return forecastTime.hour == 12 && forecastTime.isAfter(now);
+    }).toList();
+
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
@@ -438,9 +439,10 @@ class _WeatherPredictionState extends State<WeatherPrediction> {
       ),
       child: SingleChildScrollView(
         child: Column(
-          children: List.generate(fiveDayForecast.length, (index) {
-            final forecast = fiveDayForecast[index];
-            final temperatureInCelsius = double.parse(forecast['temperature']) - 273.15;
+          children: List.generate(dailyNoonForecast.length, (index) {
+            final forecast = dailyNoonForecast[index];
+            final temperatureInCelsius =
+                double.parse(forecast['temperature']) - 273.15;
             final cloudCondition = forecast['cloudsValue'] ?? '';
 
             return Card(
@@ -457,7 +459,6 @@ class _WeatherPredictionState extends State<WeatherPrediction> {
                       child: getCloudIcon(cloudCondition),
                     ),
                   ),
-                  // Centered foreground content (list items)
                   Center(
                     child: Padding(
                       padding: const EdgeInsets.all(16.0),
@@ -466,7 +467,7 @@ class _WeatherPredictionState extends State<WeatherPrediction> {
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
                           Text(
-                            'Time: ${forecast['time']}',
+                            'Date: ${forecast['time'].substring(0, 10)}',
                             style: TextStyle(
                               fontWeight: FontWeight.bold,
                               color: Colors.white,
