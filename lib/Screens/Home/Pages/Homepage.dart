@@ -9,6 +9,7 @@ import '../../../model/Home/CardData.dart';
 import 'Community/NewsCard.dart';
 import 'BatteryDetailsPage.dart';
 import 'PowerUsageDetailsPage.dart';
+import 'RealTimeMonotering.dart';
 
 class Homepage extends StatelessWidget {
   const Homepage({Key? key}) : super(key: key);
@@ -111,7 +112,7 @@ class Homepage extends StatelessWidget {
       iconColor: Colors.yellow.shade700,
       onTap: () => Navigator.push(
         context,
-        MaterialPageRoute(builder: (context) => PowerUsageDetailsPage()),
+        MaterialPageRoute(builder: (context) => PieChartExample()),
       ),
     );
     return _buildCardFromData(data);

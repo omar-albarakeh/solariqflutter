@@ -35,21 +35,25 @@ class _WeatherPredictionState extends State<WeatherPrediction> {
   Future<void> _fetchData() async {
     try {
       final currentWeatherData = await openWeatherService.fetchCurrentWeather();
-      final fiveDayForecastData = await openWeatherService
-          .fetchFiveDayForecast();
+      final fiveDayForecastData = await openWeatherService.fetchFiveDayForecast();
       final weatherService = WeatherService();
-      final solarData = await weatherService.fetchSolarRadiation(40.710335, -73.99309, 5);
-
+      final solarData = await weatherService.fetchSolarRadiation(
+        latitude: 33.88863,
+        longitude: 35.49548,
+        isHourly: true,
+        timezone: "EET",
+      );
 
       setState(() {
         this.currentWeather = currentWeatherData;
         this.fiveDayForecast = fiveDayForecastData;
-        this.solarRadiationData = solarRadiationData;
+        this.solarRadiationData = solarData;
       });
     } catch (e) {
       print('Error fetching data: $e');
     }
   }
+
 
   Widget getCloudIcon(String cloudSituation) {
     switch (cloudSituation.toLowerCase()) {
@@ -103,6 +107,8 @@ class _WeatherPredictionState extends State<WeatherPrediction> {
         ],
       ),
       body: Container(
+        width: double.infinity,
+        height: double.infinity,
         decoration: BoxDecoration(
           gradient: LinearGradient(
             colors: [theme.primaryColorLight, theme.primaryColorDark],
