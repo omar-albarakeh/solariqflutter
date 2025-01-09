@@ -24,6 +24,13 @@ class _WeatherpredictionState extends State<Weatherprediction> {
 
   final OpenWeatherService openWeatherService = OpenWeatherService('bb0cae202637e279b059eb133515cce8');
   final WeatherService weatherService = WeatherService();
+
+  @override
+  void initState() {
+    super.initState();
+    _fetchData();
+  }
+
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
