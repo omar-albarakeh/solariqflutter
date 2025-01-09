@@ -437,15 +437,16 @@ class _WeatherPredictionState extends State<WeatherPrediction> {
         color: Colors.white.withOpacity(0.1),
         borderRadius: BorderRadius.circular(16),
       ),
-      child: SingleChildScrollView(
-        child: Column(
-          children: List.generate(dailyNoonForecast.length, (index) {
-            final forecast = dailyNoonForecast[index];
-            final temperatureInCelsius =
-                double.parse(forecast['temperature']) - 273.15;
-            final cloudCondition = forecast['cloudsValue'] ?? '';
+      child: Column(
+        children: List.generate(dailyNoonForecast.length, (index) {
+          final forecast = dailyNoonForecast[index];
+          final temperatureInCelsius =
+              double.parse(forecast['temperature']) - 273.15;
+          final cloudCondition = forecast['cloudsValue'] ?? '';
 
-            return Card(
+          return Padding(
+            padding: const EdgeInsets.symmetric(vertical: 8.0),
+            child: Card(
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(16),
               ),
@@ -490,9 +491,9 @@ class _WeatherPredictionState extends State<WeatherPrediction> {
                   ),
                 ],
               ),
-            );
-          }),
-        ),
+            ),
+          );
+        }),
       ),
     );
   }
