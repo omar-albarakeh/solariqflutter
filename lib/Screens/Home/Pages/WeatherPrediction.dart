@@ -115,7 +115,7 @@ class _WeatherPredictionState extends State<WeatherPrediction> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 if (currentWeather.isNotEmpty) ...[
-                  _buildCurrentWeatherAndSolarRadiation(),
+                  _buildCurrentWeatherAndPowerOutput(),
                   SizedBox(height: 20),
                 ],
                 if (fiveDayForecast.isNotEmpty) ...[
@@ -185,7 +185,8 @@ class _WeatherPredictionState extends State<WeatherPrediction> {
     );
   }
 
-  Widget _buildCurrentWeatherAndSolarRadiation() {
+  Widget _buildCurrentWeatherAndPowerOutput() {
+
     double maxTemp = double.negativeInfinity;
     double minTemp = double.infinity;
 
@@ -197,16 +198,18 @@ class _WeatherPredictionState extends State<WeatherPrediction> {
 
     minTemp = minTemp <= -50 ? -50 : minTemp;
 
-    double maxRadiation = double.negativeInfinity;
-    double minRadiation = double.infinity;
+    double maxPowerOutput = double.negativeInfinity;
+    double minPowerOutput = double.infinity;
 
     for (var radiation in solarRadiationData) {
       double radiationValue = radiation['radiation'];
-      if (radiationValue > maxRadiation) maxRadiation = radiationValue;
-      if (radiationValue < minRadiation) minRadiation = radiationValue;
+      double powerOutput = calculatePowerOutput(radiationValue);
+
+      if (powerOutput > maxPowerOutput) maxPowerOutput = powerOutput;
+      if (powerOutput < minPowerOutput) minPowerOutput = powerOutput;
     }
 
-    minRadiation = minRadiation <= 0 ? 0.1 : minRadiation;
+    minPowerOutput = minPowerOutput <= 0 ? 0.1 : minPowerOutput;
 
     return Stack(
       children: [
@@ -326,10 +329,7 @@ class _WeatherPredictionState extends State<WeatherPrediction> {
                             ),
                             Text(
                               'Sunrise: ${_formatTimestamp(currentWeather['sunrise'])}',
-                              style: TextStyle(
-                                fontSize: 16,
-                                color: Colors.white70,
-                              ),
+                              style: TextStyle(fontSize: 16, color: Colors.white70),
                             ),
                           ],
                         ),
@@ -343,10 +343,7 @@ class _WeatherPredictionState extends State<WeatherPrediction> {
                             ),
                             Text(
                               'Sunset: ${_formatTimestamp(currentWeather['sunset'])}',
-                              style: TextStyle(
-                                fontSize: 16,
-                                color: Colors.white70,
-                              ),
+                              style: TextStyle(fontSize: 16, color: Colors.white70),
                             ),
                           ],
                         ),
@@ -356,18 +353,17 @@ class _WeatherPredictionState extends State<WeatherPrediction> {
                 ),
                 const SizedBox(height: 40),
 
-                // Solar Radiation Section
-                _buildSectionTitle('Solar Radiation Data'),
+                _buildSectionTitle('Power Output Data'),
                 const SizedBox(height: 16),
                 Row(
                   children: [
                     Icon(
-                      Icons.wb_sunny,
+                      Icons.power,
                       color: Colors.yellow,
                       size: 22,
                     ),
                     Text(
-                      'Max Radiation: ${maxRadiation.toStringAsFixed(2)} W/m²',
+                      'Max Power Output: ${maxPowerOutput.toStringAsFixed(2)} kW',
                       style: TextStyle(
                         fontSize: 20,
                         fontWeight: FontWeight.bold,
@@ -387,12 +383,12 @@ class _WeatherPredictionState extends State<WeatherPrediction> {
                 Row(
                   children: [
                     Icon(
-                      Icons.wb_cloudy,
+                      Icons.power,
                       color: Colors.blue,
                       size: 22,
                     ),
                     Text(
-                      'Min Radiation: ${minRadiation.toStringAsFixed(2)} W/m²',
+                      'Min Power Output: ${minPowerOutput.toStringAsFixed(2)} kW',
                       style: TextStyle(
                         fontSize: 20,
                         fontWeight: FontWeight.bold,
@@ -415,9 +411,6 @@ class _WeatherPredictionState extends State<WeatherPrediction> {
       ],
     );
   }
-
-
-
 
   Widget _buildFiveDayForecast() {
     return ListView.builder(
