@@ -98,9 +98,17 @@ class _WeatherpredictionState extends State<Weatherprediction> {
       ],
     ));
   }
+  String _formatTimestamp(int? timestamp) {
+    if (timestamp == null) return 'N/A';
+    return DateTime.fromMillisecondsSinceEpoch(timestamp * 1000).toString();
+  }
+  Widget _buildSectionTitle(String title) {
+    return Text(
+      title,
+      style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+    );
+  }
 
 }
-String _formatTimestamp(int? timestamp) {
-  if (timestamp == null) return 'N/A';
-  return DateTime.fromMillisecondsSinceEpoch(timestamp * 1000).toString();
-}
+
+
