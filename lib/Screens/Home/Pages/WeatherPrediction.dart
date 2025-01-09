@@ -460,51 +460,51 @@ class _WeatherPredictionState extends State<WeatherPrediction> {
     );
   }
 
-  Widget _buildSolarRadiationData() {
-    return Container(
-      padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        color: Colors.white.withOpacity(0.1),
-        borderRadius: BorderRadius.circular(16),
-      ),
-      child: SingleChildScrollView(
-        child: Column(
-          children: [
-            for (var radiation in solarRadiationData)
-              Padding(
-                padding: const EdgeInsets.only(bottom: 12),
-                child: Card(
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(16)),
-                  elevation: 4,
-                  child: ListTile(
-                    contentPadding: const EdgeInsets.all(16),
-                    title: Text(
-                      'Time: ${radiation['time']}',
-                      style: TextStyle(
-                          fontSize: 18, fontWeight: FontWeight.bold),
-                    ),
-                    subtitle: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          'Radiation: ${radiation['radiation']} W/m²',
-                          style: TextStyle(fontSize: 16),
-                        ),
-                        const SizedBox(height: 8),
-                        Text(
-                          'Power Output: ${calculatePowerOutput(
-                              radiation['radiation']).toStringAsFixed(2)} kW',
-                          style: TextStyle(fontSize: 16, color: Colors.orange),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              ),
-          ],
-        ),
-      ),
-    );
-  }
+  // Widget _buildSolarRadiationData() {
+  //   return Container(
+  //     padding: const EdgeInsets.all(16),
+  //     decoration: BoxDecoration(
+  //       color: Colors.white.withOpacity(0.1),
+  //       borderRadius: BorderRadius.circular(16),
+  //     ),
+  //     child: SingleChildScrollView(
+  //       child: Column(
+  //         children: [
+  //           for (var radiation in solarRadiationData)
+  //             Padding(
+  //               padding: const EdgeInsets.only(bottom: 12),
+  //               child: Card(
+  //                 shape: RoundedRectangleBorder(
+  //                     borderRadius: BorderRadius.circular(16)),
+  //                 elevation: 4,
+  //                 child: ListTile(
+  //                   contentPadding: const EdgeInsets.all(16),
+  //                   title: Text(
+  //                     'Time: ${radiation['time']}',
+  //                     style: TextStyle(
+  //                         fontSize: 18, fontWeight: FontWeight.bold),
+  //                   ),
+  //                   subtitle: Column(
+  //                     crossAxisAlignment: CrossAxisAlignment.start,
+  //                     children: [
+  //                       Text(
+  //                         'Radiation: ${radiation['radiation']} W/m²',
+  //                         style: TextStyle(fontSize: 16),
+  //                       ),
+  //                       const SizedBox(height: 8),
+  //                       Text(
+  //                         'Power Output: ${calculatePowerOutput(
+  //                             radiation['radiation']).toStringAsFixed(2)} kW',
+  //                         style: TextStyle(fontSize: 16, color: Colors.orange),
+  //                       ),
+  //                     ],
+  //                   ),
+  //                 ),
+  //               ),
+  //             ),
+  //         ],
+  //       ),
+  //     ),
+  //   );
+  // }
 }
