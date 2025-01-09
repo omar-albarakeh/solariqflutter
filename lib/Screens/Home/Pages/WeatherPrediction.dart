@@ -35,7 +35,8 @@ class _WeatherPredictionState extends State<WeatherPrediction> {
   Future<void> _fetchData() async {
     try {
       final currentWeatherData = await openWeatherService.fetchCurrentWeather();
-      final fiveDayForecastData = await openWeatherService.fetchFiveDayForecast();
+      final fiveDayForecastData = await openWeatherService
+          .fetchFiveDayForecast();
       final solarRadiationData = await weatherService.fetchSolarRadiation(
           33.8938, 35.5018);
 
@@ -123,10 +124,10 @@ class _WeatherPredictionState extends State<WeatherPrediction> {
                   _buildFiveDayForecast(),
                   SizedBox(height: 20),
                 ],
-                if (solarRadiationData.isNotEmpty) ...[
-                  _buildSectionTitle('Solar Radiation Data'),
-                  _buildSolarRadiationData(),
-                ],
+                // if (solarRadiationData.isNotEmpty) ...[
+                //   _buildSectionTitle('Solar Radiation Data'),
+                //   _buildSolarRadiationData(),
+                // ],
               ],
             ),
           ),
@@ -134,20 +135,29 @@ class _WeatherPredictionState extends State<WeatherPrediction> {
       ),
     );
   }
+
   String _formatTimestamp(int? timestamp) {
     if (timestamp == null) return 'N/A';
     final dateTime = DateTime.fromMillisecondsSinceEpoch(timestamp * 1000);
-    return "${_formatDayOfWeek(dateTime)}, ${_formatDate(dateTime)} at ${_formatTime(dateTime)}";
+    return "${_formatDayOfWeek(dateTime)}, ${_formatDate(
+        dateTime)} at ${_formatTime(dateTime)}";
   }
 
   String _formatDayOfWeek(DateTime dateTime) {
     return [
-      'Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'
+      'Sunday',
+      'Monday',
+      'Tuesday',
+      'Wednesday',
+      'Thursday',
+      'Friday',
+      'Saturday'
     ][dateTime.weekday - 1];
   }
 
   String _formatDate(DateTime dateTime) {
-    return "${dateTime.day.toString().padLeft(2, '0')}-${dateTime.month.toString().padLeft(2, '0')}-${dateTime.year}";
+    return "${dateTime.day.toString().padLeft(2, '0')}-${dateTime.month
+        .toString().padLeft(2, '0')}-${dateTime.year}";
   }
 
   String _formatTime(DateTime dateTime) {
@@ -186,12 +196,12 @@ class _WeatherPredictionState extends State<WeatherPrediction> {
   }
 
   Widget _buildCurrentWeatherAndPowerOutput() {
-
     double maxTemp = double.negativeInfinity;
     double minTemp = double.infinity;
 
     for (var forecast in fiveDayForecast) {
-      double temperatureInCelsius = double.parse(forecast['temperature']) - 273.15;
+      double temperatureInCelsius = double.parse(forecast['temperature']) -
+          273.15;
       if (temperatureInCelsius > maxTemp) maxTemp = temperatureInCelsius;
       if (temperatureInCelsius < minTemp) minTemp = temperatureInCelsius;
     }
@@ -303,7 +313,8 @@ class _WeatherPredictionState extends State<WeatherPrediction> {
                               size: 22,
                             ),
                             Text(
-                              'Condition: ${currentWeather['weatherMain'] ?? 'N/A'}',
+                              'Condition: ${currentWeather['weatherMain'] ??
+                                  'N/A'}',
                               style: TextStyle(
                                 fontSize: 20,
                                 fontWeight: FontWeight.bold,
@@ -328,8 +339,10 @@ class _WeatherPredictionState extends State<WeatherPrediction> {
                               size: 22,
                             ),
                             Text(
-                              'Sunrise: ${_formatTimestamp(currentWeather['sunrise'])}',
-                              style: TextStyle(fontSize: 16, color: Colors.white70),
+                              'Sunrise: ${_formatTimestamp(
+                                  currentWeather['sunrise'])}',
+                              style: TextStyle(
+                                  fontSize: 16, color: Colors.white70),
                             ),
                           ],
                         ),
@@ -342,8 +355,10 @@ class _WeatherPredictionState extends State<WeatherPrediction> {
                               size: 22,
                             ),
                             Text(
-                              'Sunset: ${_formatTimestamp(currentWeather['sunset'])}',
-                              style: TextStyle(fontSize: 16, color: Colors.white70),
+                              'Sunset: ${_formatTimestamp(
+                                  currentWeather['sunset'])}',
+                              style: TextStyle(
+                                  fontSize: 16, color: Colors.white70),
                             ),
                           ],
                         ),
@@ -363,7 +378,8 @@ class _WeatherPredictionState extends State<WeatherPrediction> {
                       size: 22,
                     ),
                     Text(
-                      'Max Power Output: ${maxPowerOutput.toStringAsFixed(2)} kW',
+                      'Max Power Output: ${maxPowerOutput.toStringAsFixed(
+                          2)} kW',
                       style: TextStyle(
                         fontSize: 20,
                         fontWeight: FontWeight.bold,
@@ -388,7 +404,8 @@ class _WeatherPredictionState extends State<WeatherPrediction> {
                       size: 22,
                     ),
                     Text(
-                      'Min Power Output: ${minPowerOutput.toStringAsFixed(2)} kW',
+                      'Min Power Output: ${minPowerOutput.toStringAsFixed(
+                          2)} kW',
                       style: TextStyle(
                         fontSize: 20,
                         fontWeight: FontWeight.bold,
@@ -419,15 +436,18 @@ class _WeatherPredictionState extends State<WeatherPrediction> {
       itemCount: fiveDayForecast.length,
       itemBuilder: (context, index) {
         final forecast = fiveDayForecast[index];
-        final temperatureInCelsius = double.parse(forecast['temperature']) - 273.15;
+        final temperatureInCelsius = double.parse(forecast['temperature']) -
+            273.15;
 
         return Card(
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+          shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(16)),
           elevation: 4,
           child: ListTile(
             title: Text('Time: ${forecast['time']}'),
             subtitle: Text(
-              'Temperature: ${temperatureInCelsius.toStringAsFixed(1)} °C\nClouds: ${forecast['cloudsValue']}',
+              'Temperature: ${temperatureInCelsius.toStringAsFixed(
+                  1)} °C\nClouds: ${forecast['cloudsValue']}',
             ),
             leading: SizedBox(
               width: 50,
@@ -441,24 +461,50 @@ class _WeatherPredictionState extends State<WeatherPrediction> {
   }
 
   Widget _buildSolarRadiationData() {
-    return ListView.builder(
-      shrinkWrap: true,
-      physics: NeverScrollableScrollPhysics(),
-      itemCount: solarRadiationData.length,
-      itemBuilder: (context, index) {
-        final radiation = solarRadiationData[index];
-        final powerOutput = calculatePowerOutput(radiation['radiation']);
-        return Card(
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-          elevation: 4,
-          child: ListTile(
-            title: Text('Time: ${radiation['time']}'),
-            subtitle: Text(
-              'Radiation: ${radiation['radiation']} W/m²\nPower Output: ${powerOutput.toStringAsFixed(2)} kW',
-            ),
-          ),
-        );
-      },
+    return Container(
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: Colors.white.withOpacity(0.1),
+        borderRadius: BorderRadius.circular(16),
+      ),
+      child: SingleChildScrollView(
+        child: Column(
+          children: [
+            for (var radiation in solarRadiationData)
+              Padding(
+                padding: const EdgeInsets.only(bottom: 12),
+                child: Card(
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(16)),
+                  elevation: 4,
+                  child: ListTile(
+                    contentPadding: const EdgeInsets.all(16),
+                    title: Text(
+                      'Time: ${radiation['time']}',
+                      style: TextStyle(
+                          fontSize: 18, fontWeight: FontWeight.bold),
+                    ),
+                    subtitle: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          'Radiation: ${radiation['radiation']} W/m²',
+                          style: TextStyle(fontSize: 16),
+                        ),
+                        const SizedBox(height: 8),
+                        Text(
+                          'Power Output: ${calculatePowerOutput(
+                              radiation['radiation']).toStringAsFixed(2)} kW',
+                          style: TextStyle(fontSize: 16, color: Colors.orange),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+          ],
+        ),
+      ),
     );
   }
 }
