@@ -12,6 +12,10 @@ class Weatherprediction extends StatefulWidget {
 }
 
 class _WeatherpredictionState extends State<Weatherprediction> {
+
+  final double systemSize = 5.0;
+  final double efficiency = 0.18;
+  final double performanceRatio = 0.85;
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
