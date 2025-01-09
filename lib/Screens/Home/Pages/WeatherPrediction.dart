@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-
 import '../../../Config/AppText.dart';
+import '../../../Services/OpenWeather.dart';
+import '../../../Services/open-meteo.dart';
 import '../../../Widgets/Home/ThemeNotifier.dart';
 
 class Weatherprediction extends StatefulWidget {
@@ -16,6 +17,13 @@ class _WeatherpredictionState extends State<Weatherprediction> {
   final double systemSize = 5.0;
   final double efficiency = 0.18;
   final double performanceRatio = 0.85;
+
+  Map<String, dynamic> currentWeather = {};
+  List<Map<String, dynamic>> fiveDayForecast = [];
+  List<Map<String, dynamic>> solarRadiationData = [];
+
+  final OpenWeatherService openWeatherService = OpenWeatherService('bb0cae202637e279b059eb133515cce8');
+  final WeatherService weatherService = WeatherService();
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
