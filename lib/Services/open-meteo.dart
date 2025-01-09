@@ -3,30 +3,29 @@ import 'dart:convert';
 
 class WeatherService {
   Future<List<Map<String, dynamic>>> fetchSolarRadiation(
-      double latitude, double longitude) async {
+      double latitude, double longitude, int days) async {
     final String baseUrl = 'https://api.open-meteo.com/v1/forecast';
     final url = Uri.parse(
-        '$baseUrl?latitude=$latitude&longitude=$longitude&hourly=shortwave_radiation');
+        '$baseUrl?latitude=$latitude&longitude=$longitude&daily=shortwave_radiation&days=$days');
 
     try {
       final response = await http.get(url);
       if (response.statusCode == 200) {
         final data = jsonDecode(response.body);
 
-        if (data['hourly'] == null ||
-            data['hourly']['shortwave_radiation'] == null ||
-            data['hourly']['time'] == null ||
-            !(data['hourly']['shortwave_radiation'] is List) ||
-            !(data['hourly']['time'] is List) ||
-            data['hourly']['shortwave_radiation'].length !=
-                data['hourly']['time'].length) {
+        if (data['daily'] == null ||
+            data['daily']['shortwave_radiation'] == null ||
+            data['daily']['time'] == null ||
+            !(data['daily']['shortwave_radiation'] is List) ||
+            !(data['daily']['time'] is List) ||
+            data['daily']['shortwave_radiation'].length !=
+                data['daily']['time'].length) {
           throw Exception('Invalid or inconsistent data format received from the API');
         }
 
         final List<double> radiationData =
-        List<double>.from(data['hourly']['shortwave_radiation']);
-        final List<String> timeData =
-        List<String>.from(data['hourly']['time']);
+        List<double>.from(data['daily']['shortwave_radiation']);
+        final List<String> timeData = List<String>.from(data['daily']['time']);
 
         return List.generate(radiationData.length, (index) {
           return {
