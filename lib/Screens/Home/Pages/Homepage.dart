@@ -76,7 +76,7 @@ class Homepage extends StatelessWidget {
     return ReusableCard(
       onTap: () => Navigator.push(
         context,
-        MaterialPageRoute(builder: (context) => Weatherprediction()),
+        MaterialPageRoute(builder: (context) => WeatherPrediction()),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
