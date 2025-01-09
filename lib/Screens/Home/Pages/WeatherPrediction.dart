@@ -46,6 +46,29 @@ class _WeatherpredictionState extends State<Weatherprediction> {
     }
   }
 
+  String getCloudIcon(String cloudSituation) {
+    switch (cloudSituation.toLowerCase()) {
+      case 'clear sky':
+        return '☀️';
+      case 'few clouds':
+        return '🌤️';
+      case 'scattered clouds':
+        return '⛅';
+      case 'broken clouds':
+        return '🌥️';
+      case 'overcast clouds':
+        return '☁️';
+      case 'light rain':
+        return '🌦️';
+      case 'moderate rain':
+        return '🌧️';
+      case 'heavy intensity rain':
+        return '🌩️';
+      default:
+        return '❓'; 
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
