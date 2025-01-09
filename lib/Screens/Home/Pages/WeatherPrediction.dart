@@ -30,6 +30,21 @@ class _WeatherpredictionState extends State<Weatherprediction> {
     super.initState();
     _fetchData();
   }
+  Future<void> _fetchData() async {
+    try {
+      final currentWeatherData = await openWeatherService.fetchCurrentWeather();
+      final fiveDayForecastData = await openWeatherService.fetchFiveDayForecast();
+      final solarRadiationData = await weatherService.fetchSolarRadiation(33.8938, 35.5018);
+
+      setState(() {
+        this.currentWeather = currentWeatherData;
+        this.fiveDayForecast = fiveDayForecastData;
+        this.solarRadiationData = solarRadiationData;
+      });
+    } catch (e) {
+      print('Error fetching data: $e');
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
