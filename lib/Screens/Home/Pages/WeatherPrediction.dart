@@ -153,7 +153,27 @@ class _WeatherpredictionState extends State<Weatherprediction> {
       ),
     );
   }
+  Widget _buildFiveDayForecast() {
+    return ListView.builder(
+      shrinkWrap: true,
+      physics: NeverScrollableScrollPhysics(),
+      itemCount: fiveDayForecast.length,
+      itemBuilder: (context, index) {
+        final forecast = fiveDayForecast[index];
+        final temperatureInCelsius = double.parse(forecast['temperature']) - 273.15;
 
+        return Card(
+          child: ListTile(
+            title: Text('Time: ${forecast['time']}'),
+            subtitle: Text(
+              'Temperature: ${temperatureInCelsius.toStringAsFixed(1)} °C\nClouds: ${forecast['cloudsValue']}',
+            ),
+            leading: Text(getCloudIcon((forecast['cloudsValue'] ?? 'unknown').toString().toLowerCase())),
+          ),
+        );
+      },
+    );
+  }
 
 }
 
