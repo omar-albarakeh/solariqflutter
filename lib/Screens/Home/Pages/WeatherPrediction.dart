@@ -108,6 +108,36 @@ class _WeatherpredictionState extends State<Weatherprediction> {
       style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
     );
   }
+  Widget _buildCurrentWeather() {
+    return Card(
+      child: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            _buildSectionTitle('Current Weather'),
+            SizedBox(height: 10),
+            Row(
+              children: [
+                Text(
+                  'Temperature: ${(currentWeather['temperature'] - 273.15).toStringAsFixed(1)} °C',
+                  style: TextStyle(fontSize: 16),
+                ),
+                SizedBox(width: 10),
+                Text(
+                  getCloudIcon(currentWeather['clouds'] ?? ''),
+                  style: TextStyle(fontSize: 24), // Adjust size for the icon
+                ),
+              ],
+            ), Text('Weather: ${currentWeather['weatherMain'] ?? 'N/A'}'),
+            Text('Sunrise: ${_formatTimestamp(currentWeather['sunrise'])}'),
+            Text('Sunset: ${_formatTimestamp(currentWeather['sunset'])}'),
+          ],
+        ),
+      ),
+    );
+  }
+
 
 }
 
