@@ -96,7 +96,23 @@ class _WeatherpredictionState extends State<Weatherprediction> {
           },
         ),
       ],
-    ));
+    ),
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              if (currentWeather.isNotEmpty) ...[
+                _buildCurrentWeather(),
+                SizedBox(height: 20),
+              ],
+
+            ],
+          ),
+        ),
+      ),
+    );
   }
   String _formatTimestamp(int? timestamp) {
     if (timestamp == null) return 'N/A';
