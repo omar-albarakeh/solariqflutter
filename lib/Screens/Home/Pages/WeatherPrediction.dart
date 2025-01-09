@@ -186,7 +186,6 @@ class _WeatherPredictionState extends State<WeatherPrediction> {
   }
 
   Widget _buildCurrentWeatherAndSolarRadiation() {
-
     double maxTemp = double.negativeInfinity;
     double minTemp = double.infinity;
 
@@ -196,6 +195,8 @@ class _WeatherPredictionState extends State<WeatherPrediction> {
       if (temperatureInCelsius < minTemp) minTemp = temperatureInCelsius;
     }
 
+    minTemp = minTemp <= -50 ? -50 : minTemp;
+
     double maxRadiation = double.negativeInfinity;
     double minRadiation = double.infinity;
 
@@ -204,6 +205,8 @@ class _WeatherPredictionState extends State<WeatherPrediction> {
       if (radiationValue > maxRadiation) maxRadiation = radiationValue;
       if (radiationValue < minRadiation) minRadiation = radiationValue;
     }
+
+    minRadiation = minRadiation <= 0 ? 0.1 : minRadiation;
 
     return Stack(
       children: [
@@ -215,11 +218,12 @@ class _WeatherPredictionState extends State<WeatherPrediction> {
           ),
         ),
         Padding(
-          padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 16),
+          padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 16),
           child: SingleChildScrollView(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+                // Current Weather Section
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -227,62 +231,183 @@ class _WeatherPredictionState extends State<WeatherPrediction> {
                     Icon(
                       Icons.thermostat,
                       color: Colors.orange,
-                      size: 24,
+                      size: 30,
                     ),
                   ],
                 ),
-                const SizedBox(height: 16),
+                const SizedBox(height: 20),
                 Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(
-                          'Max Temp: ${maxTemp.toStringAsFixed(1)} °C',
-                          style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.white),
+                        Row(
+                          children: [
+                            Icon(
+                              Icons.arrow_upward,
+                              color: Colors.orange,
+                              size: 22,
+                            ),
+                            Text(
+                              'Max Temp: ${maxTemp.toStringAsFixed(1)} °C',
+                              style: TextStyle(
+                                fontSize: 22,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.white,
+                                shadows: [
+                                  Shadow(
+                                    offset: Offset(1, 1),
+                                    blurRadius: 5,
+                                    color: Colors.black.withOpacity(0.5),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
                         ),
-                        const SizedBox(height: 8),
-                        Text(
-                          'Min Temp: ${minTemp.toStringAsFixed(1)} °C',
-                          style: TextStyle(fontSize: 16, color: Colors.white70),
+                        const SizedBox(height: 12),
+                        Row(
+                          children: [
+                            Icon(
+                              Icons.arrow_downward,
+                              color: Colors.blue,
+                              size: 22,
+                            ),
+                            Text(
+                              'Min Temp: ${minTemp.toStringAsFixed(1)} °C',
+                              style: TextStyle(
+                                fontSize: 20,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.white70,
+                                shadows: [
+                                  Shadow(
+                                    offset: Offset(1, 1),
+                                    blurRadius: 5,
+                                    color: Colors.black.withOpacity(0.5),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
                         ),
-                        const SizedBox(height: 8),
-                        Text(
-                          'Condition: ${currentWeather['weatherMain'] ?? 'N/A'}',
-                          style: TextStyle(fontSize: 16, color: Colors.white70),
+                        const SizedBox(height: 12),
+                        Row(
+                          children: [
+                            Icon(
+                              Icons.cloud,
+                              color: Colors.white70,
+                              size: 22,
+                            ),
+                            Text(
+                              'Condition: ${currentWeather['weatherMain'] ?? 'N/A'}',
+                              style: TextStyle(
+                                fontSize: 20,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.white70,
+                                shadows: [
+                                  Shadow(
+                                    offset: Offset(1, 1),
+                                    blurRadius: 5,
+                                    color: Colors.black.withOpacity(0.5),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
                         ),
-                        const SizedBox(height: 8),
-                        Text(
-                          'Sunrise: ${_formatTimestamp(currentWeather['sunrise'])}',
-                          style: TextStyle(fontSize: 16, color: Colors.white70),
+                        const SizedBox(height: 12),
+                        Row(
+                          children: [
+                            Icon(
+                              Icons.sunny,
+                              color: Colors.yellow,
+                              size: 22,
+                            ),
+                            Text(
+                              'Sunrise: ${_formatTimestamp(currentWeather['sunrise'])}',
+                              style: TextStyle(
+                                fontSize: 16,
+                                color: Colors.white70,
+                              ),
+                            ),
+                          ],
                         ),
-                        const SizedBox(height: 8),
-                        Text(
-                          'Sunset: ${_formatTimestamp(currentWeather['sunset'])}',
-                          style: TextStyle(fontSize: 16, color: Colors.white70),
+                        const SizedBox(height: 12),
+                        Row(
+                          children: [
+                            Icon(
+                              Icons.shield_moon,
+                              color: Colors.orange,
+                              size: 22,
+                            ),
+                            Text(
+                              'Sunset: ${_formatTimestamp(currentWeather['sunset'])}',
+                              style: TextStyle(
+                                fontSize: 16,
+                                color: Colors.white70,
+                              ),
+                            ),
+                          ],
                         ),
                       ],
                     ),
                   ],
                 ),
-                const SizedBox(height: 30),
+                const SizedBox(height: 40),
 
                 // Solar Radiation Section
                 _buildSectionTitle('Solar Radiation Data'),
                 const SizedBox(height: 16),
-                Text(
-                  'Max Radiation: ${maxRadiation.toStringAsFixed(2)} W/m²',
-                  style: TextStyle(fontSize: 16, color: Colors.white70),
+                Row(
+                  children: [
+                    Icon(
+                      Icons.wb_sunny,
+                      color: Colors.yellow,
+                      size: 22,
+                    ),
+                    Text(
+                      'Max Radiation: ${maxRadiation.toStringAsFixed(2)} W/m²',
+                      style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white,
+                        shadows: [
+                          Shadow(
+                            offset: Offset(1, 1),
+                            blurRadius: 5,
+                            color: Colors.black.withOpacity(0.5),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
                 ),
-                const SizedBox(height: 8),
-                Text(
-                  'Min Radiation: ${minRadiation.toStringAsFixed(2)} W/m²',
-                  style: TextStyle(fontSize: 16, color: Colors.white70),
+                const SizedBox(height: 12),
+                Row(
+                  children: [
+                    Icon(
+                      Icons.wb_cloudy,
+                      color: Colors.blue,
+                      size: 22,
+                    ),
+                    Text(
+                      'Min Radiation: ${minRadiation.toStringAsFixed(2)} W/m²',
+                      style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white70,
+                        shadows: [
+                          Shadow(
+                            offset: Offset(1, 1),
+                            blurRadius: 5,
+                            color: Colors.black.withOpacity(0.5),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
                 ),
-                const SizedBox(height: 16),
-                // You can choose to display the radiation values in a simplified list here if necessary
               ],
             ),
           ),
@@ -290,7 +415,6 @@ class _WeatherPredictionState extends State<WeatherPrediction> {
       ],
     );
   }
-
 
 
 
