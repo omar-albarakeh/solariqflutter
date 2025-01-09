@@ -65,8 +65,12 @@ class _WeatherpredictionState extends State<Weatherprediction> {
       case 'heavy intensity rain':
         return '🌩️';
       default:
-        return '❓'; 
+        return '❓';
     }
+  }
+
+  double calculatePowerOutput(double shortwaveRadiation) {
+    return shortwaveRadiation * systemSize * efficiency * performanceRatio;
   }
 
   @override
