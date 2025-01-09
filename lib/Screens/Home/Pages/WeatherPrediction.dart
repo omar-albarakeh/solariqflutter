@@ -448,16 +448,16 @@ class _WeatherPredictionState extends State<WeatherPrediction> {
                 borderRadius: BorderRadius.circular(16),
               ),
               elevation: 4,
-              margin: const EdgeInsets.symmetric(vertical: 8),
               color: Colors.white.withOpacity(0.7),
               child: Stack(
                 children: [
                   Positioned.fill(
                     child: ClipRRect(
                       borderRadius: BorderRadius.circular(16),
-                      child: getCloudIcon(cloudCondition), 
+                      child: getCloudIcon(cloudCondition),
                     ),
                   ),
+                  // Centered foreground content (list items)
                   Center(
                     child: Padding(
                       padding: const EdgeInsets.all(16.0),
