@@ -430,37 +430,55 @@ class _WeatherPredictionState extends State<WeatherPrediction> {
   }
 
   Widget _buildFiveDayForecast() {
-    return ListView.builder(
-      shrinkWrap: true,
-      physics: NeverScrollableScrollPhysics(),
-      itemCount: fiveDayForecast.length,
-      itemBuilder: (context, index) {
-        final forecast = fiveDayForecast[index];
-        final temperatureInCelsius = double.parse(forecast['temperature']) -
-            273.15;
+    return Container(
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: Colors.white.withOpacity(0.1),
+        borderRadius: BorderRadius.circular(16),
+      ),
+      child: SingleChildScrollView(
+        child: Column(
+          children: List.generate(fiveDayForecast.length, (index) {
+            final forecast = fiveDayForecast[index];
+            final temperatureInCelsius = double.parse(forecast['temperature']) - 273.15;
+            final cloudCondition = forecast['cloudsValue'] ?? '';
 
-        return Card(
-          shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(16)),
-          elevation: 4,
-          child: ListTile(
-            title: Text('Time: ${forecast['time']}'),
-            subtitle: Text(
-              'Temperature: ${temperatureInCelsius.toStringAsFixed(
-                  1)} °C\nClouds: ${forecast['cloudsValue']}',
-            ),
-            leading: SizedBox(
-              width: 50,
-              height: 50,
-              child: getCloudIcon(forecast['cloudsValue'] ?? ''),
-            ),
-          ),
-        );
-      },
+            return Card(
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(16),
+              ),
+              elevation: 4,
+              margin: const EdgeInsets.symmetric(vertical: 8),
+              color: Colors.white.withOpacity(0.7),
+              child: Stack(
+                children: [
+                  Positioned.fill(
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(16),
+                      child: getCloudIcon(cloudCondition),
+                    ),
+                  ),
+                  ListTile(
+                    title: Text(
+                      'Time: ${forecast['time']}',
+                      style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white),
+                    ),
+                    subtitle: Text(
+                      'Temperature: ${temperatureInCelsius.toStringAsFixed(1)} °C\nClouds: ${forecast['cloudsValue']}',
+                      style: TextStyle(color: Colors.white70),
+                    ),
+                  ),
+                ],
+              ),
+            );
+          }),
+        ),
+      ),
     );
   }
 
-  // Widget _buildSolarRadiationData() {
+
+// Widget _buildSolarRadiationData() {
   //   return Container(
   //     padding: const EdgeInsets.all(16),
   //     decoration: BoxDecoration(
