@@ -120,7 +120,6 @@ class _WeatherpredictionState extends State<Weatherprediction> {
                 _buildSectionTitle('Solar Radiation Data'),
                 _buildSolarRadiationData(),
               ],
-
             ],
           ),
         ),
@@ -217,6 +216,5 @@ class _WeatherpredictionState extends State<Weatherprediction> {
       },
     );
   }
-
 }
 
