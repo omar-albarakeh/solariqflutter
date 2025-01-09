@@ -155,32 +155,63 @@ class _WeatherPredictionState extends State<WeatherPrediction> {
     return Stack(
       children: [
         Positioned.fill(
-          child: getCloudIcon(currentWeather['clouds'] ?? ''),
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(16),
+            child: getCloudIcon(currentWeather['clouds'] ?? ''),
+          ),
         ),
         Card(
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-          elevation: 6,
-          margin: const EdgeInsets.all(0),
-          color: Colors.white.withOpacity(0.1),
+          elevation: 8,
+          margin: const EdgeInsets.symmetric(vertical: 10, horizontal: 16),
+          color: Colors.white.withOpacity(0.85),
           child: Padding(
-            padding: const EdgeInsets.all(16.0),
+            padding: const EdgeInsets.all(20.0),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                _buildSectionTitle('Current Weather'),
-                SizedBox(height: 10),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text(
-                      'Temperature: ${(currentWeather['temperature'] - 273.15).toStringAsFixed(1)} °C',
-                      style: TextStyle(fontSize: 16),
+                    _buildSectionTitle('Current Weather'),
+                    Icon(
+                      Icons.thermostat,
+                      color: Colors.orange,
+                      size: 24,
                     ),
                   ],
                 ),
-                Text('Weather: ${currentWeather['weatherMain'] ?? 'N/A'}'),
-                Text('Sunrise: ${_formatTimestamp(currentWeather['sunrise'])}'),
-                Text('Sunset: ${_formatTimestamp(currentWeather['sunset'])}'),
+                const SizedBox(height: 16),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          'Temperature: ${(currentWeather['temperature'] - 273.15).toStringAsFixed(1)} °C',
+                          style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                        ),
+                        const SizedBox(height: 8),
+                        Text(
+                          'Condition: ${currentWeather['weatherMain'] ?? 'N/A'}',
+                          style: TextStyle(fontSize: 16, color: Colors.grey[700]),
+                        ),
+                        const SizedBox(height: 8),
+                        Text(
+                          'Sunrise: ${_formatTimestamp(currentWeather['sunrise'])}',
+                          style: TextStyle(fontSize: 16, color: Colors.grey[600]),
+                        ),
+                        const SizedBox(height: 8),
+                        Text(
+                          'Sunset: ${_formatTimestamp(currentWeather['sunset'])}',
+                          style: TextStyle(fontSize: 16, color: Colors.grey[600]),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
               ],
             ),
           ),
