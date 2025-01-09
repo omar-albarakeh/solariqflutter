@@ -115,7 +115,7 @@ class _WeatherPredictionState extends State<WeatherPrediction> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 if (currentWeather.isNotEmpty) ...[
-                  _buildCurrentWeather(),
+                  _buildCurrentWeatherAndSolarRadiation(),
                   SizedBox(height: 20),
                 ],
                 if (fiveDayForecast.isNotEmpty) ...[
@@ -185,10 +185,10 @@ class _WeatherPredictionState extends State<WeatherPrediction> {
     );
   }
 
-  Widget _buildCurrentWeather() {
+  Widget _buildCurrentWeatherAndSolarRadiation() {
     return Stack(
       children: [
-
+        // Background animation
         Positioned.fill(
           child: ClipRRect(
             borderRadius: BorderRadius.circular(16),
@@ -197,57 +197,85 @@ class _WeatherPredictionState extends State<WeatherPrediction> {
         ),
         Padding(
           padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 16),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  _buildSectionTitle('Current Weather'),
-                  Icon(
-                    Icons.thermostat,
-                    color: Colors.orange,
-                    size: 24,
-                  ),
-                ],
-              ),
-              const SizedBox(height: 16),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        'Temperature: ${(currentWeather['temperature'] - 273.15).toStringAsFixed(1)} °C',
-                        style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.white),
+          child: SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                // Current Weather Section
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    _buildSectionTitle('Current Weather'),
+                    Icon(
+                      Icons.thermostat,
+                      color: Colors.orange,
+                      size: 24,
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 16),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          'Temperature: ${(currentWeather['temperature'] - 273.15).toStringAsFixed(1)} °C',
+                          style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.white),
+                        ),
+                        const SizedBox(height: 8),
+                        Text(
+                          'Condition: ${currentWeather['weatherMain'] ?? 'N/A'}',
+                          style: TextStyle(fontSize: 16, color: Colors.white70),
+                        ),
+                        const SizedBox(height: 8),
+                        Text(
+                          'Sunrise: ${_formatTimestamp(currentWeather['sunrise'])}',
+                          style: TextStyle(fontSize: 16, color: Colors.white70),
+                        ),
+                        const SizedBox(height: 8),
+                        Text(
+                          'Sunset: ${_formatTimestamp(currentWeather['sunset'])}',
+                          style: TextStyle(fontSize: 16, color: Colors.white70),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 30),
+                
+                _buildSectionTitle('Solar Radiation Data'),
+                const SizedBox(height: 16),
+                ListView.builder(
+                  shrinkWrap: true,
+                  physics: NeverScrollableScrollPhysics(),
+                  itemCount: solarRadiationData.length,
+                  itemBuilder: (context, index) {
+                    final radiation = solarRadiationData[index];
+                    final powerOutput = calculatePowerOutput(radiation['radiation']);
+                    return Card(
+                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+                      elevation: 4,
+                      child: ListTile(
+                        title: Text('Time: ${radiation['time']}'),
+                        subtitle: Text(
+                          'Radiation: ${radiation['radiation']} W/m²\nPower Output: ${powerOutput.toStringAsFixed(2)} kW',
+                          style: TextStyle(color: Colors.black.withOpacity(0.7)),
+                        ),
                       ),
-                      const SizedBox(height: 8),
-                      Text(
-                        'Condition: ${currentWeather['weatherMain'] ?? 'N/A'}',
-                        style: TextStyle(fontSize: 16, color: Colors.white70),
-                      ),
-                      const SizedBox(height: 8),
-                      Text(
-                        'Sunrise: ${_formatTimestamp(currentWeather['sunrise'])}',
-                        style: TextStyle(fontSize: 16, color: Colors.white70),
-                      ),
-                      const SizedBox(height: 8),
-                      Text(
-                        'Sunset: ${_formatTimestamp(currentWeather['sunset'])}',
-                        style: TextStyle(fontSize: 16, color: Colors.white70),
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-            ],
+                    );
+                  },
+                ),
+              ],
+            ),
           ),
         ),
       ],
     );
   }
+
 
 
 
