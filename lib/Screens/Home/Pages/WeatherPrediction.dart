@@ -186,6 +186,25 @@ class _WeatherPredictionState extends State<WeatherPrediction> {
   }
 
   Widget _buildCurrentWeatherAndSolarRadiation() {
+
+    double maxTemp = double.negativeInfinity;
+    double minTemp = double.infinity;
+
+    for (var forecast in fiveDayForecast) {
+      double temperatureInCelsius = double.parse(forecast['temperature']) - 273.15;
+      if (temperatureInCelsius > maxTemp) maxTemp = temperatureInCelsius;
+      if (temperatureInCelsius < minTemp) minTemp = temperatureInCelsius;
+    }
+
+    double maxRadiation = double.negativeInfinity;
+    double minRadiation = double.infinity;
+
+    for (var radiation in solarRadiationData) {
+      double radiationValue = radiation['radiation'];
+      if (radiationValue > maxRadiation) maxRadiation = radiationValue;
+      if (radiationValue < minRadiation) minRadiation = radiationValue;
+    }
+
     return Stack(
       children: [
         // Background animation
@@ -201,7 +220,6 @@ class _WeatherPredictionState extends State<WeatherPrediction> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                // Current Weather Section
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -222,8 +240,13 @@ class _WeatherPredictionState extends State<WeatherPrediction> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          'Temperature: ${(currentWeather['temperature'] - 273.15).toStringAsFixed(1)} °C',
+                          'Max Temp: ${maxTemp.toStringAsFixed(1)} °C',
                           style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.white),
+                        ),
+                        const SizedBox(height: 8),
+                        Text(
+                          'Min Temp: ${minTemp.toStringAsFixed(1)} °C',
+                          style: TextStyle(fontSize: 16, color: Colors.white70),
                         ),
                         const SizedBox(height: 8),
                         Text(
@@ -245,29 +268,21 @@ class _WeatherPredictionState extends State<WeatherPrediction> {
                   ],
                 ),
                 const SizedBox(height: 30),
-                
+
+                // Solar Radiation Section
                 _buildSectionTitle('Solar Radiation Data'),
                 const SizedBox(height: 16),
-                ListView.builder(
-                  shrinkWrap: true,
-                  physics: NeverScrollableScrollPhysics(),
-                  itemCount: solarRadiationData.length,
-                  itemBuilder: (context, index) {
-                    final radiation = solarRadiationData[index];
-                    final powerOutput = calculatePowerOutput(radiation['radiation']);
-                    return Card(
-                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-                      elevation: 4,
-                      child: ListTile(
-                        title: Text('Time: ${radiation['time']}'),
-                        subtitle: Text(
-                          'Radiation: ${radiation['radiation']} W/m²\nPower Output: ${powerOutput.toStringAsFixed(2)} kW',
-                          style: TextStyle(color: Colors.black.withOpacity(0.7)),
-                        ),
-                      ),
-                    );
-                  },
+                Text(
+                  'Max Radiation: ${maxRadiation.toStringAsFixed(2)} W/m²',
+                  style: TextStyle(fontSize: 16, color: Colors.white70),
                 ),
+                const SizedBox(height: 8),
+                Text(
+                  'Min Radiation: ${minRadiation.toStringAsFixed(2)} W/m²',
+                  style: TextStyle(fontSize: 16, color: Colors.white70),
+                ),
+                const SizedBox(height: 16),
+                // You can choose to display the radiation values in a simplified list here if necessary
               ],
             ),
           ),
@@ -275,6 +290,7 @@ class _WeatherPredictionState extends State<WeatherPrediction> {
       ],
     );
   }
+
 
 
 
