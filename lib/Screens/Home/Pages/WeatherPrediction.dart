@@ -116,6 +116,10 @@ class _WeatherpredictionState extends State<Weatherprediction> {
                 _buildFiveDayForecast(),
                 SizedBox(height: 20),
               ],
+              if (solarRadiationData.isNotEmpty) ...[
+                _buildSectionTitle('Solar Radiation Data'),
+                _buildSolarRadiationData(),
+              ],
 
             ],
           ),
