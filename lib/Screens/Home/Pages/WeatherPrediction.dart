@@ -22,7 +22,8 @@ class _WeatherpredictionState extends State<Weatherprediction> {
   List<Map<String, dynamic>> fiveDayForecast = [];
   List<Map<String, dynamic>> solarRadiationData = [];
 
-  final OpenWeatherService openWeatherService = OpenWeatherService('bb0cae202637e279b059eb133515cce8');
+  final OpenWeatherService openWeatherService = OpenWeatherService(
+      'bb0cae202637e279b059eb133515cce8');
   final WeatherService weatherService = WeatherService();
 
   @override
@@ -30,11 +31,14 @@ class _WeatherpredictionState extends State<Weatherprediction> {
     super.initState();
     _fetchData();
   }
+
   Future<void> _fetchData() async {
     try {
       final currentWeatherData = await openWeatherService.fetchCurrentWeather();
-      final fiveDayForecastData = await openWeatherService.fetchFiveDayForecast();
-      final solarRadiationData = await weatherService.fetchSolarRadiation(33.8938, 35.5018);
+      final fiveDayForecastData = await openWeatherService
+          .fetchFiveDayForecast();
+      final solarRadiationData = await weatherService.fetchSolarRadiation(
+          33.8938, 35.5018);
 
       setState(() {
         this.currentWeather = currentWeatherData;
@@ -78,25 +82,25 @@ class _WeatherpredictionState extends State<Weatherprediction> {
     final theme = Theme.of(context);
 
     return Scaffold(
-        appBar: AppBar(
-      backgroundColor: theme.primaryColor,
-      title: const Text(
-        'Weather Prediction',
-        style: AppTextStyles.appBarTitle,
-      ),
-      actions: [
-        IconButton(
-          icon: Icon(
-            theme.brightness == Brightness.dark
-                ? Icons.dark_mode
-                : Icons.light_mode,
-          ),
-          onPressed: () {
-            Provider.of<ThemeNotifier>(context, listen: false).toggleTheme();
-          },
+      appBar: AppBar(
+        backgroundColor: theme.primaryColor,
+        title: const Text(
+          'Weather Prediction',
+          style: AppTextStyles.appBarTitle,
         ),
-      ],
-    ),
+        actions: [
+          IconButton(
+            icon: Icon(
+              theme.brightness == Brightness.dark
+                  ? Icons.dark_mode
+                  : Icons.light_mode,
+            ),
+            onPressed: () {
+              Provider.of<ThemeNotifier>(context, listen: false).toggleTheme();
+            },
+          ),
+        ],
+      ),
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.all(16.0),
@@ -119,16 +123,19 @@ class _WeatherpredictionState extends State<Weatherprediction> {
       ),
     );
   }
+
   String _formatTimestamp(int? timestamp) {
     if (timestamp == null) return 'N/A';
     return DateTime.fromMillisecondsSinceEpoch(timestamp * 1000).toString();
   }
+
   Widget _buildSectionTitle(String title) {
     return Text(
       title,
       style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
     );
   }
+
   Widget _buildCurrentWeather() {
     return Card(
       child: Padding(
@@ -141,7 +148,8 @@ class _WeatherpredictionState extends State<Weatherprediction> {
             Row(
               children: [
                 Text(
-                  'Temperature: ${(currentWeather['temperature'] - 273.15).toStringAsFixed(1)} °C',
+                  'Temperature: ${(currentWeather['temperature'] - 273.15)
+                      .toStringAsFixed(1)} °C',
                   style: TextStyle(fontSize: 16),
                 ),
                 SizedBox(width: 10),
@@ -158,6 +166,7 @@ class _WeatherpredictionState extends State<Weatherprediction> {
       ),
     );
   }
+
   Widget _buildFiveDayForecast() {
     return ListView.builder(
       shrinkWrap: true,
@@ -165,15 +174,40 @@ class _WeatherpredictionState extends State<Weatherprediction> {
       itemCount: fiveDayForecast.length,
       itemBuilder: (context, index) {
         final forecast = fiveDayForecast[index];
-        final temperatureInCelsius = double.parse(forecast['temperature']) - 273.15;
+        final temperatureInCelsius = double.parse(forecast['temperature']) -
+            273.15;
 
         return Card(
           child: ListTile(
             title: Text('Time: ${forecast['time']}'),
             subtitle: Text(
-              'Temperature: ${temperatureInCelsius.toStringAsFixed(1)} °C\nClouds: ${forecast['cloudsValue']}',
+              'Temperature: ${temperatureInCelsius.toStringAsFixed(
+                  1)} °C\nClouds: ${forecast['cloudsValue']}',
             ),
-            leading: Text(getCloudIcon((forecast['cloudsValue'] ?? 'unknown').toString().toLowerCase())),
+            leading: Text(getCloudIcon((forecast['cloudsValue'] ?? 'unknown')
+                .toString()
+                .toLowerCase())),
+          ),
+        );
+      },
+    );
+  }
+
+  Widget _buildSolarRadiationData() {
+    return ListView.builder(
+      shrinkWrap: true,
+      physics: NeverScrollableScrollPhysics(),
+      itemCount: solarRadiationData.length,
+      itemBuilder: (context, index) {
+        final radiation = solarRadiationData[index];
+        final powerOutput = calculatePowerOutput(radiation['radiation']);
+        return Card(
+          child: ListTile(
+            title: Text('Time: ${radiation['time']}'),
+            subtitle: Text(
+              'Radiation: ${radiation['radiation']} W/m²\nPower Output: ${powerOutput
+                  .toStringAsFixed(2)} kW',
+            ),
           ),
         );
       },
@@ -181,5 +215,4 @@ class _WeatherpredictionState extends State<Weatherprediction> {
   }
 
 }
-
 
