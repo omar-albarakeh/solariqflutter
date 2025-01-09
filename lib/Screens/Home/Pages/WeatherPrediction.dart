@@ -134,91 +134,121 @@ class _WeatherPredictionState extends State<WeatherPrediction> {
       ),
     );
   }
-
   String _formatTimestamp(int? timestamp) {
     if (timestamp == null) return 'N/A';
-    return DateTime.fromMillisecondsSinceEpoch(timestamp * 1000).toString();
+    final dateTime = DateTime.fromMillisecondsSinceEpoch(timestamp * 1000);
+    return "${_formatDayOfWeek(dateTime)}, ${_formatDate(dateTime)} at ${_formatTime(dateTime)}";
   }
 
-  Widget _buildSectionTitle(String title) {
-    return Text(
-      title,
-      style: TextStyle(
-        fontSize: 24,
-        fontWeight: FontWeight.bold,
-        color: Colors.white,
-      ),
+  String _formatDayOfWeek(DateTime dateTime) {
+    return [
+      'Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'
+    ][dateTime.weekday - 1];
+  }
+
+  String _formatDate(DateTime dateTime) {
+    return "${dateTime.day.toString().padLeft(2, '0')}-${dateTime.month.toString().padLeft(2, '0')}-${dateTime.year}";
+  }
+
+  String _formatTime(DateTime dateTime) {
+    final hour = dateTime.hour.toString().padLeft(2, '0');
+    final minute = dateTime.minute.toString().padLeft(2, '0');
+    return "$hour:$minute";
+  }
+
+  Widget _buildSectionTitle(String title, {IconData? icon}) {
+    return Row(
+      children: [
+        if (icon != null)
+          Icon(
+            icon,
+            color: Colors.white,
+            size: 28,
+          ),
+        if (icon != null) SizedBox(width: 8),
+        Text(
+          title,
+          style: TextStyle(
+            fontSize: 24,
+            fontWeight: FontWeight.bold,
+            color: Colors.white,
+            shadows: [
+              Shadow(
+                color: Colors.black.withOpacity(0.4),
+                offset: Offset(1, 1),
+                blurRadius: 4,
+              ),
+            ],
+          ),
+        ),
+      ],
     );
   }
 
   Widget _buildCurrentWeather() {
     return Stack(
       children: [
+
         Positioned.fill(
           child: ClipRRect(
             borderRadius: BorderRadius.circular(16),
             child: getCloudIcon(currentWeather['clouds'] ?? ''),
           ),
         ),
-        Card(
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-          elevation: 8,
-          margin: const EdgeInsets.symmetric(vertical: 10, horizontal: 16),
-          color: Colors.white.withOpacity(0.85),
-          child: Padding(
-            padding: const EdgeInsets.all(20.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    _buildSectionTitle('Current Weather'),
-                    Icon(
-                      Icons.thermostat,
-                      color: Colors.orange,
-                      size: 24,
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 16),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          'Temperature: ${(currentWeather['temperature'] - 273.15).toStringAsFixed(1)} °C',
-                          style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                        ),
-                        const SizedBox(height: 8),
-                        Text(
-                          'Condition: ${currentWeather['weatherMain'] ?? 'N/A'}',
-                          style: TextStyle(fontSize: 16, color: Colors.grey[700]),
-                        ),
-                        const SizedBox(height: 8),
-                        Text(
-                          'Sunrise: ${_formatTimestamp(currentWeather['sunrise'])}',
-                          style: TextStyle(fontSize: 16, color: Colors.grey[600]),
-                        ),
-                        const SizedBox(height: 8),
-                        Text(
-                          'Sunset: ${_formatTimestamp(currentWeather['sunset'])}',
-                          style: TextStyle(fontSize: 16, color: Colors.grey[600]),
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-              ],
-            ),
+        Padding(
+          padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 16),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  _buildSectionTitle('Current Weather'),
+                  Icon(
+                    Icons.thermostat,
+                    color: Colors.orange,
+                    size: 24,
+                  ),
+                ],
+              ),
+              const SizedBox(height: 16),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        'Temperature: ${(currentWeather['temperature'] - 273.15).toStringAsFixed(1)} °C',
+                        style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.white),
+                      ),
+                      const SizedBox(height: 8),
+                      Text(
+                        'Condition: ${currentWeather['weatherMain'] ?? 'N/A'}',
+                        style: TextStyle(fontSize: 16, color: Colors.white70),
+                      ),
+                      const SizedBox(height: 8),
+                      Text(
+                        'Sunrise: ${_formatTimestamp(currentWeather['sunrise'])}',
+                        style: TextStyle(fontSize: 16, color: Colors.white70),
+                      ),
+                      const SizedBox(height: 8),
+                      Text(
+                        'Sunset: ${_formatTimestamp(currentWeather['sunset'])}',
+                        style: TextStyle(fontSize: 16, color: Colors.white70),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ],
           ),
         ),
       ],
     );
   }
+
 
 
   Widget _buildFiveDayForecast() {
