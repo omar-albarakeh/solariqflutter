@@ -72,8 +72,6 @@ class _WeatherPredictionState extends State<WeatherPrediction> {
     }
   }
 
-
-
   double calculatePowerOutput(double shortwaveRadiation) {
     return shortwaveRadiation * systemSize * efficiency * performanceRatio;
   }
@@ -102,26 +100,35 @@ class _WeatherPredictionState extends State<WeatherPrediction> {
           ),
         ],
       ),
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              if (currentWeather.isNotEmpty) ...[
-                _buildCurrentWeather(),
-                SizedBox(height: 20),
+      body: Container(
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            colors: [theme.primaryColorLight, theme.primaryColorDark],
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+          ),
+        ),
+        child: SingleChildScrollView(
+          child: Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                if (currentWeather.isNotEmpty) ...[
+                  _buildCurrentWeather(),
+                  SizedBox(height: 20),
+                ],
+                if (fiveDayForecast.isNotEmpty) ...[
+                  _buildSectionTitle('5-Day Forecast'),
+                  _buildFiveDayForecast(),
+                  SizedBox(height: 20),
+                ],
+                if (solarRadiationData.isNotEmpty) ...[
+                  _buildSectionTitle('Solar Radiation Data'),
+                  _buildSolarRadiationData(),
+                ],
               ],
-              if (fiveDayForecast.isNotEmpty) ...[
-                _buildSectionTitle('5-Day Forecast'),
-                _buildFiveDayForecast(),
-                SizedBox(height: 20),
-              ],
-              if (solarRadiationData.isNotEmpty) ...[
-                _buildSectionTitle('Solar Radiation Data'),
-                _buildSolarRadiationData(),
-              ],
-            ],
+            ),
           ),
         ),
       ),
@@ -136,12 +143,18 @@ class _WeatherPredictionState extends State<WeatherPrediction> {
   Widget _buildSectionTitle(String title) {
     return Text(
       title,
-      style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+      style: TextStyle(
+        fontSize: 24,
+        fontWeight: FontWeight.bold,
+        color: Colors.white,
+      ),
     );
   }
 
   Widget _buildCurrentWeather() {
     return Card(
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+      elevation: 6,
       child: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
@@ -182,6 +195,8 @@ class _WeatherPredictionState extends State<WeatherPrediction> {
         final temperatureInCelsius = double.parse(forecast['temperature']) - 273.15;
 
         return Card(
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+          elevation: 4,
           child: ListTile(
             title: Text('Time: ${forecast['time']}'),
             subtitle: Text(
@@ -207,6 +222,8 @@ class _WeatherPredictionState extends State<WeatherPrediction> {
         final radiation = solarRadiationData[index];
         final powerOutput = calculatePowerOutput(radiation['radiation']);
         return Card(
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+          elevation: 4,
           child: ListTile(
             title: Text('Time: ${radiation['time']}'),
             subtitle: Text(
