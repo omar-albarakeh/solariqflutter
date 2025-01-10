@@ -54,9 +54,11 @@ class MarketItem extends StatelessWidget {
             child: FloatingActionButton(
               onPressed: () {},
               backgroundColor: Colors.green,
+              mini: true,  
               child: Icon(Icons.add),
             ),
-          ),
+          )
+
         ],
       ),
     );
