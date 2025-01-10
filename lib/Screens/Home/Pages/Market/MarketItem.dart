@@ -40,7 +40,7 @@ class MarketItem extends StatelessWidget {
                   TextButton(
                     onPressed: () {},
                     style: TextButton.styleFrom(
-                      foregroundColor: Colors.white, backgroundColor: Colors.blue,
+                      foregroundColor: Colors.blue,
                     ),
                     child: Text('Details', style: TextStyle(fontSize: 12)),
                   ),
