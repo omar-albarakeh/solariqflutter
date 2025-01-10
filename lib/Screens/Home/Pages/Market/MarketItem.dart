@@ -42,7 +42,7 @@ class MarketItem extends StatelessWidget {
                     style: TextButton.styleFrom(
                       foregroundColor: Colors.blue,
                     ),
-                    child: Text('Details', style: TextStyle(fontSize: 12)),
+                    child: Text('Details', style: TextStyle(fontSize: 12,fontWeight: FontWeight.bold)),
                   ),
                 ],
               ),
