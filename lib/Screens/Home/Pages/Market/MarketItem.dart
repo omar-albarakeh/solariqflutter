@@ -39,14 +39,6 @@ class MarketItem extends StatelessWidget {
                   TextButton(
                     onPressed: () {},
                     style: TextButton.styleFrom(
-                      padding: EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
-                      foregroundColor: Colors.white, backgroundColor: Colors.green,
-                    ),
-                    child: Text('Add ', style: TextStyle(fontSize: 12)),
-                  ),
-                  TextButton(
-                    onPressed: () {},
-                    style: TextButton.styleFrom(
                       foregroundColor: Colors.white, backgroundColor: Colors.blue,
                     ),
                     child: Text('Details', style: TextStyle(fontSize: 12)),
