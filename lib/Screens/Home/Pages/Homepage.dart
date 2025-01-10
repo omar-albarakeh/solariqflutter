@@ -112,7 +112,7 @@ class Homepage extends StatelessWidget {
       iconColor: Colors.yellow.shade700,
       onTap: () => Navigator.push(
         context,
-        MaterialPageRoute(builder: (context) => PieChartExample()),
+        MaterialPageRoute(builder: (context) => BatteryLifeTracker()),
       ),
     );
     return _buildCardFromData(data);
