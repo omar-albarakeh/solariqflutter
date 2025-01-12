@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:solariqflutter/Config/AppColor.dart';
 import 'package:weather_animation/weather_animation.dart';
 import '../../../Config/AppText.dart';
 import '../../../Services/OpenWeather.dart';
@@ -180,7 +181,7 @@ class _WeatherPredictionState extends State<WeatherPrediction> {
           style: TextStyle(
             fontSize: 24,
             fontWeight: FontWeight.bold,
-            color: Colors.white,
+            color: AppColor.primary,
             shadows: [
               Shadow(
                 color: Colors.black.withOpacity(0.4),
