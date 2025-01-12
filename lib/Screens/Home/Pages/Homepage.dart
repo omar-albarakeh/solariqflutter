@@ -8,7 +8,6 @@ import '../../../Widgets/Home/ThemeNotifier.dart';
 import '../../../model/Home/CardData.dart';
 import 'Community/NewsCard.dart';
 import 'BatteryDetailsPage.dart';
-import 'PowerUsageDetailsPage.dart';
 import 'RealTimeMonotering.dart';
 
 class Homepage extends StatelessWidget {
@@ -42,14 +41,12 @@ class Homepage extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                // Weather Information Card
                 _buildWeatherCard(context),
                 const SizedBox(height: 16.0),
 
-                // Power Usage and Battery Information Cards
                 Row(
                   children: [
-                    Expanded(child: _buildPowerUsageCard(context, 500)), // Replace 500 with actual powerDifference value
+                    Expanded(child: _buildPowerUsageCard(context, 500)),
                     const SizedBox(width: 16.0),
                     Expanded(child: _buildBatteryCard(context)),
                   ],
@@ -104,7 +101,6 @@ class Homepage extends StatelessWidget {
     );
   }
 
-  // Corrected PowerUsageCard function to accept powerDifference value
   Widget _buildPowerUsageCard(BuildContext context, double powerDifference) {
     final data = CardData(
       title: '${powerDifference.toStringAsFixed(1)} W Difference',

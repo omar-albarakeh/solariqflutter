@@ -3,8 +3,8 @@ import 'package:provider/provider.dart';
 import 'package:solariqflutter/Config/AppColor.dart';
 import 'package:weather_animation/weather_animation.dart';
 import '../../../Config/AppText.dart';
-import '../../../Services/OpenWeather.dart';
-import '../../../Services/open-meteo.dart';
+import '../../../Services/weather/OpenWeather.dart';
+import '../../../Services/weather/open-meteo.dart';
 import '../../../Widgets/Home/ThemeNotifier.dart';
 
 class WeatherPrediction extends StatefulWidget {
