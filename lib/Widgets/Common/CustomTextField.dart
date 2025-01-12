@@ -43,13 +43,14 @@ class CustomTextField extends StatelessWidget {
           labelStyle: AppTextStyles.subtitleText.copyWith(
             color: AppColor.textWhite,
           ),
+          // Normal border color
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(8.0),
             borderSide: const BorderSide(color: Colors.grey),
           ),
           focusedBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(8.0),
-            borderSide: const BorderSide(color: Colors.grey),
+            borderSide: BorderSide(color: AppColor.primary),
           ),
           errorStyle: const TextStyle(color: Colors.redAccent),
         ),
