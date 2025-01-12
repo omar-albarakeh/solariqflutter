@@ -110,7 +110,7 @@ class _WeatherPredictionState extends State<WeatherPrediction> {
         width: double.infinity,
         height: double.infinity,
         decoration: BoxDecoration(
-          color: Colors.orange[300]
+          color: Colors.white
         ),
         child: SingleChildScrollView(
           child: Padding(
