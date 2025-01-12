@@ -45,7 +45,7 @@ class _ChatWithBotState extends State<ChatWithBot> {
       ),
       body: Container(
         decoration: const BoxDecoration(
-          gradient: AppColor.linearGradient,
+        color: Colors.white
         ),
         child: Column(
           children: [

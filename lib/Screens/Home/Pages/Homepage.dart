@@ -20,8 +20,7 @@ class Homepage extends StatelessWidget {
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
-          backgroundColor:
-          theme.appBarTheme.backgroundColor ?? theme.primaryColor,
+          backgroundColor: theme.appBarTheme.backgroundColor ?? theme.primaryColor,
           title: const Text(
             'Home',
             style: AppTextStyles.appBarTitle,
@@ -29,9 +28,7 @@ class Homepage extends StatelessWidget {
           actions: [
             IconButton(
               icon: Icon(
-                theme.brightness == Brightness.dark
-                    ? Icons.dark_mode
-                    : Icons.light_mode,
+                theme.brightness == Brightness.dark ? Icons.dark_mode : Icons.light_mode,
               ),
               onPressed: () {
                 Provider.of<ThemeNotifier>(context, listen: false).toggleTheme();
@@ -52,7 +49,7 @@ class Homepage extends StatelessWidget {
                 // Power Usage and Battery Information Cards
                 Row(
                   children: [
-                    Expanded(child: _buildPowerUsageCard(context)),
+                    Expanded(child: _buildPowerUsageCard(context, 500)), // Replace 500 with actual powerDifference value
                     const SizedBox(width: 16.0),
                     Expanded(child: _buildBatteryCard(context)),
                   ],
@@ -62,9 +59,12 @@ class Homepage extends StatelessWidget {
                 // Solar News Section
                 _buildNewsSection(context),
 
-                ElevatedButton(onPressed: (){
-                  Navigator.push(context, MaterialPageRoute(builder: (context)=>Userprofilescreen()));
-                }, child:Text("userprofile"))
+                ElevatedButton(
+                  onPressed: () {
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => Userprofilescreen()));
+                  },
+                  child: const Text("User Profile"),
+                ),
               ],
             ),
           ),
@@ -104,15 +104,16 @@ class Homepage extends StatelessWidget {
     );
   }
 
-  Widget _buildPowerUsageCard(BuildContext context) {
+  // Corrected PowerUsageCard function to accept powerDifference value
+  Widget _buildPowerUsageCard(BuildContext context, double powerDifference) {
     final data = CardData(
-      title: '6 kW Used',
-      description: '',
+      title: '${powerDifference.toStringAsFixed(1)} W Difference',
+      description: 'Available vs Consumed Power',
       icon: Icons.bolt,
       iconColor: Colors.yellow.shade700,
       onTap: () => Navigator.push(
         context,
-        MaterialPageRoute(builder: (context) => BatteryLifeTracker()),
+        MaterialPageRoute(builder: (context) => RealTimeMonotering()),
       ),
     );
     return _buildCardFromData(data);
