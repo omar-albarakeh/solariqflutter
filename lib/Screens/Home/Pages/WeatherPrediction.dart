@@ -438,7 +438,7 @@ class _WeatherPredictionState extends State<WeatherPrediction> {
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: Colors.white.withOpacity(0.1),
+        color: Colors.black.withOpacity(0.1),
         borderRadius: BorderRadius.circular(16),
       ),
       child: SingleChildScrollView(
