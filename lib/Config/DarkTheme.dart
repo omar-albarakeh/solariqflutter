@@ -37,8 +37,10 @@ class DarkTheme {
         ),
       ),
       inputDecorationTheme: InputDecorationTheme(
+        // Default grey border
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(8.0),
+          borderSide: const BorderSide(color: Colors.grey),
         ),
         focusedBorder: OutlineInputBorder(
           borderSide: BorderSide(color: AppColor.primary),
