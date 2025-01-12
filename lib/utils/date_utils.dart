@@ -20,3 +20,8 @@ String formatTime(DateTime dateTime) {
   final minute = dateTime.minute.toString().padLeft(2, '0');
   return "$hour:$minute";
 }
+String formatTimestamp(int? timestamp) {
+  if (timestamp == null) return 'N/A';
+  final dateTime = DateTime.fromMillisecondsSinceEpoch(timestamp * 1000);
+  return "${formatDayOfWeek(dateTime)}, ${formatDate(dateTime)} at ${formatTime(dateTime)}";
+}
