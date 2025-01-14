@@ -406,86 +406,100 @@ class _WeatherPredictionState extends State<WeatherPrediction> {
       ),
       child: SingleChildScrollView(
         scrollDirection: Axis.horizontal,
-        child: Row(
-          children: List.generate(dailyNoonForecast.length, (index) {
-            final forecast = dailyNoonForecast[index];
-            final forecastTime = DateTime.parse(forecast['time']);
-            final temperatureInCelsius =
-                double.parse(forecast['temperature']) - 273.15;
-            final cloudCondition = forecast['cloudsValue'] ?? '';
-            final correspondingRadiationData = solarRadiationData.firstWhere(
-                  (radiation) {
-                final radiationTime = DateTime.parse(radiation['time']);
-                return radiationTime.year == forecastTime.year &&
-                    radiationTime.month == forecastTime.month &&
-                    radiationTime.day == forecastTime.day &&
-                    radiationTime.hour == 12;
-              },
-              orElse: () => {'radiation': 0.0},
-            );
-            final radiationValue = correspondingRadiationData['radiation'];
-            final powerOutput = calculatePowerOutput(radiationValue);
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            // New Row at the top
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                _buildSectionTitle('Daily Noon Forecast'),
+              ],
+            ),
+            const SizedBox(height: 16),
 
-            return Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 8.0),
-              child: Card(
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(16),
-                ),
-                elevation: 4,
-                color: Colors.white.withOpacity(0.7),
-                child: Stack(
-                  children: [
-                    Positioned.fill(
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.circular(16),
-                        child: getCloudIcon(cloudCondition),
-                      ),
+            Row(
+              children: List.generate(dailyNoonForecast.length, (index) {
+                final forecast = dailyNoonForecast[index];
+                final forecastTime = DateTime.parse(forecast['time']);
+                final temperatureInCelsius =
+                    double.parse(forecast['temperature']) - 273.15;
+                final cloudCondition = forecast['cloudsValue'] ?? '';
+                final correspondingRadiationData = solarRadiationData.firstWhere(
+                      (radiation) {
+                    final radiationTime = DateTime.parse(radiation['time']);
+                    return radiationTime.year == forecastTime.year &&
+                        radiationTime.month == forecastTime.month &&
+                        radiationTime.day == forecastTime.day &&
+                        radiationTime.hour == 12;
+                  },
+                  orElse: () => {'radiation': 0.0},
+                );
+                final radiationValue = correspondingRadiationData['radiation'];
+                final powerOutput = calculatePowerOutput(radiationValue);
+
+                return Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                  child: Card(
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(16),
                     ),
-                    Center(
-                      child: Padding(
-                        padding: const EdgeInsets.all(16.0),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            Text(
-                              'Date: ${forecastTime.toIso8601String().substring(0, 10)}',
-                              style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                color: Colors.white,
-                                fontSize: 18,
-                              ),
-                              textAlign: TextAlign.center,
-                            ),
-                            const SizedBox(height: 8),
-                            Text(
-                              'Temperature: ${temperatureInCelsius.toStringAsFixed(1)} °C\nClouds: ${forecast['cloudsValue']}',
-                              style: TextStyle(
-                                color: Colors.white70,
-                                fontSize: 16,
-                              ),
-                              textAlign: TextAlign.center,
-                            ),
-                            const SizedBox(height: 8),
-                            Text(
-                              'Power Output: ${powerOutput.toStringAsFixed(2)} kW',
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 16,
-                                fontWeight: FontWeight.bold,
-                              ),
-                              textAlign: TextAlign.center,
-                            ),
-                          ],
+                    elevation: 4,
+                    color: Colors.white.withOpacity(0.7),
+                    child: Stack(
+                      children: [
+                        Positioned.fill(
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.circular(16),
+                            child: getCloudIcon(cloudCondition),
+                          ),
                         ),
-                      ),
+                        Center(
+                          child: Padding(
+                            padding: const EdgeInsets.all(16.0),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                Text(
+                                  'Date: ${forecastTime.toIso8601String().substring(0, 10)}',
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.white,
+                                    fontSize: 18,
+                                  ),
+                                  textAlign: TextAlign.center,
+                                ),
+                                const SizedBox(height: 8),
+                                Text(
+                                  'Temperature: ${temperatureInCelsius.toStringAsFixed(1)} °C\nClouds: ${forecast['cloudsValue']}',
+                                  style: TextStyle(
+                                    color: Colors.white70,
+                                    fontSize: 16,
+                                  ),
+                                  textAlign: TextAlign.center,
+                                ),
+                                const SizedBox(height: 8),
+                                Text(
+                                  'Power Output: ${powerOutput.toStringAsFixed(2)} kW',
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                  textAlign: TextAlign.center,
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
-                  ],
-                ),
-              ),
-            );
-          }),
+                  ),
+                );
+              }),
+            ),
+          ],
         ),
       ),
     );
