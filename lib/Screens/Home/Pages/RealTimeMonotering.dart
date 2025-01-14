@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:web_socket_channel/web_socket_channel.dart';
 
 class RealTimeMonotering extends StatefulWidget {
   const RealTimeMonotering({super.key});
@@ -15,6 +16,10 @@ class _lifeMonitoringState extends State<RealTimeMonotering> {
   double _calculatePowerDifference() {
     return availablePower - _calculateTotalPowerConsumption();
   }
+  
+  late final WebSocketChannel channel;
+  String connectionStatus = "Disconnected";
+
 
   final List<Map<String, dynamic>> devices = [
     {"name": "AC", "power": 400, "isOn": false},
