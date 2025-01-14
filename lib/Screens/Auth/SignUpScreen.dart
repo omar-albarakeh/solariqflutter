@@ -52,12 +52,12 @@ class _SignUpScreenState extends State<SignUpScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SafeArea(
-        child: Container(
+      body: Container(
           width: double.infinity,
           height: double.infinity,
           decoration: const BoxDecoration(
-            gradient: AppColor.linearGradient,
+            // gradient: AppColor.linearGradient,
+            color: AppColor.background,
           ),
           child: SingleChildScrollView(
             padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 20.0),
@@ -131,15 +131,14 @@ class _SignUpScreenState extends State<SignUpScreen> {
             ),
           ),
         ),
-      ),
-    );
+      );
   }
 
   Widget _buildCityDropdown() {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 16.0),
       decoration: BoxDecoration(
-        border: Border.all(color: Colors.black, width: 1),
+        border: Border.all(color: Colors.grey, width: 1),
         borderRadius: BorderRadius.circular(8),
       ),
       child: DropdownButton<String>(
@@ -174,7 +173,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 16.0),
       decoration: BoxDecoration(
-        border: Border.all(color: Colors.black, width: 1),
+        border: Border.all(color: Colors.grey, width: 1),
         borderRadius: BorderRadius.circular(8),
       ),
       child: DropdownButton<String>(

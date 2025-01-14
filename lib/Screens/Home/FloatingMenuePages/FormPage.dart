@@ -71,7 +71,8 @@ class _FormPageState extends State<FormPage> {
       ),
       body: Container(
         decoration: BoxDecoration(
-          gradient: AppColor.linearGradient,
+          // gradient: AppColor.linearGradient,
+          color: AppColor.background,
         ),
         padding: const EdgeInsets.all(30.0),
         height: double.infinity,
