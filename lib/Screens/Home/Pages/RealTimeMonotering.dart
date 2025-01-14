@@ -177,6 +177,15 @@ class _LifeMonitoringState extends State<RealTimeMonotering> {
       ],
     );
   }
+  Widget _buildLegendItem({required Color color, required String label}) {
+    return Row(
+      children: [
+        Icon(Icons.circle, color: color, size: 16),
+        const SizedBox(width: 4),
+        Text(label),
+      ],
+    );
+  }
 
 
 }
