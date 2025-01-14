@@ -10,7 +10,7 @@ class ChatService {
   final List<Messagemodel> _messages = [
     Messagemodel(
       type: 'target',
-      message: "Hello, I am Sara. How can I help you with solar energy systems?",
+      message: "Hello, I am Solar-IQ-BOT. How can I help you with solar energy systems?",
       time: DateTime.now().toIso8601String(),
     ),
   ];

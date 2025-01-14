@@ -69,7 +69,6 @@ class _ChatCardState extends State<ChatCard> {
               ],
             ),
             onTap: () {
-              // Navigate to chat details screen
               print("Chat card tapped");
             },
           ),

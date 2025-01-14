@@ -2,17 +2,17 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:web_socket_channel/web_socket_channel.dart';
 
-class RealTimeMonotering extends StatefulWidget {
+class RealTimeMonitoring extends StatefulWidget {
   @override
-  _LifeMonitoringState createState() => _LifeMonitoringState();
+  _RealTimeMonitoringState createState() => _RealTimeMonitoringState();
 }
 
-class _LifeMonitoringState extends State<RealTimeMonotering> {
+class _RealTimeMonitoringState extends State<RealTimeMonitoring> {
   static const double maxPower = 1500;
-
 
   double availablePower = 0;
   String errorMessage = "";
+
   final List<Map<String, dynamic>> devices = [
     {"name": "AC", "power": 400, "isOn": false},
     {"name": "Fan", "power": 100, "isOn": false},
@@ -20,6 +20,7 @@ class _LifeMonitoringState extends State<RealTimeMonotering> {
     {"name": "Heater", "power": 500, "isOn": false},
     {"name": "Laptop", "power": 150, "isOn": false},
     {"name": "Refrigerator", "power": 300, "isOn": false},
+    {"name": "Servo Motor", "power": 50, "isOn": false},
   ];
 
   late final WebSocketChannel channel;
@@ -82,6 +83,11 @@ class _LifeMonitoringState extends State<RealTimeMonotering> {
     setState(() {
       devices[index]["isOn"] = !devices[index]["isOn"];
     });
+
+    if (devices[index]["name"] == "Servo Motor") {
+      channel.sink.add(devices[index]["isOn"] ? "on" : "off");
+    }
+
     _checkPowerStatus(index);
   }
 
@@ -236,7 +242,12 @@ class _LifeMonitoringState extends State<RealTimeMonotering> {
         final device = devices[index];
         return Card(
           child: ListTile(
-            leading: const Icon(Icons.electrical_services, size: 40),
+            leading: Icon(
+              device["name"] == "Servo Motor"
+                  ? Icons.settings_remote
+                  : Icons.electrical_services,
+              size: 40,
+            ),
             title: Text(device["name"]),
             subtitle: Text('${device["power"]} W'),
             trailing: Switch(

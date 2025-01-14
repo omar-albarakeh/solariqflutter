@@ -3,9 +3,10 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'Screens/Home/Pages/Homepage.dart';
+import 'Screens/Home/Pages/dataprovider.dart';
 import 'Widgets/Home/ThemeNotifier.dart';
 import 'SolarIQ.dart';
-
 List<CameraDescription>? cameras;
 late FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin;
 
@@ -18,8 +19,11 @@ Future<void> main() async {
   await _initializeNotifications();
 
   runApp(
-    ChangeNotifierProvider(
-      create: (_) => ThemeNotifier(),
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (_) => ThemeNotifier()),
+        ChangeNotifierProvider(create: (_) => PowerDataProvider()), // Add PowerDataProvider here
+      ],
       child: const SolarIQ(),
     ),
   );

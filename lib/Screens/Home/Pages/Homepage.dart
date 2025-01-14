@@ -109,7 +109,7 @@ class Homepage extends StatelessWidget {
       iconColor: Colors.yellow.shade700,
       onTap: () => Navigator.push(
         context,
-        MaterialPageRoute(builder: (context) => RealTimeMonotering()),
+        MaterialPageRoute(builder: (context) => RealTimeMonitoring()),
       ),
     );
     return _buildCardFromData(data);
@@ -121,10 +121,11 @@ class Homepage extends StatelessWidget {
       description: '',
       icon: Icons.battery_full,
       iconColor: Colors.green.shade600,
-      onTap: () => Navigator.push(
-        context,
-        MaterialPageRoute(builder: (context) => BatteryDetailsPage()),
-      ),
+      onTap: (){}
+      // => Navigator.push(
+      //   context,
+      //   MaterialPageRoute(builder: (context) => EnergyChart()),
+      // ),
     );
     return _buildCardFromData(data);
   }
