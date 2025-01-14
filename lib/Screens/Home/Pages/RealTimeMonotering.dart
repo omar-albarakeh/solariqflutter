@@ -9,6 +9,9 @@ class RealTimeMonotering extends StatefulWidget {
 
 class _lifeMonitoringState extends State<RealTimeMonotering> {
 
+  static const double maxPower = 1500;
+  double availablePower = 0;
+  
   double _calculatePowerDifference() {
     return availablePower - _calculateTotalPowerConsumption();
   }
