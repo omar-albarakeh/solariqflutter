@@ -16,7 +16,7 @@ class _lifeMonitoringState extends State<RealTimeMonotering> {
   double _calculatePowerDifference() {
     return availablePower - _calculateTotalPowerConsumption();
   }
-  
+
   late final WebSocketChannel channel;
   String connectionStatus = "Disconnected";
 
@@ -31,7 +31,17 @@ class _lifeMonitoringState extends State<RealTimeMonotering> {
   ];
 
   @override
+  void initState() {
+    super.initState();
+    _initializeWebSocket();
+  }
+
+
+  @override
   Widget build(BuildContext context) {
     return const Placeholder();
   }
+
+
 }
+
