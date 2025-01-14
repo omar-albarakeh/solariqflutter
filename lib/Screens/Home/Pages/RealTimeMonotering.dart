@@ -1,28 +1,22 @@
+import 'dart:async';
 import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:web_socket_channel/web_socket_channel.dart';
 
 class RealTimeMonotering extends StatefulWidget {
-  const RealTimeMonotering({super.key});
-
   @override
-  State<RealTimeMonotering> createState() => _lifeMonitoringState();
+  _LifeMonitoringState createState() => _LifeMonitoringState();
 }
 
-class _lifeMonitoringState extends State<RealTimeMonotering> {
-
+class _LifeMonitoringState extends State<RealTimeMonotering> {
   static const double maxPower = 1500;
-  double availablePower = 0;
 
   double _calculatePowerDifference() {
     return availablePower - _calculateTotalPowerConsumption();
   }
 
-  late final WebSocketChannel channel;
-  String connectionStatus = "Disconnected";
-
-
+  double availablePower = 0;
+  String errorMessage = "";
   final List<Map<String, dynamic>> devices = [
     {"name": "AC", "power": 400, "isOn": false},
     {"name": "Fan", "power": 100, "isOn": false},
@@ -31,6 +25,9 @@ class _lifeMonitoringState extends State<RealTimeMonotering> {
     {"name": "Laptop", "power": 150, "isOn": false},
     {"name": "Refrigerator", "power": 300, "isOn": false},
   ];
+
+  late final WebSocketChannel channel;
+  String connectionStatus = "Disconnected";
 
   @override
   void initState() {
@@ -71,23 +68,52 @@ class _lifeMonitoringState extends State<RealTimeMonotering> {
       });
     }
   }
+
   @override
   void dispose() {
     channel.sink.close();
     super.dispose();
   }
+
   void _updateAvailablePower(Map<String, dynamic> data) {
     setState(() {
       availablePower = (data['potentio'] as num).toDouble() * 15;
     });
     _checkPowerStatus();
   }
+
+  void _toggleDevice(int index) {
+    setState(() {
+      devices[index]["isOn"] = !devices[index]["isOn"];
+    });
+    _checkPowerStatus(index);
+  }
+
+  void _checkPowerStatus([int? lastToggledIndex]) {
+    final totalConsumption = _calculateTotalPowerConsumption();
+    if (totalConsumption > availablePower) {
+      if (lastToggledIndex != null && devices[lastToggledIndex]["isOn"]) {
+        setState(() {
+          devices[lastToggledIndex]["isOn"] = false;
+        });
+        _showPowerExceededDialog(devices[lastToggledIndex]["name"]);
+      }
+      setState(() {
+        errorMessage = "Warning: Consumed power exceeds available power!";
+      });
+    } else {
+      setState(() {
+        errorMessage = "";
+      });
+    }
+  }
+
   double _calculateTotalPowerConsumption() {
     return devices
         .where((device) => device["isOn"])
         .fold(0.0, (sum, device) => sum + device["power"]);
   }
-  
+
   void _showPowerExceededDialog(String deviceName) {
     showDialog(
       context: context,
@@ -109,9 +135,21 @@ class _lifeMonitoringState extends State<RealTimeMonotering> {
 
   @override
   Widget build(BuildContext context) {
-    return const Placeholder();
+    // TODO: implement build
+    throw UnimplementedError();
+  }
+  Widget _buildCircularIndicator(
+      double value, Color color, double strokeWidth) {
+    return SizedBox(
+      width: 150,
+      height: 150,
+      child: CircularProgressIndicator(
+        value: value.clamp(0.0, 1.0),
+        strokeWidth: strokeWidth,
+        backgroundColor: Colors.transparent,
+        valueColor: AlwaysStoppedAnimation<Color>(color),
+      ),
+    );
   }
 
-
 }
-
