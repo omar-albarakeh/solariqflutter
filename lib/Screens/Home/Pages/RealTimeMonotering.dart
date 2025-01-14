@@ -186,6 +186,17 @@ class _LifeMonitoringState extends State<RealTimeMonotering> {
       ],
     );
   }
-
+  Widget _buildColorLegend() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        _buildLegendItem(color: Colors.green, label: 'Available'),
+        const SizedBox(width: 20),
+        _buildLegendItem(color: Colors.red, label: 'Consumed'),
+        const SizedBox(width: 20),
+        _buildLegendItem(color: Colors.grey.shade300, label: 'Max'),
+      ],
+    );
+  }
 
 }
