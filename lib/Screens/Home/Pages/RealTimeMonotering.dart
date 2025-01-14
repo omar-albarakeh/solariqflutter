@@ -152,4 +152,31 @@ class _LifeMonitoringState extends State<RealTimeMonotering> {
     );
   }
 
+  Widget _buildPowerIndicator(double totalConsumption) {
+    return Stack(
+      alignment: Alignment.center,
+      children: [
+        _buildCircularIndicator(1.0, Colors.grey.shade300, 12),
+        _buildCircularIndicator(totalConsumption / maxPower, Colors.red, 12),
+        _buildCircularIndicator(availablePower / maxPower, Colors.green, 8),
+        Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            const Icon(Icons.flash_on, size: 30, color: Colors.black),
+            const SizedBox(height: 5),
+            Text(
+              '${availablePower.toStringAsFixed(0)} W',
+              style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+            ),
+            Text(
+              '${totalConsumption.toStringAsFixed(0)} W Consumed',
+              style: const TextStyle(fontSize: 16, color: Colors.black54),
+            ),
+          ],
+        ),
+      ],
+    );
+  }
+
+
 }
