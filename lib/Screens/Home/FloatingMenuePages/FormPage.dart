@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:solariqflutter/Config/AppText.dart';
 import '../../../Config/AppColor.dart';
+import '../../../Widgets/Common/Buttons.dart';
 import '../../../Widgets/Common/CustomTextField.dart';
 import 'ChatwithBot.dart';
 
@@ -82,7 +83,7 @@ class _FormPageState extends State<FormPage> {
           child: ListView(
             children: [
               Text(
-                "Recommendation form",
+                "Recommendation Form",
                 style: AppTextStyles.title,
               ),
               const SizedBox(height: 30),
@@ -164,20 +165,12 @@ class _FormPageState extends State<FormPage> {
                 },
               ),
               const SizedBox(height: 32),
-              ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: AppColor.primary,
-                  padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 32),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                ),
-                onPressed: _submitForm,
-                child: const Text(
-                  'Submit',
-                  style: TextStyle(color: Colors.white, fontSize: 16),
-                ),
-              ),
+              Buttons(
+                backgroundColor: AppColor.primary,
+                buttonText: 'Submit',
+                hasBorder: false,
+                onTap: _submitForm,
+              )
             ],
           ),
         ),

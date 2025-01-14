@@ -42,6 +42,7 @@ class CustomTextField extends StatelessWidget {
           labelText: label,
           labelStyle: AppTextStyles.subtitleText.copyWith(
             color: AppColor.textWhite,
+            fontSize: 15,
           ),
           enabledBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(8.0),

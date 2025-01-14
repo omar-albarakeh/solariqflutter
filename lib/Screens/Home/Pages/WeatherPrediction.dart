@@ -111,7 +111,7 @@ class _WeatherPredictionState extends State<WeatherPrediction> {
         width: double.infinity,
         height: double.infinity,
         decoration: BoxDecoration(
-          color: Colors.white
+          color:AppColor.background
         ),
         child: SingleChildScrollView(
           child: Padding(
@@ -401,7 +401,7 @@ class _WeatherPredictionState extends State<WeatherPrediction> {
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: Colors.grey.withOpacity(0.2),
+          color: Color(0xFF1B273D).withOpacity(0.4),
         borderRadius: BorderRadius.circular(16),
       ),
       child: SingleChildScrollView(
@@ -409,7 +409,6 @@ class _WeatherPredictionState extends State<WeatherPrediction> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // New Row at the top
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -458,14 +457,14 @@ class _WeatherPredictionState extends State<WeatherPrediction> {
                           child: Padding(
                             padding: const EdgeInsets.all(16.0),
                             child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              crossAxisAlignment: CrossAxisAlignment.center,
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
                                   'Date: ${forecastTime.toIso8601String().substring(0, 10)}',
                                   style: TextStyle(
                                     fontWeight: FontWeight.bold,
-                                    color: Colors.white,
+                                    color: AppColor.background,
                                     fontSize: 18,
                                   ),
                                   textAlign: TextAlign.center,
@@ -474,16 +473,15 @@ class _WeatherPredictionState extends State<WeatherPrediction> {
                                 Text(
                                   'Temperature: ${temperatureInCelsius.toStringAsFixed(1)} °C\nClouds: ${forecast['cloudsValue']}',
                                   style: TextStyle(
-                                    color: Colors.white70,
+                                    color: Colors.white,
                                     fontSize: 16,
                                   ),
-                                  textAlign: TextAlign.center,
                                 ),
                                 const SizedBox(height: 8),
                                 Text(
                                   'Power Output: ${powerOutput.toStringAsFixed(2)} kW',
                                   style: TextStyle(
-                                    color: Colors.white,
+                                    color: AppColor.background,
                                     fontSize: 16,
                                     fontWeight: FontWeight.bold,
                                   ),

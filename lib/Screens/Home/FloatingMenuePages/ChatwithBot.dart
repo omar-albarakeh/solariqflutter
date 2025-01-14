@@ -45,7 +45,7 @@ class _ChatWithBotState extends State<ChatWithBot> {
       ),
       body: Container(
         decoration: const BoxDecoration(
-        color: Colors.white
+        color: AppColor.background,
         ),
         child: Column(
           children: [
@@ -101,37 +101,46 @@ class _ChatWithBotState extends State<ChatWithBot> {
   Widget _buildInputArea() {
     return Align(
       alignment: Alignment.bottomCenter,
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 8),
-        child: Row(
-          children: [
-            Expanded(
-              child: CustomTextField(
-                label: 'Type a message...',
-                controller: _controller,
-                obscureText: false,
-                keyboardType: TextInputType.multiline,
-                width: double.infinity,
-                suffixIcon: null,
-              ),
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+        child: Material(
+          elevation: 4,
+          borderRadius: BorderRadius.circular(30),
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+            child: Row(
+              children: [
+                Expanded(
+                  child: TextField(
+                    controller: _controller,
+                    decoration: InputDecoration(
+                      hintText: 'Type a message...',
+                      border: InputBorder.none,
+                      contentPadding: const EdgeInsets.symmetric(horizontal: 16),
+                    ),
+                    keyboardType: TextInputType.multiline,
+                    maxLines: null,
+                  ),
+                ),
+                Container(
+                  margin: const EdgeInsets.only(left: 8),
+                  decoration: const BoxDecoration(
+                    shape: BoxShape.circle,
+                    color: AppColor.primary,
+                  ),
+                  child: IconButton(
+                    icon: const Icon(Icons.send, color: Colors.white),
+                    onPressed: () {
+                      final text = _controller.text.trim();
+                      if (text.isNotEmpty) {
+                        _sendMessage(text);
+                      }
+                    },
+                  ),
+                ),
+              ],
             ),
-            Container(
-              margin: const EdgeInsets.only(left: 8),
-              decoration: const BoxDecoration(
-                shape: BoxShape.circle,
-                color: AppColor.primary,
-              ),
-              child: IconButton(
-                icon: const Icon(Icons.send, color: Colors.white),
-                onPressed: () {
-                  final text = _controller.text.trim();
-                  if (text.isNotEmpty) {
-                    _sendMessage(text);
-                  }
-                },
-              ),
-            ),
-          ],
+          ),
         ),
       ),
     );
