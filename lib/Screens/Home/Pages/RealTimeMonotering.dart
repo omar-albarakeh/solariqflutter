@@ -83,6 +83,24 @@ class _lifeMonitoringState extends State<RealTimeMonotering> {
     _checkPowerStatus();
   }
 
+  void _showPowerExceededDialog(String deviceName) {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: Text("Power Exceeded"),
+          content: Text(
+              "Turning on '$deviceName' exceeds available power. It has been turned off."),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(),
+              child: Text("OK"),
+            ),
+          ],
+        );
+      },
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
