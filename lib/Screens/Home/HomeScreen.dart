@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import '../../Config/AppText.dart';
 import '../../Widgets/Home/CurvedNavBar.dart';
 import '../../Widgets/Home/FloatingMenue.dart';
-import '../../Widgets/Home/ThemeNotifier.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
