@@ -177,7 +177,7 @@ class _LifeMonitoringState extends State<RealTimeMonotering> {
         Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            const Icon(Icons.flash_on, size: 30, color: Colors.black),
+            const Icon(Icons.flash_on, size: 30, color: Colors.yellow),
             const SizedBox(height: 5),
             Text(
               '${availablePower.toStringAsFixed(0)} W',
@@ -185,7 +185,7 @@ class _LifeMonitoringState extends State<RealTimeMonotering> {
             ),
             Text(
               '${totalConsumption.toStringAsFixed(0)} W Consumed',
-              style: const TextStyle(fontSize: 16, color: Colors.black54),
+              style: const TextStyle(fontSize: 12, color: Colors.black),
             ),
           ],
         ),
