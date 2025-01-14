@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:solariqflutter/Config/AppColor.dart';
 import 'package:solariqflutter/Config/AppText.dart';
 import '../../../Services/ChatBotService.dart';
-import '../../../Widgets/Common/CustomTextField.dart';
 import '../../../Widgets/Common/Message/OwnMessage.dart';
 import '../../../Widgets/Common/Message/ReplyMessageCard.dart';
 import '../../../model/Home/Message.dart';

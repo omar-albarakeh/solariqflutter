@@ -11,9 +11,6 @@ class RealTimeMonotering extends StatefulWidget {
 class _LifeMonitoringState extends State<RealTimeMonotering> {
   static const double maxPower = 1500;
 
-  double _calculatePowerDifference() {
-    return availablePower - _calculateTotalPowerConsumption();
-  }
 
   double availablePower = 0;
   String errorMessage = "";
@@ -135,19 +132,37 @@ class _LifeMonitoringState extends State<RealTimeMonotering> {
 
   @override
   Widget build(BuildContext context) {
-    // TODO: implement build
-    throw UnimplementedError();
-  }
-  Widget _buildCircularIndicator(
-      double value, Color color, double strokeWidth) {
-    return SizedBox(
-      width: 150,
-      height: 150,
-      child: CircularProgressIndicator(
-        value: value.clamp(0.0, 1.0),
-        strokeWidth: strokeWidth,
-        backgroundColor: Colors.transparent,
-        valueColor: AlwaysStoppedAnimation<Color>(color),
+    final totalConsumption = _calculateTotalPowerConsumption();
+
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Life Monitoring'),
+        centerTitle: true,
+      ),
+      body: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          children: [
+            Text(
+              'WebSocket Status: $connectionStatus',
+              style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+            ),
+            const SizedBox(height: 20),
+            _buildPowerIndicator(totalConsumption),
+            const SizedBox(height: 10),
+            _buildColorLegend(),
+            const SizedBox(height: 10),
+            if (errorMessage.isNotEmpty)
+              Text(
+                errorMessage,
+                style: const TextStyle(fontSize: 16, color: Colors.red),
+              ),
+            const SizedBox(height: 20),
+            Expanded(
+              child: _buildDeviceList(),
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -177,15 +192,21 @@ class _LifeMonitoringState extends State<RealTimeMonotering> {
       ],
     );
   }
-  Widget _buildLegendItem({required Color color, required String label}) {
-    return Row(
-      children: [
-        Icon(Icons.circle, color: color, size: 16),
-        const SizedBox(width: 4),
-        Text(label),
-      ],
+
+  Widget _buildCircularIndicator(
+      double value, Color color, double strokeWidth) {
+    return SizedBox(
+      width: 150,
+      height: 150,
+      child: CircularProgressIndicator(
+        value: value.clamp(0.0, 1.0),
+        strokeWidth: strokeWidth,
+        backgroundColor: Colors.transparent,
+        valueColor: AlwaysStoppedAnimation<Color>(color),
+      ),
     );
   }
+
   Widget _buildColorLegend() {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
@@ -198,6 +219,17 @@ class _LifeMonitoringState extends State<RealTimeMonotering> {
       ],
     );
   }
+
+  Widget _buildLegendItem({required Color color, required String label}) {
+    return Row(
+      children: [
+        Icon(Icons.circle, color: color, size: 16),
+        const SizedBox(width: 4),
+        Text(label),
+      ],
+    );
+  }
+
   Widget _buildDeviceList() {
     return ListView.builder(
       itemCount: devices.length,
@@ -217,5 +249,4 @@ class _LifeMonitoringState extends State<RealTimeMonotering> {
       },
     );
   }
-
 }
