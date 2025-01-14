@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:weather_animation/weather_animation.dart';
 import '../../../Config/AppColor.dart';
-import '../../../Config/AppText.dart';
 import 'ReusableCard.dart';
 class CurrentWeatherCard extends StatelessWidget {
   final Map<String, dynamic> currentWeather;
