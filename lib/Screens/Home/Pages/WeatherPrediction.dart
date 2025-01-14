@@ -124,7 +124,6 @@ class _WeatherPredictionState extends State<WeatherPrediction> {
                   SizedBox(height: 20),
                 ],
                 if (fiveDayForecast.isNotEmpty) ...[
-                  _buildSectionTitle('5-Day Forecast'),
                   _buildDailyForecastAtNoon(solarRadiationData),
                   SizedBox(height: 20),
                 ],
@@ -172,7 +171,7 @@ class _WeatherPredictionState extends State<WeatherPrediction> {
         if (icon != null)
           Icon(
             icon,
-            color: Colors.white,
+            color: AppColor.primary,
             size: 28,
           ),
         if (icon != null) SizedBox(width: 8),
@@ -181,7 +180,7 @@ class _WeatherPredictionState extends State<WeatherPrediction> {
           style: TextStyle(
             fontSize: 24,
             fontWeight: FontWeight.bold,
-            color: AppColor.primary,
+            color: Colors.white,
             shadows: [
               Shadow(
                 color: Colors.black.withOpacity(0.4),
@@ -200,8 +199,8 @@ class _WeatherPredictionState extends State<WeatherPrediction> {
     double minTemp = double.infinity;
 
     for (var forecast in fiveDayForecast) {
-      double temperatureInCelsius = double.parse(forecast['temperature']) -
-          273.15;
+      double temperatureInCelsius =
+          double.parse(forecast['temperature']) - 273.15;
       if (temperatureInCelsius > maxTemp) maxTemp = temperatureInCelsius;
       if (temperatureInCelsius < minTemp) minTemp = temperatureInCelsius;
     }
@@ -241,7 +240,7 @@ class _WeatherPredictionState extends State<WeatherPrediction> {
                     _buildSectionTitle('Current Weather'),
                     Icon(
                       Icons.thermostat,
-                      color: Colors.orange,
+                      color: Colors.white,
                       size: 30,
                     ),
                   ],
@@ -257,7 +256,7 @@ class _WeatherPredictionState extends State<WeatherPrediction> {
                           children: [
                             Icon(
                               Icons.arrow_upward,
-                              color: Colors.orange,
+                              color: Colors.red,
                               size: 22,
                             ),
                             Text(
@@ -266,13 +265,6 @@ class _WeatherPredictionState extends State<WeatherPrediction> {
                                 fontSize: 22,
                                 fontWeight: FontWeight.bold,
                                 color: Colors.white,
-                                shadows: [
-                                  Shadow(
-                                    offset: Offset(1, 1),
-                                    blurRadius: 5,
-                                    color: Colors.black.withOpacity(0.5),
-                                  ),
-                                ],
                               ),
                             ),
                           ],
@@ -290,14 +282,7 @@ class _WeatherPredictionState extends State<WeatherPrediction> {
                               style: TextStyle(
                                 fontSize: 20,
                                 fontWeight: FontWeight.bold,
-                                color: Colors.white70,
-                                shadows: [
-                                  Shadow(
-                                    offset: Offset(1, 1),
-                                    blurRadius: 5,
-                                    color: Colors.black.withOpacity(0.5),
-                                  ),
-                                ],
+                                color: Colors.white,
                               ),
                             ),
                           ],
@@ -307,23 +292,15 @@ class _WeatherPredictionState extends State<WeatherPrediction> {
                           children: [
                             Icon(
                               Icons.cloud,
-                              color: Colors.white70,
+                              color: Colors.grey,
                               size: 22,
                             ),
                             Text(
-                              'Condition: ${currentWeather['weatherMain'] ??
-                                  'N/A'}',
+                              'Condition: ${currentWeather['weatherMain'] ?? 'N/A'}',
                               style: TextStyle(
                                 fontSize: 20,
                                 fontWeight: FontWeight.bold,
-                                color: Colors.white70,
-                                shadows: [
-                                  Shadow(
-                                    offset: Offset(1, 1),
-                                    blurRadius: 5,
-                                    color: Colors.black.withOpacity(0.5),
-                                  ),
-                                ],
+                                color: Colors.white,
                               ),
                             ),
                           ],
@@ -337,10 +314,11 @@ class _WeatherPredictionState extends State<WeatherPrediction> {
                               size: 22,
                             ),
                             Text(
-                              'Sunrise: ${_formatTimestamp(
-                                  currentWeather['sunrise'])}',
+                              'Sunrise: ${_formatTimestamp(currentWeather['sunrise'])}',
                               style: TextStyle(
-                                  fontSize: 16, color: Colors.white70),
+                                fontSize: 16,
+                                color: Colors.white,
+                              ),
                             ),
                           ],
                         ),
@@ -349,14 +327,15 @@ class _WeatherPredictionState extends State<WeatherPrediction> {
                           children: [
                             Icon(
                               Icons.shield_moon,
-                              color: Colors.orange,
+                              color: Colors.blue,
                               size: 22,
                             ),
                             Text(
-                              'Sunset: ${_formatTimestamp(
-                                  currentWeather['sunset'])}',
+                              'Sunset: ${_formatTimestamp(currentWeather['sunset'])}',
                               style: TextStyle(
-                                  fontSize: 16, color: Colors.white70),
+                                fontSize: 16,
+                                color: Colors.white,
+                              ),
                             ),
                           ],
                         ),
@@ -365,30 +344,21 @@ class _WeatherPredictionState extends State<WeatherPrediction> {
                   ],
                 ),
                 const SizedBox(height: 40),
-
                 _buildSectionTitle('Power Output Data'),
                 const SizedBox(height: 16),
                 Row(
                   children: [
                     Icon(
                       Icons.power,
-                      color: Colors.yellow,
+                      color: Colors.black,
                       size: 22,
                     ),
                     Text(
-                      'Max Power Output: ${maxPowerOutput.toStringAsFixed(
-                          2)} kW',
+                      'Max Power Output: ${maxPowerOutput.toStringAsFixed(2)} kW',
                       style: TextStyle(
                         fontSize: 20,
                         fontWeight: FontWeight.bold,
                         color: Colors.white,
-                        shadows: [
-                          Shadow(
-                            offset: Offset(1, 1),
-                            blurRadius: 5,
-                            color: Colors.black.withOpacity(0.5),
-                          ),
-                        ],
                       ),
                     ),
                   ],
@@ -398,23 +368,15 @@ class _WeatherPredictionState extends State<WeatherPrediction> {
                   children: [
                     Icon(
                       Icons.power,
-                      color: Colors.blue,
+                      color: Colors.black,
                       size: 22,
                     ),
                     Text(
-                      'Min Power Output: ${minPowerOutput.toStringAsFixed(
-                          2)} kW',
+                      'Min Power Output: ${minPowerOutput.toStringAsFixed(2)} kW',
                       style: TextStyle(
                         fontSize: 20,
                         fontWeight: FontWeight.bold,
-                        color: Colors.white70,
-                        shadows: [
-                          Shadow(
-                            offset: Offset(1, 1),
-                            blurRadius: 5,
-                            color: Colors.black.withOpacity(0.5),
-                          ),
-                        ],
+                        color: Colors.white,
                       ),
                     ),
                   ],
@@ -426,6 +388,7 @@ class _WeatherPredictionState extends State<WeatherPrediction> {
       ],
     );
   }
+
 
   Widget _buildDailyForecastAtNoon(List<Map<String, dynamic>> solarRadiationData) {
     final now = DateTime.now();
