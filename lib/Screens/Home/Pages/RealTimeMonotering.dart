@@ -82,7 +82,12 @@ class _lifeMonitoringState extends State<RealTimeMonotering> {
     });
     _checkPowerStatus();
   }
-
+  double _calculateTotalPowerConsumption() {
+    return devices
+        .where((device) => device["isOn"])
+        .fold(0.0, (sum, device) => sum + device["power"]);
+  }
+  
   void _showPowerExceededDialog(String deviceName) {
     showDialog(
       context: context,
