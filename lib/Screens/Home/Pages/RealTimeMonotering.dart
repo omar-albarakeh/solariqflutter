@@ -198,5 +198,24 @@ class _LifeMonitoringState extends State<RealTimeMonotering> {
       ],
     );
   }
+  Widget _buildDeviceList() {
+    return ListView.builder(
+      itemCount: devices.length,
+      itemBuilder: (context, index) {
+        final device = devices[index];
+        return Card(
+          child: ListTile(
+            leading: const Icon(Icons.electrical_services, size: 40),
+            title: Text(device["name"]),
+            subtitle: Text('${device["power"]} W'),
+            trailing: Switch(
+              value: device["isOn"],
+              onChanged: (value) => _toggleDevice(index),
+            ),
+          ),
+        );
+      },
+    );
+  }
 
 }
