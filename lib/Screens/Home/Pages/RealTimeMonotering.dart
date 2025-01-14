@@ -11,10 +11,20 @@ class _lifeMonitoringState extends State<RealTimeMonotering> {
 
   static const double maxPower = 1500;
   double availablePower = 0;
-  
+
   double _calculatePowerDifference() {
     return availablePower - _calculateTotalPowerConsumption();
   }
+
+  final List<Map<String, dynamic>> devices = [
+    {"name": "AC", "power": 400, "isOn": false},
+    {"name": "Fan", "power": 100, "isOn": false},
+    {"name": "TV", "power": 200, "isOn": false},
+    {"name": "Heater", "power": 500, "isOn": false},
+    {"name": "Laptop", "power": 150, "isOn": false},
+    {"name": "Refrigerator", "power": 300, "isOn": false},
+  ];
+
   @override
   Widget build(BuildContext context) {
     return const Placeholder();
