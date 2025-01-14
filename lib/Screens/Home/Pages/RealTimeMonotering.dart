@@ -71,6 +71,17 @@ class _lifeMonitoringState extends State<RealTimeMonotering> {
       });
     }
   }
+  @override
+  void dispose() {
+    channel.sink.close();
+    super.dispose();
+  }
+  void _updateAvailablePower(Map<String, dynamic> data) {
+    setState(() {
+      availablePower = (data['potentio'] as num).toDouble() * 15;
+    });
+    _checkPowerStatus();
+  }
 
 
   @override
