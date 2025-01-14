@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:web_socket_channel/web_socket_channel.dart';
 
@@ -34,6 +36,40 @@ class _lifeMonitoringState extends State<RealTimeMonotering> {
   void initState() {
     super.initState();
     _initializeWebSocket();
+  }
+
+  void _initializeWebSocket() {
+    try {
+      channel = WebSocketChannel.connect(
+        Uri.parse('ws://192.168.0.100:81'),
+      );
+      connectionStatus = "Connected";
+
+      channel.stream.listen(
+            (data) {
+          try {
+            final parsedData = jsonDecode(data);
+            _updateAvailablePower(parsedData);
+          } catch (e) {
+            debugPrint('Error parsing WebSocket data: $e');
+          }
+        },
+        onDone: () {
+          setState(() {
+            connectionStatus = "Disconnected";
+          });
+        },
+        onError: (error) {
+          setState(() {
+            connectionStatus = "Error: $error";
+          });
+        },
+      );
+    } catch (e) {
+      setState(() {
+        connectionStatus = "Error connecting: $e";
+      });
+    }
   }
 
 
