@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:solariqflutter/Config/AppText.dart';
 
 class ChatCard extends StatefulWidget {
   const ChatCard({super.key});
