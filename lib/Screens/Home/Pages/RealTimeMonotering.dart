@@ -8,6 +8,10 @@ class RealTimeMonotering extends StatefulWidget {
 }
 
 class _lifeMonitoringState extends State<RealTimeMonotering> {
+
+  double _calculatePowerDifference() {
+    return availablePower - _calculateTotalPowerConsumption();
+  }
   @override
   Widget build(BuildContext context) {
     return const Placeholder();
