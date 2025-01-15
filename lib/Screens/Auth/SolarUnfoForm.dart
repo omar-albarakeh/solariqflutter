@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import '../../Config/AppColor.dart';
 import '../../Config/SharedPreferences.dart';
 import '../../Controllers/AuthController.dart';
+import '../../Widgets/Common/CustomTextField.dart';
 
 class SolarInfoForm extends StatefulWidget {
   const SolarInfoForm({super.key});
@@ -44,7 +46,8 @@ class _SolarInfoFormState extends State<SolarInfoForm> {
   }
 
   void _showSnackBar(String message) {
-    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(message)));
+    ScaffoldMessenger.of(context)
+        .showSnackBar(SnackBar(content: Text(message)));
   }
 
   Future<void> _submitForm() async {
@@ -58,7 +61,8 @@ class _SolarInfoFormState extends State<SolarInfoForm> {
     final formData = {
       'panelArea': double.tryParse(_panelAreaController.text.trim()) ?? 0,
       'panelWatt': int.tryParse(_panelWattController.text.trim()) ?? 0,
-      'panelEfficiency': double.tryParse(_panelEfficiencyController.text.trim()) ?? 0,
+      'panelEfficiency':
+      double.tryParse(_panelEfficiencyController.text.trim()) ?? 0,
       'panelsNb': int.tryParse(_panelsNbController.text.trim()) ?? 0,
       'userId': int.tryParse(_userId!) ?? 0,
     };
@@ -77,20 +81,6 @@ class _SolarInfoFormState extends State<SolarInfoForm> {
     }
   }
 
-  Widget _buildInputField({
-    required TextEditingController controller,
-    required String labelText,
-    required String errorMessage,
-    TextInputType keyboardType = TextInputType.number,
-  }) {
-    return TextFormField(
-      controller: controller,
-      decoration: InputDecoration(labelText: labelText),
-      keyboardType: keyboardType,
-      validator: (value) => value == null || value.trim().isEmpty ? errorMessage : null,
-    );
-  }
-
   @override
   void dispose() {
     _panelAreaController.dispose();
@@ -104,42 +94,65 @@ class _SolarInfoFormState extends State<SolarInfoForm> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: const Text('Solar Information')),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Form(
-          key: _formKey,
-          child: SingleChildScrollView(
-            child: Column(
-              children: [
-                _buildInputField(
-                  controller: _panelAreaController,
-                  labelText: 'Panel Area (m²)',
-                  errorMessage: 'Please enter the panel area',
-                ),
-                const SizedBox(height: 16),
-                _buildInputField(
-                  controller: _panelWattController,
-                  labelText: 'Panel Watt (W)',
-                  errorMessage: 'Please enter the panel watt',
-                ),
-                const SizedBox(height: 16),
-                _buildInputField(
-                  controller: _panelEfficiencyController,
-                  labelText: 'Panel Efficiency (%)',
-                  errorMessage: 'Please enter the panel efficiency',
-                ),
-                const SizedBox(height: 16),
-                _buildInputField(
-                  controller: _panelsNbController,
-                  labelText: 'Number of Panels',
-                  errorMessage: 'Please enter the number of panels',
-                ),
-                const SizedBox(height: 24),
-                ElevatedButton(
-                  onPressed: _submitForm,
-                  child: const Text('Submit'),
-                ),
-              ],
+      body: Container(
+        width: double.infinity,
+        height: double.infinity,
+        decoration: const BoxDecoration(
+          color: AppColor.background,
+        ),
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Form(
+            key: _formKey,
+            child: SingleChildScrollView(
+              child: Column(
+                children: [
+                  CustomTextField(
+                    label: 'Panel Area (m²)',
+                    controller: _panelAreaController,
+                    validator: (value) =>
+                    value == null || value.trim().isEmpty
+                        ? 'Please enter the panel area'
+                        : null,
+                    keyboardType: TextInputType.number,
+                  ),
+                  const SizedBox(height: 16),
+                  CustomTextField(
+                    label: 'Panel Watt (W)',
+                    controller: _panelWattController,
+                    validator: (value) =>
+                    value == null || value.trim().isEmpty
+                        ? 'Please enter the panel watt'
+                        : null,
+                    keyboardType: TextInputType.number,
+                  ),
+                  const SizedBox(height: 16),
+                  CustomTextField(
+                    label: 'Panel Efficiency (%)',
+                    controller: _panelEfficiencyController,
+                    validator: (value) =>
+                    value == null || value.trim().isEmpty
+                        ? 'Please enter the panel efficiency'
+                        : null,
+                    keyboardType: TextInputType.number,
+                  ),
+                  const SizedBox(height: 16),
+                  CustomTextField(
+                    label: 'Number of Panels',
+                    controller: _panelsNbController,
+                    validator: (value) =>
+                    value == null || value.trim().isEmpty
+                        ? 'Please enter the number of panels'
+                        : null,
+                    keyboardType: TextInputType.number,
+                  ),
+                  const SizedBox(height: 24),
+                  ElevatedButton(
+                    onPressed: _submitForm,
+                    child: const Text('Submit'),
+                  ),
+                ],
+              ),
             ),
           ),
         ),

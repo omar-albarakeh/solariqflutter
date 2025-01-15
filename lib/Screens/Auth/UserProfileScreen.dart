@@ -82,34 +82,100 @@ class _UserprofilescreenState extends State<Userprofilescreen> {
         padding: const EdgeInsets.all(16.0),
         child: ListView(
           children: [
-            Text(
-              'User Information',
-              style: Theme.of(context).textTheme.headlineMedium,
-            ),
-            const SizedBox(height: 10),
-            ...userInfo.entries
-                .where((entry) => entry.key != 'solarInfo')
-                .map((entry) {
-              return ListTile(
-                title: Text('${entry.key}: ${entry.value}'),
-              );
-            }).toList(),
-
-            const SizedBox(height: 20),
-
-            if (userInfo.containsKey('solarInfo'))
-              Text(
-                'Solar Information',
-                style: Theme.of(context).textTheme.headlineMedium,
+            Card(
+              elevation: 4,
+              margin: const EdgeInsets.only(bottom: 20),
+              child: Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'User Information',
+                      style: Theme.of(context).textTheme.headlineMedium?.copyWith(
+                        fontWeight: FontWeight.bold,
+                        color: Colors.blue,
+                      ),
+                    ),
+                    const SizedBox(height: 10),
+                    ...userInfo.entries
+                        .where((entry) => entry.key != 'solarInfo')
+                        .map((entry) {
+                      return Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 8.0),
+                        child: Row(
+                          children: [
+                            Text(
+                              '${entry.key}:',
+                              style: const TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 16,
+                              ),
+                            ),
+                            const SizedBox(width: 10),
+                            Expanded(
+                              child: Text(
+                                '${entry.value}',
+                                style: const TextStyle(
+                                  fontSize: 16,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      );
+                    }).toList(),
+                  ],
+                ),
               ),
+            ),
+
             if (userInfo.containsKey('solarInfo'))
-              const SizedBox(height: 10),
-            if (userInfo.containsKey('solarInfo'))
-              ...userInfo['solarInfo'].entries.map((entry) {
-                return ListTile(
-                  title: Text('${entry.key}: ${entry.value}'),
-                );
-              }).toList(),
+              Card(
+                elevation: 4,
+                margin: const EdgeInsets.only(bottom: 20),
+                child: Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        'Solar Information',
+                        style: Theme.of(context).textTheme.headlineMedium?.copyWith(
+                          fontWeight: FontWeight.bold,
+                          color: Colors.green,
+                        ),
+                      ),
+                      const SizedBox(height: 10),
+                      ...userInfo['solarInfo'].entries.map((entry) {
+                        return Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 8.0),
+                          child: Row(
+                            children: [
+                              Text(
+                                '${entry.key}:',
+                                style: const TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 16,
+                                ),
+                              ),
+                              const SizedBox(width: 10),
+                              Expanded(
+                                child: Text(
+                                  '${entry.value}',
+                                  style: const TextStyle(
+                                    fontSize: 16,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        );
+                      }).toList(),
+                    ],
+                  ),
+                ),
+              ),
           ],
         ),
       ),

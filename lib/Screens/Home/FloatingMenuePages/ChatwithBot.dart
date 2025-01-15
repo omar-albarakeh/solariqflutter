@@ -119,6 +119,7 @@ class _ChatWithBotState extends State<ChatWithBot> {
                     ),
                     keyboardType: TextInputType.multiline,
                     maxLines: null,
+                    autofocus: false,
                   ),
                 ),
                 Container(

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:weather_animation/weather_animation.dart';
-import '../../../Config/AppColor.dart';
 import 'ReusableCard.dart';
 class CurrentWeatherCard extends StatelessWidget {
   final Map<String, dynamic> currentWeather;
@@ -51,7 +50,6 @@ class CurrentWeatherCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return ReusableCard(
       onTap: onTap,
-      backgroundColor: AppColor.primary.withOpacity(0.8),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [

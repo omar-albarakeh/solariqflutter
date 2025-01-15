@@ -55,7 +55,7 @@ class SplashScreen extends StatelessWidget {
                   showDialogOnTap: true,
                   dialogTitle: "SolarIQ",
                   dialogContent:
-                      "SolarIQ Maximize your solar investment with SolarIQ. Our AI-powered app provides real-time monitoring, weather-based predictions, and expert advice. Connect with a community of solar enthusiasts and unlock the full potential of your system.Key Features:\nReal-time Monitorin \nAI-Powered Advice \nWeather Predictions \nCommunity & Support",
+                      "SOLARIQ is a mobile app that offers a comprehensive solution for managing solar energy. It uses WebSocket technology for real-time monitoring of solar panels, battery status, and weather-driven energy forecasts. SOLARIQ also features a marketplace for purchasing solar panels, a community forum, live chat with engineers, and a chatbot providing personalized advice.",
                 ),
                 const SizedBox(height: 30),
               ],

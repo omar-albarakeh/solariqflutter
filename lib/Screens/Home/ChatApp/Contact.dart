@@ -123,7 +123,7 @@ class _ContactsPageState extends State<ContactsPage> {
                           ),
                         ),
                         subtitle: Text(
-                          contact['status'] ?? "Hey there! I'm using WhatsApp.",
+                          contact['status'] ?? "Hey there! I'm using SolarIQ.",
                           style: const TextStyle(color: Colors.grey),
                         ),
                         onTap: () {

@@ -6,7 +6,7 @@ class WebSocketService {
 
   WebSocketService({required this.serverUrl});
 
-  void connect() {
+  void connect(String s) {
     _channel = WebSocketChannel.connect(Uri.parse(serverUrl));
   }
 
