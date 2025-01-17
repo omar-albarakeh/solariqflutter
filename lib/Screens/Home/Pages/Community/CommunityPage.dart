@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'CommentsPage.dart';
 import 'ComunityPost.dart';
 import 'api_service.dart';
 
@@ -21,6 +22,7 @@ class _CommunityPageState extends State<CommunityPage> {
     _fetchPosts();
   }
 
+  // Fetch all posts
   Future<void> _fetchPosts() async {
     try {
       final fetchedPosts = await _apiService.getPosts();
@@ -40,6 +42,7 @@ class _CommunityPageState extends State<CommunityPage> {
     }
   }
 
+  // Toggle like/unlike for the post
   Future<void> _toggleLike(dynamic post) async {
     try {
       if (post['hasLiked']) {
@@ -59,27 +62,24 @@ class _CommunityPageState extends State<CommunityPage> {
     }
   }
 
-  Future<void> _addComment(dynamic post, String text) async {
-    try {
-      await _apiService.addComment(post['_id'], text);
-      // Fetch the latest posts to update comments
-      _fetchPosts();
-    } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Failed to add comment: $e')),
-      );
-    }
+  // Navigate to comments page
+  Future<void> _viewComments(dynamic post) async {
+    await Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => CommentsPage(postId: post['_id']),
+      ),
+    );
+    _fetchPosts();  // Refresh posts after returning from comments page
   }
 
+  // Build the UI for each post card
   Widget _buildPostCard(dynamic post) {
     final String userName = post['userId']['name'] ?? 'Anonymous';
     final String content = post['text'] ?? 'No content available';
     final int likesCount = post['likes']?.length ?? 0;
     final int commentsCount = post['comments']?.length ?? 0;
-    final String type = post['userId']['type'] ?? "user";
     final bool hasLiked = post['hasLiked'] ?? false;
-
-    TextEditingController _commentController = TextEditingController();
 
     return Card(
       margin: const EdgeInsets.only(bottom: 16.0),
@@ -106,18 +106,8 @@ class _CommunityPageState extends State<CommunityPage> {
                 Expanded(
                   child: Container(),
                 ),
-                if (type == 'Engineer')
-                  ElevatedButton(
-                    onPressed: () {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(content: Text('Asking engineer...')),
-                      );
-                    },
-                    child: const Text('Ask Engineer', style: TextStyle(color: Colors.white)),
-                  ),
               ],
             ),
-
             const SizedBox(height: 12.0),
             Text(
               content,
@@ -143,33 +133,16 @@ class _CommunityPageState extends State<CommunityPage> {
                 ),
                 Row(
                   children: [
-                    Icon(Icons.comment, color: Colors.grey),
-                    const SizedBox(width: 4.0),
+                    IconButton(
+                      onPressed: () async {
+                        await _viewComments(post);
+                      },
+                      icon: const Icon(Icons.comment, color: Colors.grey),
+                    ),
                     Text('$commentsCount Comments'),
                   ],
                 ),
               ],
-            ),
-            // Add comment section
-            const SizedBox(height: 12.0),
-            TextField(
-              controller: _commentController,
-              decoration: const InputDecoration(
-                hintText: 'Add a comment...',
-                border: OutlineInputBorder(),
-              ),
-              maxLines: 3,
-            ),
-            const SizedBox(height: 8.0),
-            ElevatedButton(
-              onPressed: () async {
-                String text = _commentController.text.trim();
-                if (text.isNotEmpty) {
-                  await _addComment(post, text);
-                  _commentController.clear();
-                }
-              },
-              child: const Text('Post Comment'),
             ),
           ],
         ),

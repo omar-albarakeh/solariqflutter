@@ -50,7 +50,7 @@ class ApiService {
   }
 
   Future<void> unlikePost(String postId) async {
-    final url = '$_baseUrl/community/unlike/$postId'; // Assuming your API uses this route for unliking
+    final url = '$_baseUrl/community/unlike/$postId';
     final headers = await _getHeaders();
     await _handleRequest(
       http.delete(  // Using DELETE for removing a like
@@ -78,6 +78,14 @@ class ApiService {
     return posts;
   }
 
+  Future<Map<String, dynamic>> getPost(String postId) async {
+    final url = '$_baseUrl/community/post/$postId';
+    final headers = await _getHeaders();
+    return await _handleRequest(
+      http.get(Uri.parse(url), headers: headers),
+    );
+  }
+
   Future<void> addComment(String postId, String text) async {
     final url = '$_baseUrl/community/comment/$postId';
     final headers = await _getHeaders();
@@ -89,6 +97,4 @@ class ApiService {
       ),
     );
   }
-
-
 }
