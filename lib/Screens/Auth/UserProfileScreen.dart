@@ -94,7 +94,7 @@ class _UserprofilescreenState extends State<Userprofilescreen> {
                       'User Information',
                       style: Theme.of(context).textTheme.headlineMedium?.copyWith(
                         fontWeight: FontWeight.bold,
-                        color: Colors.blue,
+                        color: Colors.green,
                       ),
                     ),
                     const SizedBox(height: 10),

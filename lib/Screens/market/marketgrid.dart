@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:solariqflutter/Screens/market/marketitem.dart';
 
-import 'MarketItem.dart';
-import 'MarketItemModel.dart';
+import 'itemModule.dart';
 
 class MarketGrid extends StatelessWidget {
-  final List<MarketItemModel> items;
+  final List<Item> items;
 
   MarketGrid({required this.items});
 
@@ -16,7 +16,7 @@ class MarketGrid extends StatelessWidget {
         crossAxisCount: 2,
         crossAxisSpacing: 8.0,
         mainAxisSpacing: 8.0,
-        childAspectRatio: 2 / 3,
+        childAspectRatio: 0.8,
       ),
       itemCount: items.length,
       itemBuilder: (context, index) {

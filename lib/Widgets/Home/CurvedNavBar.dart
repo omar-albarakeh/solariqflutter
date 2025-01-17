@@ -4,6 +4,7 @@ import '../../Screens/Home/ChatApp/ChatPage.dart';
 import '../../Screens/Home/Pages/Community/CommunityPage.dart';
 import '../../Screens/Home/Pages/Homepage.dart';
 import '../../Screens/Home/Pages/Market/MarketPage.dart';
+import '../../Screens/market/marketpage.dart';
 
 class NavBar extends StatefulWidget {
   const NavBar({super.key});

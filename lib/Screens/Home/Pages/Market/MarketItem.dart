@@ -1,6 +1,12 @@
 import 'package:flutter/material.dart';
 
+import 'MarketItemModel.dart';
+
 class MarketItem extends StatelessWidget {
+  final MarketItemModel item;
+
+  MarketItem({required this.item});
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -16,33 +22,41 @@ class MarketItem extends StatelessWidget {
               Expanded(
                 child: Container(
                   decoration: BoxDecoration(
-                    color: Colors.grey,
-                    borderRadius: BorderRadius.vertical(top: Radius.circular(16.0)),
+                    image: DecorationImage(
+                      image: NetworkImage(item.imageUrl),
+                      fit: BoxFit.cover,
+                    ),
+                    borderRadius:
+                    BorderRadius.vertical(top: Radius.circular(16.0)),
                   ),
                 ),
               ),
-
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
                   Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          'Trina 550 W',
+                          item.name,
                           style: TextStyle(fontWeight: FontWeight.bold),
                         ),
-                        Text('\$99'),
+                        Text('\$${item.price.toStringAsFixed(2)}'),
                       ],
                     ),
                   ),
                   TextButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      // Navigate to item details page
+                    },
                     style: TextButton.styleFrom(
                       foregroundColor: Colors.blue,
                     ),
-                    child: Text('Details', style: TextStyle(fontSize: 12,fontWeight: FontWeight.bold)),
+                    child: Text('Details',
+                        style:
+                        TextStyle(fontSize: 12, fontWeight: FontWeight.bold)),
                   ),
                 ],
               ),
@@ -52,13 +66,14 @@ class MarketItem extends StatelessWidget {
             top: 8,
             right: 8,
             child: FloatingActionButton(
-              onPressed: () {},
+              onPressed: () {
+                // Add to cart logic
+              },
               backgroundColor: Colors.green,
               mini: true,
               child: Icon(Icons.add),
             ),
-          )
-
+          ),
         ],
       ),
     );

@@ -149,7 +149,7 @@ class _SolarInfoFormState extends State<SolarInfoForm> {
                   const SizedBox(height: 24),
                   ElevatedButton(
                     onPressed: _submitForm,
-                    child: const Text('Submit'),
+                    child: const Text('Submit' ,style:TextStyle(color: Colors.white),),
                   ),
                 ],
               ),

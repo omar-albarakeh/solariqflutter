@@ -39,7 +39,7 @@ class _RealTimeMonitoringState extends State<RealTimeMonitoring> {
 
   void _initializeWebSocket() {
     try {
-      webSocketService.connect('ws://192.168.0.100:81', _updateAvailablePower);
+      webSocketService.connect('ws://192.168.43.60:81', _updateAvailablePower);
       setState(() {
         connectionStatus = "Connecting...";
       });

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:path/path.dart';
 import 'package:provider/provider.dart';
 import 'package:solariqflutter/Screens/Auth/UserProfileScreen.dart';
 import 'package:solariqflutter/Screens/weather/weatherdatamodel.dart';
@@ -58,6 +59,25 @@ class _HomepageState extends State<Homepage> {
                 Provider.of<ThemeNotifier>(context, listen: false).toggleTheme();
               },
             ),
+            GestureDetector(
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => Userprofilescreen()),
+                );
+              },
+              child: Container(
+                width: 40.0,
+                height: 40.0,
+                decoration: BoxDecoration(
+                  color: Colors.grey,
+                  shape: BoxShape.circle,
+                ),
+                child: Center(
+                    child: Icon(Icons.person)
+                ),
+              ),
+            ),
           ],
         ),
         body: SingleChildScrollView(
@@ -87,15 +107,8 @@ class _HomepageState extends State<Homepage> {
               ),
               const SizedBox(height: 16.0),
 
-              // Solar News Section
               _buildNewsSection(context),
 
-              ElevatedButton(
-                onPressed: () {
-                  Navigator.push(context, MaterialPageRoute(builder: (context) => Userprofilescreen()));
-                },
-                child: const Text("User Profile"),
-              ),
             ],
           ),
         ),
@@ -109,24 +122,30 @@ class _HomepageState extends State<Homepage> {
         context,
         MaterialPageRoute(builder: (context) => RealTimeMonitoring()),
       ),
-      child: ColoredLiquidProgressIndicator(
+      child:Column(
+      children: [ColoredLiquidProgressIndicator(
         value: powerDifference / 10,
       ),
+        Text("Solar Power available",style: TextStyle(fontSize: 15,fontWeight: FontWeight.bold),)]),
     );
   }
 
   Widget _buildBatteryCard(BuildContext context) {
-    const double batteryLevel = 20; // Example: 67% battery
+    const double batteryLevel = 20;
     return ReusableCard(
       onTap: () => Navigator.push(
         context,
         MaterialPageRoute(builder: (context) => LineChartSample()),
       ),
-      child: ColoredLiquidProgressIndicator(
+      child: Column(
+      children: [
+        ColoredLiquidProgressIndicator(
         value: batteryLevel,
-      ),
+        ),
+        Text("Battery Power available",style: TextStyle(fontSize: 15,fontWeight: FontWeight.bold)),]),
     );
   }
+
 
   Widget _buildNewsSection(BuildContext context) {
     return ReusableCard(

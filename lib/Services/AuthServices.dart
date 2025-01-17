@@ -3,7 +3,7 @@ import '../model/Auth/Users.dart';
 import '../utils/helpers.dart';
 
 class AuthService {
-  final String _baseUrl = "http://192.168.0.103:3001";
+  final String _baseUrl = "http://192.168.0.102:3001";
 
   Future<Map<String, dynamic>> signup(Users user) async {
     final url = Uri.parse('$_baseUrl/auth/signup');

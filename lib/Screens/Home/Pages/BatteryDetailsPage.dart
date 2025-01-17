@@ -28,7 +28,7 @@ class _LineChartSampleState extends State<LineChartSample> {
 
   void _connectToWebSocket() {
     _channel = IOWebSocketChannel.connect(
-      Uri.parse('ws://192.168.0.100:81'),
+      Uri.parse('ws://192.168.43.60:81'),
     );
 
     _channel.stream.listen(
@@ -40,7 +40,6 @@ class _LineChartSampleState extends State<LineChartSample> {
           final double soc = jsonData['soc'];
 
           setState(() {
-            // Add new data points
             _voltageDataPoints.add(FlSpot(_voltageDataPoints.length.toDouble(), voltage));
             _currentDataPoints.add(FlSpot(_currentDataPoints.length.toDouble(), current));
             _socDataPoints.add(FlSpot(_socDataPoints.length.toDouble(), soc));
@@ -92,7 +91,7 @@ class _LineChartSampleState extends State<LineChartSample> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Battery Telemetry Dashboard'),
+        title: Text('Battery Dashboard'),
         backgroundColor: AppColor.primary,
         elevation: 4,
       ),
@@ -120,7 +119,6 @@ class _LineChartSampleState extends State<LineChartSample> {
                     ),
                   ),
                   SizedBox(height: 16),
-                  // Use Wrap to prevent overflow
                   Wrap(
                     spacing: 16,
                     runSpacing: 8,
@@ -180,7 +178,6 @@ class _LineChartSampleState extends State<LineChartSample> {
                               reservedSize: 40,
                             ),
                           ),
-                          // Disable right and top titles
                           rightTitles: AxisTitles(
                             sideTitles: SideTitles(showTitles: false),
                           ),
@@ -222,7 +219,6 @@ class _LineChartSampleState extends State<LineChartSample> {
                       ),
                     ),
                   ),
-                  // Legend
                   Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: Wrap(
@@ -230,7 +226,7 @@ class _LineChartSampleState extends State<LineChartSample> {
                       spacing: 16,
                       runSpacing: 8,
                       children: [
-                        // Voltage Legend
+
                         Row(
                           mainAxisSize: MainAxisSize.min,
                           children: [
@@ -246,7 +242,6 @@ class _LineChartSampleState extends State<LineChartSample> {
                             Text('Voltage'),
                           ],
                         ),
-                        // Current Legend
                         Row(
                           mainAxisSize: MainAxisSize.min,
                           children: [
@@ -281,7 +276,6 @@ class _LineChartSampleState extends State<LineChartSample> {
                       ],
                     ),
                   ),
-                  // Comments Section
                   Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: Text(
