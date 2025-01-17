@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-
-import '../../../../Config/AppColor.dart';
-import '../../../../Config/AppText.dart';
+import 'api_service.dart';
 
 class CommunityPost extends StatefulWidget {
-  const CommunityPost({super.key});
+  final Future<void> Function() onPostCreated;
+
+  const CommunityPost({super.key, required this.onPostCreated});
 
   @override
   State<CommunityPost> createState() => _CommunityPostState();
@@ -12,17 +12,32 @@ class CommunityPost extends StatefulWidget {
 
 class _CommunityPostState extends State<CommunityPost> {
   final TextEditingController _controller = TextEditingController();
+  final ApiService _apiService = ApiService();
+
+  void _createPost() async {
+    if (_controller.text.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Post text cannot be empty')),
+      );
+      return;
+    }
+
+    try {
+      await _apiService.createPost(_controller.text);
+      widget.onPostCreated();
+      Navigator.pop(context);
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Failed to create post: $e')),
+      );
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: theme.primaryColor,
-        title: const Text(
-          'Community',
-          style: AppTextStyles.appBarTitle,
-        ),
+        title: const Text('Create Post'),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -39,12 +54,7 @@ class _CommunityPostState extends State<CommunityPost> {
             ),
             const SizedBox(height: 16.0),
             ElevatedButton(
-              onPressed: () {
-                Navigator.pop(context);
-              },
-              style: ElevatedButton.styleFrom(
-                backgroundColor: AppColor.buttonPrimary,
-              ),
+              onPressed: _createPost,
               child: const Text('Post'),
             ),
           ],

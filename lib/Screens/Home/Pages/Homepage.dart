@@ -100,12 +100,11 @@ class _HomepageState extends State<Homepage> {
 
               Row(
                 children: [
-                  Expanded(child: _buildPowerUsageCard(context, 500)),
+                  Expanded(child: _buildPowerUsageCard(context, 50)),
                   const SizedBox(width: 16.0),
                   Expanded(child: _buildBatteryCard(context)),
                 ],
               ),
-              const SizedBox(height: 16.0),
 
               _buildNewsSection(context),
 
@@ -122,11 +121,17 @@ class _HomepageState extends State<Homepage> {
         context,
         MaterialPageRoute(builder: (context) => RealTimeMonitoring()),
       ),
-      child:Column(
-      children: [ColoredLiquidProgressIndicator(
-        value: powerDifference / 10,
+      child: Column(
+        children: [
+          ColoredLiquidProgressIndicator(
+            value: powerDifference ,
+            center: Text(" Power available"+
+              '\n\t\t\t\t\t\t\t\t\t ${powerDifference.toStringAsFixed(0)}%',
+              style: const TextStyle(fontSize: 18, color: Colors.black,fontWeight: FontWeight.bold),
+            ),
+          ),
+        ],
       ),
-        Text("Solar Power available",style: TextStyle(fontSize: 15,fontWeight: FontWeight.bold),)]),
     );
   }
 
@@ -141,9 +146,12 @@ class _HomepageState extends State<Homepage> {
       children: [
         ColoredLiquidProgressIndicator(
         value: batteryLevel,
+          center: Text("Battery Capacity"+
+              '\n\t\t\t\t\t\t\t\t\t\t ${batteryLevel.toStringAsFixed(0)}%',
+            style: const TextStyle(fontSize: 18, color: Colors.black,fontWeight: FontWeight.bold),
+          ),
         ),
-        Text("Battery Power available",style: TextStyle(fontSize: 15,fontWeight: FontWeight.bold)),]),
-    );
+    ]));
   }
 
 

@@ -1,164 +1,209 @@
 import 'package:flutter/material.dart';
-import 'package:solariqflutter/Screens/Home/Pages/Community/ComunityPost.dart';
-import '../../../../Config/AppText.dart';
+import 'ComunityPost.dart';
+import 'api_service.dart';
 
-class CommunityPage extends StatelessWidget {
+class CommunityPage extends StatefulWidget {
   const CommunityPage({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    final theme = Theme.of(context);
+  _CommunityPageState createState() => _CommunityPageState();
+}
 
-    final List<Map<String, dynamic>> demoPosts = [
-      {
-        'userName': 'SolarExpert',
-        'content': 'Installed a 5kW solar panel system on my roof last week. Already seeing savings on my energy bill!',
-        'likes': 42,
-        'type': 'Engineer',
-      },
-      {
-        'userName': 'GreenEnthusiast',
-        'content': 'Thinking about switching to solar energy. Any tips for selecting the best provider?',
-        'likes': 30,
-        'type': 'User',
-      },
-      {
-        'userName': 'EcoWarrior',
-        'content': 'Just finished my DIY solar power generator setup! Perfect for emergencies.',
-        'likes': 18,
-        'type': 'User',
-      },
-      {
-        'userName': 'EnergySaver2025',
-        'content': 'Can someone explain the difference between monocrystalline and polycrystalline solar panels?',
-        'likes': 25,
-        'type': 'Engineer',
-      },
-      {
-        'userName': 'FutureIsSolar',
-        'content': 'The government incentives for solar energy this year are amazing! Don’t miss out.',
-        'likes': 50,
-        'type': 'User',
-      },
-    ];
+class _CommunityPageState extends State<CommunityPage> {
+  final ApiService _apiService = ApiService();
+  List<dynamic> posts = [];
+  bool isLoading = true;
+  bool hasError = false;
 
-    Widget _buildPostCard(dynamic post) {
-      return Card(
-        margin: const EdgeInsets.only(bottom: 16.0),
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(12.0),
-        ),
-        child: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Row(
-                    children: [
-                      CircleAvatar(
-                        radius: 24.0,
-                        backgroundColor: Colors.grey[300],
-                        child: const Icon(Icons.person, size: 24, color: Colors.white),
-                      ),
-                      const SizedBox(width: 12.0),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            post['userName'],
-                            style: const TextStyle(fontWeight: FontWeight.bold),
-                          ),
-                          const Text(
-                            '2 hours ago',
-                            style: TextStyle(fontSize: 12, color: Colors.grey),
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
-                  if (post['type'] == 'Engineer')
-                    ElevatedButton.icon(
-                      onPressed: () {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(content: Text('Ask an Engineer button clicked for ${post['userName']}')),
-                        );
-                      },
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: theme.primaryColor,
-                        padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 8.0),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(8.0),
-                        ),
-                      ),
-                      icon: const Icon(Icons.engineering, color: Colors.white, size: 18),
-                      label: const Text(
-                        'Ask an Eng',
-                        style: TextStyle(color: Colors.white),
-                      ),
-                    ),
-                ],
-              ),
-              const SizedBox(height: 12.0),
-              Text(
-                post['content'],
-                style: const TextStyle(fontSize: 14),
-              ),
-              const SizedBox(height: 12.0),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Row(
-                    children: [
-                      IconButton(
-                        onPressed: () {
-                        },
-                        icon: const Icon(Icons.thumb_up_alt_outlined, color: Colors.blue),
-                      ),
-                      Text('${post['likes']} Likes'),
-                    ],
-                  ),
-                  TextButton(
-                    onPressed: () {
-                    },
-                    child: const Text('Comments', style: TextStyle(color: Colors.blue)),
-                  ),
-                ],
-              ),
-            ],
-          ),
-        ),
+  @override
+  void initState() {
+    super.initState();
+    _fetchPosts();
+  }
+
+  Future<void> _fetchPosts() async {
+    try {
+      final fetchedPosts = await _apiService.getPosts();
+      setState(() {
+        posts = fetchedPosts;
+        isLoading = false;
+        hasError = false;
+      });
+    } catch (e) {
+      setState(() {
+        isLoading = false;
+        hasError = true;
+      });
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Failed to load posts: $e')),
       );
     }
+  }
 
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: theme.primaryColor,
-        title: const Text(
-          'Community',
-          style: AppTextStyles.appBarTitle,
+  Future<void> _toggleLike(dynamic post) async {
+    try {
+      if (post['hasLiked']) {
+        // Remove Like
+        await _apiService.unlikePost(post['_id']);
+      } else {
+        // Add Like
+        await _apiService.likePost(post['_id']);
+      }
+
+      // Fetch the latest posts to update like counts and statuses
+      _fetchPosts();
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Failed to toggle like: $e')),
+      );
+    }
+  }
+
+  Future<void> _addComment(dynamic post, String text) async {
+    try {
+      await _apiService.addComment(post['_id'], text);
+      // Fetch the latest posts to update comments
+      _fetchPosts();
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Failed to add comment: $e')),
+      );
+    }
+  }
+
+  Widget _buildPostCard(dynamic post) {
+    final String userName = post['userId']['name'] ?? 'Anonymous';
+    final String content = post['text'] ?? 'No content available';
+    final int likesCount = post['likes']?.length ?? 0;
+    final int commentsCount = post['comments']?.length ?? 0;
+    final String type = post['userId']['type'] ?? "user";
+    final bool hasLiked = post['hasLiked'] ?? false;
+
+    TextEditingController _commentController = TextEditingController();
+
+    return Card(
+      margin: const EdgeInsets.only(bottom: 16.0),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(12.0),
+      ),
+      child: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              children: [
+                CircleAvatar(
+                  radius: 24.0,
+                  backgroundColor: Colors.grey[300],
+                  child: const Icon(Icons.person, size: 24, color: Colors.white),
+                ),
+                const SizedBox(width: 12.0),
+                Text(
+                  userName,
+                  style: const TextStyle(fontWeight: FontWeight.bold),
+                ),
+                Expanded(
+                  child: Container(),
+                ),
+                if (type == 'Engineer')
+                  ElevatedButton(
+                    onPressed: () {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(content: Text('Asking engineer...')),
+                      );
+                    },
+                    child: const Text('Ask Engineer', style: TextStyle(color: Colors.white)),
+                  ),
+              ],
+            ),
+
+            const SizedBox(height: 12.0),
+            Text(
+              content,
+              style: const TextStyle(fontSize: 14),
+            ),
+            const SizedBox(height: 12.0),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Row(
+                  children: [
+                    IconButton(
+                      onPressed: () async {
+                        await _toggleLike(post);
+                      },
+                      icon: Icon(
+                        hasLiked ? Icons.thumb_up_alt : Icons.thumb_up_alt_outlined,
+                        color: hasLiked ? Colors.blue : Colors.grey,
+                      ),
+                    ),
+                    Text('$likesCount Likes'),
+                  ],
+                ),
+                Row(
+                  children: [
+                    Icon(Icons.comment, color: Colors.grey),
+                    const SizedBox(width: 4.0),
+                    Text('$commentsCount Comments'),
+                  ],
+                ),
+              ],
+            ),
+            // Add comment section
+            const SizedBox(height: 12.0),
+            TextField(
+              controller: _commentController,
+              decoration: const InputDecoration(
+                hintText: 'Add a comment...',
+                border: OutlineInputBorder(),
+              ),
+              maxLines: 3,
+            ),
+            const SizedBox(height: 8.0),
+            ElevatedButton(
+              onPressed: () async {
+                String text = _commentController.text.trim();
+                if (text.isNotEmpty) {
+                  await _addComment(post, text);
+                  _commentController.clear();
+                }
+              },
+              child: const Text('Post Comment'),
+            ),
+          ],
         ),
       ),
-      body: ListView.builder(
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Community'),
+      ),
+      body: isLoading
+          ? const Center(child: CircularProgressIndicator())
+          : hasError
+          ? const Center(child: Text('Error loading posts'))
+          : ListView.builder(
         padding: const EdgeInsets.all(16.0),
-        itemCount: demoPosts.length,
-        itemBuilder: (context, index) => _buildPostCard(demoPosts[index]),
+        itemCount: posts.length,
+        itemBuilder: (context, index) => _buildPostCard(posts[index]),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          Navigator.push(
+        onPressed: () async {
+          await Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => const CommunityPost(),
+              builder: (context) => CommunityPost(onPostCreated: _fetchPosts),
             ),
           );
         },
-        backgroundColor: Colors.blue,
         child: const Icon(Icons.add),
       ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.startFloat,
+      floatingActionButtonLocation: FloatingActionButtonLocation.endTop,
     );
   }
 }

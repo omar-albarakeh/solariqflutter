@@ -29,7 +29,7 @@ class SolarIQ extends StatelessWidget {
             '/signup': (context) => const SignUpScreen(),
             '/userprofile': (context) => const Userprofilescreen(),
             '/home': (context) => const HomeScreen(),
-            '/solar-form': (context) => SolarInfoForm(), // Add SolarInfoForm route
+            '/solar-form': (context) => SolarInfoForm(),
           },
         );
       },

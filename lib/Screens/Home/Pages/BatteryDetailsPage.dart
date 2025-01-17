@@ -102,7 +102,19 @@ class _LineChartSampleState extends State<LineChartSample> {
             width: double.infinity,
             margin: EdgeInsets.all(16.0),
             decoration: BoxDecoration(
-              color: Colors.grey[500],
+              gradient: LinearGradient(
+                colors: [Colors.orange[700]!, Colors.red[700]!],
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+              ),
+              borderRadius: BorderRadius.circular(16),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black26,
+                  blurRadius: 10,
+                  offset: Offset(0, 4),
+                ),
+              ],
             ),
             child: Padding(
               padding: EdgeInsets.all(16.0),
@@ -113,9 +125,16 @@ class _LineChartSampleState extends State<LineChartSample> {
                   Text(
                     'Battery Health Metrics',
                     style: TextStyle(
-                      fontSize: 20,
+                      fontSize: 24,
                       fontWeight: FontWeight.bold,
                       color: Colors.white,
+                      shadows: [
+                        Shadow(
+                          blurRadius: 5,
+                          color: Colors.black.withOpacity(0.6),
+                          offset: Offset(2, 2),
+                        ),
+                      ],
                     ),
                   ),
                   SizedBox(height: 16),
@@ -123,27 +142,9 @@ class _LineChartSampleState extends State<LineChartSample> {
                     spacing: 16,
                     runSpacing: 8,
                     children: [
-                      Text(
-                        'Cycle Count: $_cycleCount',
-                        style: TextStyle(
-                          fontSize: 16,
-                          color: Colors.white
-                        ),
-                      ),
-                      Text(
-                        'Temperature: ${_temperature.toStringAsFixed(1)}°C',
-                        style: TextStyle(
-                          fontSize: 16,
-                          color: Colors.white,
-                        ),
-                      ),
-                      Text(
-                        'Internal Resistance: ${_internalResistance.toStringAsFixed(3)} Ω',
-                        style: TextStyle(
-                          fontSize: 16,
-                          color: Colors.white,
-                        ),
-                      ),
+                      _buildMetricText('Cycle Count: $_cycleCount'),
+                      _buildMetricText('Temperature: ${_temperature.toStringAsFixed(1)}°C'),
+                      _buildMetricText('Internal Resistance: ${_internalResistance.toStringAsFixed(3)} Ω'),
                     ],
                   ),
                 ],
@@ -291,6 +292,24 @@ class _LineChartSampleState extends State<LineChartSample> {
                 ],
               ),
             ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildMetricText(String text) {
+    return Text(
+      text,
+      style: TextStyle(
+        fontSize: 16,
+        fontWeight: FontWeight.w600,
+        color: Colors.white,
+        shadows: [
+          Shadow(
+            blurRadius: 3,
+            color: Colors.black.withOpacity(0.4),
+            offset: Offset(1, 1),
           ),
         ],
       ),
