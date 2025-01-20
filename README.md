@@ -1,5 +1,4 @@
 # solariqflutter
-test test
 A new Flutter project.
 
 ## Getting Started
