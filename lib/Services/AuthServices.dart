@@ -136,7 +136,7 @@ class AuthService {
   Future<Map<String, dynamic>> getUserById() async {
     final token = await TokenStorage.getToken();
     if (token == null) throw Exception('No token found');
-    
+
     final userId = JwtUtils.getUserIdFromToken(token);
     if (userId == null) throw Exception('User ID not found in token');
 

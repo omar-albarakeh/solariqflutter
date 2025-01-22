@@ -63,15 +63,7 @@ class _UserprofilescreenState extends State<Userprofilescreen> {
           'address': _addressController.text,
         };
 
-        final userId = await TokenStorage.getUserId();
-        if (userId == null) {
-          throw Exception('User ID not found');
-        }
-
-        await _authService.updateUserProfile(
-          userId: userId,
-          updatedData: updatedData,
-        );
+        await _authService.updateUserProfile(updatedData: updatedData);
 
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text('Profile updated successfully!')),
