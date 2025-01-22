@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:weather_animation/weather_animation.dart';
-import 'ReusableCard.dart';
+import '../Widgets/Home/homewidgets/ReusableCard.dart';
 class CurrentWeatherCard extends StatelessWidget {
   final Map<String, dynamic> currentWeather;
   final double maxTemp;
