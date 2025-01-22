@@ -1,6 +1,7 @@
 import '../Config/SharedPreferences.dart';
 import '../model/Auth/Users.dart';
 import '../utils/helpers.dart';
+import 'TokenDecode.dart';
 
 class AuthService {
   final String _baseUrl = "http://192.168.0.102:3001";
@@ -130,25 +131,12 @@ class AuthService {
     };
   }
 
-  Future<Map<String, dynamic>> getUserById(String userId) async {
+
+  Future<String?> getUserIdFromToken() async {
     final token = await TokenStorage.getToken();
     if (token == null) throw Exception('No token found');
 
-    final url = Uri.parse('$_baseUrl/User/$userId');
-    try {
-      final response = await HttpHelper.getRequest(
-        url,
-        headers: _buildAuthHeaders(token),
-      );
-
-      if (response['status'] == 'success') {
-        return response['data'];
-      } else {
-        throw Exception(response['message']);
-      }
-    } catch (e) {
-      throw Exception('Failed to fetch user by ID: $e');
-    }
+    return JwtUtils.getUserIdFromToken(token);
   }
 
 }

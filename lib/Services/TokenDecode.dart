@@ -13,7 +13,7 @@ class JwtUtils {
       final decodedPayload = utf8.decode(base64Url.decode(normalizedPayload));
 
       final payloadMap = jsonDecode(decodedPayload) as Map<String, dynamic>;
-      
+
       return payloadMap['id'] as String?;
     } catch (e) {
       print('Error decoding token: $e');
