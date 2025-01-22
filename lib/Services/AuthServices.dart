@@ -94,6 +94,31 @@ class AuthService {
     }
   }
 
+  Future<Map<String, dynamic>> updateUserProfile({
+    required String userId,
+    required Map<String, dynamic> updatedData,
+  }) async {
+    final token = await TokenStorage.getToken();
+    if (token == null) throw Exception('No token found');
+
+    final url = Uri.parse('$_baseUrl/User/updateprofile/$userId');
+    try {
+      final response = await HttpHelper.putRequest(
+        url,
+        updatedData,
+        headers: _buildAuthHeaders(token),
+      );
+
+      if (response['status'] == 'success') {
+        return response['data'];
+      } else {
+        throw Exception(response['message']);
+      }
+    } catch (e) {
+      throw Exception('Failed to update user profile: $e');
+    }
+  }
+
   Future<void> logout() async {
     await TokenStorage.deleteToken();
   }

@@ -10,8 +10,13 @@ class Userprofilescreen extends StatefulWidget {
 }
 
 class _UserprofilescreenState extends State<Userprofilescreen> {
-  Map<String, dynamic> userInfo = {};
-  bool isLoading = true;
+  final _formKey = GlobalKey<FormState>();
+  final TextEditingController _nameController = TextEditingController();
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _phoneController = TextEditingController();
+  final TextEditingController _addressController = TextEditingController();
+  bool isLoading = false;
+  bool isFetching = false;
   final AuthService _authService = AuthService();
 
   @override
@@ -21,41 +26,65 @@ class _UserprofilescreenState extends State<Userprofilescreen> {
   }
 
   Future<void> _fetchUserInfo() async {
+    setState(() {
+      isFetching = true;
+    });
+
     try {
-      final token = await TokenStorage.getToken();
-      print('Token Retrieved: $token');
-
-      if (token == null || token.isEmpty) {
-        throw Exception('No token found. Please log in again.');
-      }
-
-      final isTokenValid = await TokenStorage.isTokenValid();
-      if (!isTokenValid) {
-        throw Exception('Token is invalid or expired. Please log in again.');
-      }
-
       final response = await _authService.getUserInfo();
-      print('User Info Response:');
-      response.forEach((key, value) {
-        print('$key: $value');
+      setState(() {
+        _nameController.text = response['name'];
+        _emailController.text = response['email'];
+        _phoneController.text = response['phone'];
+        _addressController.text = response['address'];
       });
-
-      if (response.containsKey('name') && response.containsKey('email')) {
-        setState(() {
-          userInfo = response;
-        });
-      } else {
-        throw Exception('Unexpected response structure');
-      }
     } catch (e) {
-      print('Error fetching user info: $e');
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Error: ${e.toString()}')),
+        SnackBar(content: Text('Failed to fetch user info: $e')),
       );
     } finally {
       setState(() {
-        isLoading = false;
+        isFetching = false;
       });
+    }
+  }
+
+  Future<void> _updateProfile() async {
+    if (_formKey.currentState!.validate()) {
+      setState(() {
+        isLoading = true;
+      });
+
+      try {
+        final updatedData = {
+          'name': _nameController.text,
+          'email': _emailController.text,
+          'phone': _phoneController.text,
+          'address': _addressController.text,
+        };
+
+        final userId = await TokenStorage.getUserId();
+        if (userId == null) {
+          throw Exception('User ID not found');
+        }
+
+        await _authService.updateUserProfile(
+          userId: userId,
+          updatedData: updatedData,
+        );
+
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Profile updated successfully!')),
+        );
+      } catch (e) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Error updating profile: $e')),
+        );
+      } finally {
+        setState(() {
+          isLoading = false;
+        });
+      }
     }
   }
 
@@ -74,97 +103,65 @@ class _UserprofilescreenState extends State<Userprofilescreen> {
           )
         ],
       ),
-      body: isLoading
+      body: isFetching
           ? const Center(child: CircularProgressIndicator())
-          : userInfo.isEmpty
-          ? const Center(child: Text('Failed to load user info'))
           : Padding(
         padding: const EdgeInsets.all(16.0),
-        child: ListView(
-          children: [
-            Card(
-              elevation: 4,
-              margin: const EdgeInsets.only(bottom: 20),
-              child: Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      'User Information',
-                      style: Theme.of(context).textTheme.headlineMedium?.copyWith(
-                        fontWeight: FontWeight.bold,
-                        color: Colors.green,
-                      ),
-                    ),
-                    const SizedBox(height: 10),
-                    _buildUserInfoRow('Name', userInfo['name']),
-                    _buildUserInfoRow('Email', userInfo['email']),
-                    _buildUserInfoRow('Phone', userInfo['phone']),
-                    _buildUserInfoRow('Address', userInfo['address']),
-                  ],
-                ),
+        child: Form(
+          key: _formKey,
+          child: ListView(
+            children: [
+              TextFormField(
+                controller: _nameController,
+                decoration: const InputDecoration(labelText: 'Name'),
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Please enter your name';
+                  }
+                  return null;
+                },
               ),
-            ),
-
-            if (userInfo.containsKey('solarInfo'))
-              Card(
-                elevation: 4,
-                margin: const EdgeInsets.only(bottom: 20),
-                child: Padding(
-                  padding: const EdgeInsets.all(16.0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        'Solar Information',
-                        style: Theme.of(context).textTheme.headlineMedium?.copyWith(
-                          fontWeight: FontWeight.bold,
-                          color: Colors.green,
-                        ),
-                      ),
-                      const SizedBox(height: 10),
-                      ..._getFilteredSolarInfo().entries.map((entry) {
-                        return _buildUserInfoRow(entry.key, entry.value.toString());
-                      }).toList(),
-                    ],
-                  ),
-                ),
+              TextFormField(
+                controller: _emailController,
+                decoration: const InputDecoration(labelText: 'Email'),
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Please enter your email';
+                  }
+                  return null;
+                },
               ),
-          ],
+              TextFormField(
+                controller: _phoneController,
+                decoration: const InputDecoration(labelText: 'Phone'),
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Please enter your phone number';
+                  }
+                  return null;
+                },
+              ),
+              TextFormField(
+                controller: _addressController,
+                decoration: const InputDecoration(labelText: 'Address'),
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Please enter your address';
+                  }
+                  return null;
+                },
+              ),
+              const SizedBox(height: 20),
+              ElevatedButton(
+                onPressed: isLoading ? null : _updateProfile,
+                child: isLoading
+                    ? const CircularProgressIndicator()
+                    : const Text('Update Profile'),
+              ),
+            ],
+          ),
         ),
       ),
     );
-  }
-
-  Widget _buildUserInfoRow(String label, String? value) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 8.0),
-      child: Row(
-        children: [
-          Text(
-            '$label:',
-            style: const TextStyle(
-              fontWeight: FontWeight.bold,
-              fontSize: 16,
-            ),
-          ),
-          const SizedBox(width: 10),
-          Expanded(
-            child: Text(
-              value ?? 'Not provided',
-              style: const TextStyle(
-                fontSize: 16,
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Map<String, dynamic> _getFilteredSolarInfo() {
-    final solarInfo = userInfo['solarInfo'] as Map<String, dynamic>;
-    return Map.from(solarInfo)..remove('_id');
   }
 }
