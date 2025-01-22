@@ -98,33 +98,10 @@ class _UserprofilescreenState extends State<Userprofilescreen> {
                       ),
                     ),
                     const SizedBox(height: 10),
-                    ...userInfo.entries
-                        .where((entry) => entry.key != 'solarInfo')
-                        .map((entry) {
-                      return Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 8.0),
-                        child: Row(
-                          children: [
-                            Text(
-                              '${entry.key}:',
-                              style: const TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontSize: 16,
-                              ),
-                            ),
-                            const SizedBox(width: 10),
-                            Expanded(
-                              child: Text(
-                                '${entry.value}',
-                                style: const TextStyle(
-                                  fontSize: 16,
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      );
-                    }).toList(),
+                    _buildUserInfoRow('Name', userInfo['name']),
+                    _buildUserInfoRow('Email', userInfo['email']),
+                    _buildUserInfoRow('Phone', userInfo['phone']),
+                    _buildUserInfoRow('Address', userInfo['address']),
                   ],
                 ),
               ),
@@ -147,30 +124,8 @@ class _UserprofilescreenState extends State<Userprofilescreen> {
                         ),
                       ),
                       const SizedBox(height: 10),
-                      ...userInfo['solarInfo'].entries.map((entry) {
-                        return Padding(
-                          padding: const EdgeInsets.symmetric(vertical: 8.0),
-                          child: Row(
-                            children: [
-                              Text(
-                                '${entry.key}:',
-                                style: const TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 16,
-                                ),
-                              ),
-                              const SizedBox(width: 10),
-                              Expanded(
-                                child: Text(
-                                  '${entry.value}',
-                                  style: const TextStyle(
-                                    fontSize: 16,
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                        );
+                      ..._getFilteredSolarInfo().entries.map((entry) {
+                        return _buildUserInfoRow(entry.key, entry.value.toString());
                       }).toList(),
                     ],
                   ),
@@ -180,5 +135,36 @@ class _UserprofilescreenState extends State<Userprofilescreen> {
         ),
       ),
     );
+  }
+
+  Widget _buildUserInfoRow(String label, String? value) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 8.0),
+      child: Row(
+        children: [
+          Text(
+            '$label:',
+            style: const TextStyle(
+              fontWeight: FontWeight.bold,
+              fontSize: 16,
+            ),
+          ),
+          const SizedBox(width: 10),
+          Expanded(
+            child: Text(
+              value ?? 'Not provided',
+              style: const TextStyle(
+                fontSize: 16,
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Map<String, dynamic> _getFilteredSolarInfo() {
+    final solarInfo = userInfo['solarInfo'] as Map<String, dynamic>;
+    return Map.from(solarInfo)..remove('_id');
   }
 }

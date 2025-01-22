@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'Config/DarkTheme.dart';
 import 'Config/LightTheme.dart';
-import 'Screens/Auth/SolarUnfoForm.dart';
+import 'Screens/Auth/SolarinfoForm.dart';
 import 'Widgets/Home/ThemeNotifier.dart';
 import 'Screens/Auth/SplashScreen.dart';
 import 'Screens/Auth/LoginScreen.dart';
