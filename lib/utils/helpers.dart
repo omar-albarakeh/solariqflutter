@@ -69,4 +69,20 @@ class HttpHelper {
       };
     }
   }
+
+  static Future<Map<String, dynamic>> deleteRequest(Uri url,
+      {Map<String, String>? headers}) async {
+    try {
+      final response = await http.delete(
+        url,
+        headers: headers ?? {'Content-Type': 'application/json'},
+      );
+      return _processResponse(response);
+    } catch (e) {
+      return {
+        'status': 'error',
+        'message': 'Network error: ${e.toString()}',
+      };
+    }
+  }
 }
