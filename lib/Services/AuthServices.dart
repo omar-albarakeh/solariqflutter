@@ -96,11 +96,14 @@ class AuthService {
   }
 
   Future<Map<String, dynamic>> updateUserProfile({
-    required String userId,
     required Map<String, dynamic> updatedData,
   }) async {
     final token = await TokenStorage.getToken();
     if (token == null) throw Exception('No token found');
+
+    // Get the id from the token
+    final userId = JwtUtils.getUserIdFromToken(token);
+    if (userId == null) throw Exception('User ID not found in token');
 
     final url = Uri.parse('$_baseUrl/User/updateprofile/$userId');
     try {
