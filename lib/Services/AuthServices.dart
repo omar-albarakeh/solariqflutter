@@ -129,4 +129,26 @@ class AuthService {
       'Content-Type': 'application/json',
     };
   }
+
+  Future<Map<String, dynamic>> getUserById(String userId) async {
+    final token = await TokenStorage.getToken();
+    if (token == null) throw Exception('No token found');
+
+    final url = Uri.parse('$_baseUrl/User/$userId');
+    try {
+      final response = await HttpHelper.getRequest(
+        url,
+        headers: _buildAuthHeaders(token),
+      );
+
+      if (response['status'] == 'success') {
+        return response['data'];
+      } else {
+        throw Exception(response['message']);
+      }
+    } catch (e) {
+      throw Exception('Failed to fetch user by ID: $e');
+    }
+  }
+
 }
