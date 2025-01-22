@@ -52,4 +52,21 @@ class HttpHelper {
       };
     }
   }
+
+  static Future<Map<String, dynamic>> putRequest(
+      Uri url, Map<String, dynamic> body, {Map<String, String>? headers}) async {
+    try {
+      final response = await http.put(
+        url,
+        headers: headers ?? {'Content-Type': 'application/json'},
+        body: jsonEncode(body),
+      );
+      return _processResponse(response);
+    } catch (e) {
+      return {
+        'status': 'error',
+        'message': 'Network error: ${e.toString()}',
+      };
+    }
+  }
 }
