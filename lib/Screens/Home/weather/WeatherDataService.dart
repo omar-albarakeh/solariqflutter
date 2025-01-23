@@ -1,5 +1,6 @@
-import '../../Services/weather/OpenWeather.dart';
-import '../../Services/weather/open-meteo.dart';
+import '../../../Services/weather/OpenWeather.dart';
+import '../../../Services/weather/open-meteo.dart';
+
 
 class WeatherDataService {
   final OpenWeatherService openWeatherService;

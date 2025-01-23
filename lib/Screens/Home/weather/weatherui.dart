@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:solariqflutter/Screens/weather/poweroutput.dart';
-import 'package:solariqflutter/Screens/weather/weatheranimation.dart';
-import 'package:solariqflutter/Screens/weather/weatherdatamodel.dart';
+import 'package:solariqflutter/Screens/Home/weather/poweroutput.dart';
+import 'package:solariqflutter/Screens/Home/weather/weatheranimation.dart';
+import 'package:solariqflutter/Screens/Home/weather/weatherdatamodel.dart';
 
 class WeatherUIComponents {
   static Widget buildSectionTitle(String title, {IconData? icon}) {

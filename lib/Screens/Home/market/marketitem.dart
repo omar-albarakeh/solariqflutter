@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../../Config/SharedPreferences.dart';
+import '../../../Config/SharedPreferences.dart';
 import 'cart.services.dart';
 import 'itemModule.dart';
 

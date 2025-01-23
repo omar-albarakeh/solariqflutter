@@ -3,8 +3,7 @@ import 'package:flutter/material.dart';
 import '../../Screens/Home/ChatApp/ChatPage.dart';
 import '../../Screens/Home/Pages/Community/CommunityPage.dart';
 import '../../Screens/Home/Pages/Homepage.dart';
-import '../../Screens/Home/Pages/Market/MarketPage.dart';
-import '../../Screens/market/marketpage.dart';
+import '../../Screens/Home/market/marketpage.dart';
 
 class NavBar extends StatefulWidget {
   const NavBar({super.key});
@@ -18,7 +17,7 @@ class _NavBarState extends State<NavBar> {
 
   final List<Widget> _pages = [
     Homepage(),
-    MarketPage(),
+    // MarketPage(),
     CommunityPage(),
     ChatPage(),
   ];

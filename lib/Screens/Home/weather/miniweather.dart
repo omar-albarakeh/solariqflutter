@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:solariqflutter/Screens/weather/weatheranimation.dart';
-import 'package:solariqflutter/Screens/weather/weatherprediction.dart';
-import '../../Widgets/Home/homewidgets/ReusableCard.dart';
+import 'package:solariqflutter/Screens/Home/weather/weatheranimation.dart';
+import 'package:solariqflutter/Screens/Home/weather/weatherprediction.dart';
+import '../../../Widgets/Home/homewidgets/ReusableCard.dart';
+
 
 Widget miniWeather({
   required double maxTemp,

@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:solariqflutter/Screens/weather/poweroutput.dart';
-import 'package:solariqflutter/Screens/weather/weatherdatamodel.dart';
-import 'package:solariqflutter/Screens/weather/weatherui.dart';
-import '../../Config/AppColor.dart';
-import '../../Config/AppText.dart';
-import '../../Widgets/Home/ThemeNotifier.dart';
+import 'package:solariqflutter/Screens/Home/weather/poweroutput.dart';
+import 'package:solariqflutter/Screens/Home/weather/weatherdatamodel.dart';
+import 'package:solariqflutter/Screens/Home/weather/weatherui.dart';
+import '../../../Config/AppColor.dart';
+import '../../../Config/AppText.dart';
+import '../../../Widgets/Home/ThemeNotifier.dart';
 import 'WeatherDataService.dart';
 
 class WeatherPrediction1 extends StatefulWidget {

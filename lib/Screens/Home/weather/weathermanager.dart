@@ -1,6 +1,7 @@
-import 'package:solariqflutter/Screens/weather/poweroutput.dart';
-import 'package:solariqflutter/Screens/weather/weatherdatamodel.dart';
-import 'package:solariqflutter/Screens/weather/WeatherDataService.dart';
+import 'package:solariqflutter/Screens/Home/weather/poweroutput.dart';
+import 'package:solariqflutter/Screens/Home/weather/weatherdatamodel.dart';
+
+import 'WeatherDataService.dart';
 
 class WeatherManager {
   final WeatherDataService weatherDataService = WeatherDataService();
