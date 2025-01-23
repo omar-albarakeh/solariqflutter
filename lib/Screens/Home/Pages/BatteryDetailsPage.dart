@@ -121,11 +121,7 @@ class _LineChartSampleState extends State<LineChartSample> {
             width: double.infinity,
             margin: EdgeInsets.all(16.0),
             decoration: BoxDecoration(
-              gradient: LinearGradient(
-                colors: [Colors.orange[700]!, Colors.red[700]!],
-                begin: Alignment.topLeft,
-                end: Alignment.bottomRight,
-              ),
+           color: Colors.black26,
               borderRadius: BorderRadius.circular(16),
               boxShadow: [
                 BoxShadow(

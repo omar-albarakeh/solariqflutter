@@ -17,7 +17,7 @@ class _NavBarState extends State<NavBar> {
 
   final List<Widget> _pages = [
     Homepage(),
-    // MarketPage(),
+    MarketPage(),
     CommunityPage(),
     ChatPage(),
   ];

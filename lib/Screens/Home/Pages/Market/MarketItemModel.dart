@@ -19,7 +19,7 @@ class MarketItemModel {
 
   factory MarketItemModel.fromJson(Map<String, dynamic> json) {
     return MarketItemModel(
-      id: json['_id'], // Map '_id' from JSON to 'id' in the model
+      id: json['_id'],
       name: json['name'],
       price: json['price'].toDouble(),
       category: json['category'],
