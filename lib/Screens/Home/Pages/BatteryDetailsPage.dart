@@ -1,9 +1,13 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:fl_chart/fl_chart.dart';
+import 'package:provider/provider.dart';
 import 'package:solariqflutter/Config/AppColor.dart';
 import 'package:web_socket_channel/web_socket_channel.dart';
 import 'package:web_socket_channel/io.dart';
+
+import '../../../Config/AppText.dart';
+import '../../../Widgets/Home/ThemeNotifier.dart';
 
 class LineChartSample extends StatefulWidget {
   @override
@@ -89,11 +93,26 @@ class _LineChartSampleState extends State<LineChartSample> {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return Scaffold(
       appBar: AppBar(
-        title: Text('Battery Dashboard'),
-        backgroundColor: AppColor.primary,
-        elevation: 4,
+        backgroundColor: theme.primaryColor,
+        title: const Text(
+          'Battery Life Tracking',
+          style: AppTextStyles.appBarTitle,
+        ),
+        actions: [
+          IconButton(
+            icon: Icon(
+              theme.brightness == Brightness.dark
+                  ? Icons.dark_mode
+                  : Icons.light_mode,
+            ),
+            onPressed: () {
+              Provider.of<ThemeNotifier>(context, listen: false).toggleTheme();
+            },
+          ),
+        ],
       ),
       body: Column(
         children: [
