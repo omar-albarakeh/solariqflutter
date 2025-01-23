@@ -10,10 +10,30 @@ class ChatService {
   final List<Messagemodel> _messages = [
     Messagemodel(
       type: 'target',
-      message: "Hello, I am Solar-IQ-BOT. How can I help you with solar energy systems?",
+      message: "Hello, I am Solar-IQ-BOT, your dedicated solar energy assistant. "
+          "I specialize in providing expert advice on solar energy systems, including "
+          "solar panels, inverters, batteries, and energy storage solutions. Whether "
+          "you're looking to install a new system, optimize an existing one, or simply "
+          "learn more about solar energy, I'm here to help. Feel free to ask me about "
+          "system design, cost estimates, maintenance tips, or any other aspect of solar "
+          "energy production. Let's work together to make your transition to clean, "
+          "renewable energy as smooth and efficient as possible!",
       time: DateTime.now().toIso8601String(),
     ),
   ];
+
+  bool _isSolarEnergyRelated(String userMessage) {
+    final relevantTerms = [
+      "solar energy", "solar power", "solar panel", "photovoltaic", "solar cells", "renewable energy",
+      "solar installation", "solar technology", "solar electricity", "solar farm", "solar inverter",
+      "solar battery", "solar grid", "solar systems", "solar maintenance", "solar energy efficiency",
+      "solar energy production", "solar storage", "solar batteries", "solar array", "solar installation costs",
+      "solar system optimization", "solar output", "solar power generation", "solar technology advancements"
+    ];
+
+    return relevantTerms.any((term) => userMessage.toLowerCase().contains(term));
+  }
+
 
   final BehaviorSubject<List<Messagemodel>> _messageController = BehaviorSubject.seeded([]);
 
@@ -47,23 +67,13 @@ class ChatService {
     } else {
       _addMessage(Messagemodel(
         type: 'target',
+
         message: "I'm sorry, I only answer questions related to solar energy systems. Please ask something relevant to solar energy production, panels, inverters, or batteries.",
         time: DateTime.now().toIso8601String(),
       ));
     }
   }
 
-  bool _isSolarEnergyRelated(String userMessage) {
-    final relevantTerms = [
-      "solar energy", "solar power", "solar panel", "photovoltaic", "solar cells", "renewable energy",
-      "solar installation", "solar technology", "solar electricity", "solar farm", "solar inverter",
-      "solar battery", "solar grid", "solar systems", "solar maintenance", "solar energy efficiency",
-      "solar energy production", "solar storage", "solar batteries", "solar array", "solar installation costs",
-      "solar system optimization", "solar output", "solar power generation", "solar technology advancements"
-    ];
-
-    return relevantTerms.any((term) => userMessage.toLowerCase().contains(term));
-  }
 
   Future<void> generateResponse(String userMessage, {String? customPrompt}) async {
     final url = Uri.parse('https://chatgem.onrender.com/generatethetext');
