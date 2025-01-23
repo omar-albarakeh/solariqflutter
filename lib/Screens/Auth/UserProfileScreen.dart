@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import '../../Config/SharedPreferences.dart';
 import '../../Services/AuthServices.dart';
 
 class Userprofilescreen extends StatefulWidget {
@@ -113,6 +112,7 @@ class _UserprofilescreenState extends State<Userprofilescreen> {
                   return null;
                 },
               ),
+              const SizedBox(height: 10),
               TextFormField(
                 controller: _emailController,
                 decoration: const InputDecoration(labelText: 'Email'),
@@ -123,6 +123,7 @@ class _UserprofilescreenState extends State<Userprofilescreen> {
                   return null;
                 },
               ),
+              const SizedBox(height: 10),
               TextFormField(
                 controller: _phoneController,
                 decoration: const InputDecoration(labelText: 'Phone'),
@@ -133,6 +134,7 @@ class _UserprofilescreenState extends State<Userprofilescreen> {
                   return null;
                 },
               ),
+              const SizedBox(height: 10),
               TextFormField(
                 controller: _addressController,
                 decoration: const InputDecoration(labelText: 'Address'),
@@ -148,7 +150,7 @@ class _UserprofilescreenState extends State<Userprofilescreen> {
                 onPressed: isLoading ? null : _updateProfile,
                 child: isLoading
                     ? const CircularProgressIndicator()
-                    : const Text('Update Profile'),
+                    : const Text('Update Profile' ,style: TextStyle(color: Colors.white),),
               ),
             ],
           ),
