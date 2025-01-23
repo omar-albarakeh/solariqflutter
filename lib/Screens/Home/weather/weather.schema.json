@@ -1,0 +1,125 @@
+{
+  "WeatherService": {
+    "description": "Fetches solar radiation data from the Open-Meteo API.",
+    "inputs": {
+      "latitude": "double",
+      "longitude": "double",
+      "isHourly": "boolean",
+      "timezone": "string"
+    },
+    "outputs": {
+      "solarRadiationData": [
+        {
+          "time": "string",
+          "radiation": "double"
+        }
+      ]
+    },
+    "methods": {
+      "fetchSolarRadiation": "Fetches solar radiation data."
+    }
+  },
+  "OpenWeatherService": {
+    "description": "Fetches current weather and 5-day forecast data from the OpenWeatherMap API.",
+    "inputs": {
+      "apiKey": "string"
+    },
+    "outputs": {
+      "currentWeather": {
+        "temperature": "double",
+        "weatherMain": "string",
+        "sunrise": "int",
+        "sunset": "int",
+        "clouds": "string"
+      },
+      "fiveDayForecast": [
+        {
+          "time": "string",
+          "temperature": "double",
+          "cloudsValue": "string"
+        }
+      ]
+    },
+    "methods": {
+      "fetchCurrentWeather": "Fetches current weather data.",
+      "fetchFiveDayForecast": "Fetches 5-day forecast data.",
+      "_parseFiveDayForecast": "Parses XML data for the 5-day forecast."
+    }
+  },
+  "WeatherDataModel": {
+    "description": "Represents the combined weather data fetched from both services.",
+    "fields": {
+      "currentWeather": "Map<string, dynamic>",
+      "fiveDayForecast": "List<Map<string, dynamic>>",
+      "solarRadiationData": "List<Map<string, dynamic>>"
+    },
+    "methods": {
+      "formatTimestamp": "Formats a timestamp into a readable date and time string."
+    }
+  },
+  "WeatherDataService": {
+    "description": "Acts as a wrapper for OpenWeatherService and WeatherService.",
+    "methods": {
+      "fetchCurrentWeather": "Fetches current weather data.",
+      "fetchFiveDayForecast": "Fetches 5-day forecast data.",
+      "fetchSolarRadiation": "Fetches solar radiation data."
+    }
+  },
+  "WeatherManager": {
+    "description": "Manages the fetching and processing of weather data.",
+    "methods": {
+      "fetchWeatherData": "Fetches and combines weather data.",
+      "calculateMaxTemp": "Calculates the maximum temperature from the 5-day forecast.",
+      "calculateMaxPowerOutput": "Calculates the maximum power output from solar radiation data."
+    }
+  },
+  "PowerOutputCalculator": {
+    "description": "Calculates power output based on solar radiation data.",
+    "fields": {
+      "systemSize": "double",
+      "efficiency": "double",
+      "performanceRatio": "double"
+    },
+    "methods": {
+      "calculatePowerOutput": "Calculates power output using the formula: powerOutput = shortwaveRadiation * systemSize * efficiency * performanceRatio."
+    }
+  },
+  "WeatherAnimationManager": {
+    "description": "Provides weather animations based on cloud conditions.",
+    "methods": {
+      "getCloudIcon": "Returns a weather animation widget based on the cloud condition."
+    }
+  },
+  "WeatherUIComponents": {
+    "description": "Provides reusable UI components for displaying weather data.",
+    "methods": {
+      "buildSectionTitle": "Builds a section title with an optional icon.",
+      "buildCurrentWeatherAndPowerOutput": "Builds a UI component for current weather and power output.",
+      "buildDailyForecastAtNoon": "Builds a UI component for the daily forecast at noon."
+    }
+  },
+  "WeatherPrediction1": {
+    "description": "Main screen that displays weather predictions.",
+    "fields": {
+      "weatherDataService": "WeatherDataService",
+      "powerOutputCalculator": "PowerOutputCalculator",
+      "weatherDataModel": "WeatherDataModel"
+    },
+    "methods": {
+      "_fetchData": "Fetches weather data and updates the state.",
+      "build": "Builds the UI for the weather prediction screen."
+    }
+  },
+  "miniWeather": {
+    "description": "Reusable widget for displaying a mini weather summary.",
+    "inputs": {
+      "maxTemp": "double",
+      "maxPowerOutput": "double",
+      "cloudCondition": "string",
+      "context": "BuildContext",
+      "width": "double?",
+      "height": "double?"
+    },
+    "behavior": "Displays a card with weather and power output data. Navigates to the WeatherPrediction1 screen when tapped."
+  }
+}
