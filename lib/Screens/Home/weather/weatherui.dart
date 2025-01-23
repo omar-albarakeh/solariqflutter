@@ -66,178 +66,170 @@ class WeatherUIComponents {
 
     minPowerOutput = minPowerOutput <= 0 ? 0.1 : minPowerOutput;
 
-    return SizedBox.expand(
-      child: Stack(
-        children: [
-          Positioned.fill(
-            child: ClipRRect(
-              borderRadius: BorderRadius.circular(16),
-              child: WeatherAnimationManager.getCloudIcon(
-                  currentWeather['clouds'] ?? ''),
-            ),
+    return Stack(
+      children: [
+        Positioned.fill(
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(16),
+            child: WeatherAnimationManager.getCloudIcon(
+                currentWeather['clouds'] ?? ''),
           ),
-          SingleChildScrollView(
-            padding: EdgeInsets.zero, 
-            child: Container(
-              width: double.infinity,
-              height: double.infinity,
-              padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 16),
-              child: Column(
+        ),
+        SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  buildSectionTitle('Current Weather'),
+                  const Icon(
+                    Icons.thermostat,
+                    color: Colors.white,
+                    size: 30,
+                  ),
+                ],
+              ),
+              const SizedBox(height: 20),
+              Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      buildSectionTitle('Current Weather'),
-                      const Icon(
-                        Icons.thermostat,
-                        color: Colors.white,
-                        size: 30,
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 20),
-                  Row(
+                  Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
+                      Row(
                         children: [
-                          Row(
-                            children: [
-                              const Icon(
-                                Icons.arrow_upward,
-                                color: Colors.red,
-                                size: 22,
-                              ),
-                              Text(
-                                'Max Temp: ${maxTemp.toStringAsFixed(1)} °C',
-                                style: const TextStyle(
-                                  fontSize: 22,
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.white,
-                                ),
-                              ),
-                            ],
+                          const Icon(
+                            Icons.arrow_upward,
+                            color: Colors.red,
+                            size: 22,
                           ),
-                          const SizedBox(height: 12),
-                          Row(
-                            children: [
-                              const Icon(
-                                Icons.arrow_downward,
-                                color: Colors.blue,
-                                size: 22,
-                              ),
-                              Text(
-                                'Min Temp: ${minTemp.toStringAsFixed(1)} °C',
-                                style: const TextStyle(
-                                  fontSize: 20,
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.white,
-                                ),
-                              ),
-                            ],
+                          Text(
+                            'Max Temp: ${maxTemp.toStringAsFixed(1)} °C',
+                            style: const TextStyle(
+                              fontSize: 22,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.white,
+                            ),
                           ),
-                          const SizedBox(height: 12),
-                          Row(
-                            children: [
-                              const Icon(
-                                Icons.cloud,
-                                color: Colors.grey,
-                                size: 22,
-                              ),
-                              Text(
-                                'Condition: ${currentWeather['weatherMain'] ?? 'N/A'}',
-                                style: const TextStyle(
-                                  fontSize: 20,
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.white,
-                                ),
-                              ),
-                            ],
+                        ],
+                      ),
+                      const SizedBox(height: 12),
+                      Row(
+                        children: [
+                          const Icon(
+                            Icons.arrow_downward,
+                            color: Colors.blue,
+                            size: 22,
                           ),
-                          const SizedBox(height: 12),
-                          Row(
-                            children: [
-                              const Icon(
-                                Icons.sunny,
-                                color: Colors.yellow,
-                                size: 22,
-                              ),
-                              Text(
-                                'Sunrise: ${weatherDataModel.formatTimestamp(currentWeather['sunrise'])}',
-                                style: const TextStyle(
-                                  fontSize: 16,
-                                  color: Colors.white,
-                                ),
-                              ),
-                            ],
+                          Text(
+                            'Min Temp: ${minTemp.toStringAsFixed(1)} °C',
+                            style: const TextStyle(
+                              fontSize: 20,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.white,
+                            ),
                           ),
-                          const SizedBox(height: 12),
-                          Row(
-                            children: [
-                              const Icon(
-                                Icons.shield_moon,
-                                color: Colors.blue,
-                                size: 22,
-                              ),
-                              Text(
-                                'Sunset: ${weatherDataModel.formatTimestamp(currentWeather['sunset'])}',
-                                style: const TextStyle(
-                                  fontSize: 16,
-                                  color: Colors.white,
-                                ),
-                              ),
-                            ],
+                        ],
+                      ),
+                      const SizedBox(height: 12),
+                      Row(
+                        children: [
+                          const Icon(
+                            Icons.cloud,
+                            color: Colors.grey,
+                            size: 22,
+                          ),
+                          Text(
+                            'Condition: ${currentWeather['weatherMain'] ?? 'N/A'}',
+                            style: const TextStyle(
+                              fontSize: 20,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.white,
+                            ),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 12),
+                      Row(
+                        children: [
+                          const Icon(
+                            Icons.sunny,
+                            color: Colors.yellow,
+                            size: 22,
+                          ),
+                          Text(
+                            'Sunrise: ${weatherDataModel.formatTimestamp(currentWeather['sunrise'])}',
+                            style: const TextStyle(
+                              fontSize: 16,
+                              color: Colors.white,
+                            ),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 12),
+                      Row(
+                        children: [
+                          const Icon(
+                            Icons.shield_moon,
+                            color: Colors.blue,
+                            size: 22,
+                          ),
+                          Text(
+                            'Sunset: ${weatherDataModel.formatTimestamp(currentWeather['sunset'])}',
+                            style: const TextStyle(
+                              fontSize: 16,
+                              color: Colors.white,
+                            ),
                           ),
                         ],
                       ),
                     ],
                   ),
-                  const SizedBox(height: 40),
-                  buildSectionTitle('Power Output Data'),
-                  const SizedBox(height: 16),
-                  Row(
-                    children: [
-                      const Icon(
-                        Icons.power,
-                        color: Colors.black,
-                        size: 22,
-                      ),
-                      Text(
-                        'Max Power Output: ${maxPowerOutput.toStringAsFixed(2)} kW',
-                        style: const TextStyle(
-                          fontSize: 20,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.white,
-                        ),
-                      ),
-                    ],
+                ],
+              ),
+              const SizedBox(height: 40),
+              buildSectionTitle('Power Output Data'),
+              const SizedBox(height: 16),
+              Row(
+                children: [
+                  const Icon(
+                    Icons.power,
+                    color: Colors.black,
+                    size: 22,
                   ),
-                  const SizedBox(height: 12),
-                  Row(
-                    children: [
-                      const Icon(
-                        Icons.power,
-                        color: Colors.black,
-                        size: 22,
-                      ),
-                      Text(
-                        'Min Power Output: ${minPowerOutput.toStringAsFixed(2)} kW',
-                        style: const TextStyle(
-                          fontSize: 20,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.white,
-                        ),
-                      ),
-                    ],
+                  Text(
+                    'Max Power Output: ${maxPowerOutput.toStringAsFixed(2)} kW',
+                    style: const TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white,
+                    ),
                   ),
                 ],
               ),
-            ),
+              const SizedBox(height: 12),
+              Row(
+                children: [
+                  const Icon(
+                    Icons.power,
+                    color: Colors.black,
+                    size: 22,
+                  ),
+                  Text(
+                    'Min Power Output: ${minPowerOutput.toStringAsFixed(2)} kW',
+                    style: const TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white,
+                    ),
+                  ),
+                ],
+              ),
+            ],
           ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 
@@ -248,14 +240,13 @@ class WeatherUIComponents {
       ) {
     final now = DateTime.now();
 
-
     final dailyNoonForecast = fiveDayForecast.where((forecast) {
       final forecastTime = DateTime.parse(forecast['time']);
       return forecastTime.hour == 12 && forecastTime.isAfter(now);
     }).toList();
 
     return Container(
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.all(8),
       decoration: BoxDecoration(
         color: const Color(0xFF1B273D).withOpacity(0.4),
         borderRadius: BorderRadius.circular(16),
@@ -264,7 +255,7 @@ class WeatherUIComponents {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           buildSectionTitle('Daily Noon Forecast'),
-          const SizedBox(height: 16),
+          const SizedBox(height: 8),
           ListView.builder(
             shrinkWrap: true,
             physics: const NeverScrollableScrollPhysics(),
@@ -291,7 +282,7 @@ class WeatherUIComponents {
               powerOutputCalculator.calculatePowerOutput(radiationValue);
 
               return Padding(
-                padding: const EdgeInsets.symmetric(vertical: 8.0),
+                padding: const EdgeInsets.symmetric(vertical: 4.0),
                 child: Card(
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(16),
@@ -308,42 +299,83 @@ class WeatherUIComponents {
                         ),
                       ),
                       Padding(
-                        padding: const EdgeInsets.all(16.0),
+                        padding: const EdgeInsets.all(12.0),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text(
-                              'Date: ${forecastTime.toIso8601String().substring(0, 10)}',
-                              style: const TextStyle(
-                                fontWeight: FontWeight.bold,
-                                color: Colors.white,
-                                fontSize: 18,
-                              ),
+                            // Date with Icon
+                            Row(
+                              children: [
+                                const Icon(
+                                  Icons.calendar_today,
+                                  color: Colors.white,
+                                  size: 18,
+                                ),
+                                const SizedBox(width: 8),
+                                Text(
+                                  'Date: ${forecastTime.toIso8601String().substring(0, 10)}',
+                                  style: const TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.white,
+                                    fontSize: 16,
+                                  ),
+                                ),
+                              ],
                             ),
                             const SizedBox(height: 8),
-                            Text(
-                              'Temperature: ${temperatureInCelsius.toStringAsFixed(1)} °C',
-                              style: const TextStyle(
-                                color: Colors.white,
-                                fontSize: 16,
-                              ),
+                            Row(
+                              children: [
+                                const Icon(
+                                  Icons.thermostat,
+                                  color: Colors.red,
+                                  size: 18,
+                                ),
+                                const SizedBox(width: 8),
+                                Text(
+                                  'Temperature: ${temperatureInCelsius.toStringAsFixed(1)} °C',
+                                  style: const TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 14,
+                                  ),
+                                ),
+                              ],
                             ),
                             const SizedBox(height: 8),
-                            Text(
-                              'Clouds: ${forecast['cloudsValue']}',
-                              style: const TextStyle(
-                                color: Colors.white,
-                                fontSize: 16,
-                              ),
+                            Row(
+                              children: [
+                                const Icon(
+                                  Icons.cloud,
+                                  color: Colors.grey,
+                                  size: 18,
+                                ),
+                                const SizedBox(width: 8),
+                                Text(
+                                  'Clouds: ${forecast['cloudsValue']}',
+                                  style: const TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 14,
+                                  ),
+                                ),
+                              ],
                             ),
                             const SizedBox(height: 8),
-                            Text(
-                              'Power Output: ${powerOutput.toStringAsFixed(2)} kW',
-                              style: const TextStyle(
-                                color: Colors.white,
-                                fontSize: 16,
-                                fontWeight: FontWeight.bold,
-                              ),
+                            Row(
+                              children: [
+                                const Icon(
+                                  Icons.power,
+                                  color: Colors.black,
+                                  size: 18,
+                                ),
+                                const SizedBox(width: 8),
+                                Text(
+                                  'Power Output: ${powerOutput.toStringAsFixed(2)} kW',
+                                  style: const TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ],
                             ),
                           ],
                         ),
