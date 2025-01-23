@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import '../../../../Config/AppText.dart';
+import '../../../../Widgets/Home/ThemeNotifier.dart';
 import 'PowerIndicator.dart';
 import 'powerWebSocket.dart';
 import 'devices.dart';
@@ -136,11 +139,26 @@ class _RealTimeMonitoringState extends State<RealTimeMonitoring> {
   @override
   Widget build(BuildContext context) {
     final totalConsumption = _calculateTotalPowerConsumption();
-
+    final theme = Theme.of(context);
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Life Monitoring'),
-        centerTitle: true,
+        backgroundColor: theme.primaryColor,
+        title: const Text(
+          'Life Monitering',
+          style: AppTextStyles.appBarTitle,
+        ),
+        actions: [
+          IconButton(
+            icon: Icon(
+              theme.brightness == Brightness.dark
+                  ? Icons.dark_mode
+                  : Icons.light_mode,
+            ),
+            onPressed: () {
+              Provider.of<ThemeNotifier>(context, listen: false).toggleTheme();
+            },
+          ),
+        ],
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
