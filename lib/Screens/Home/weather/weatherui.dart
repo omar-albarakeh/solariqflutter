@@ -237,11 +237,12 @@ class WeatherUIComponents {
   }
 
   static Widget buildDailyForecastAtNoon(
-    List<Map<String, dynamic>> fiveDayForecast,
-    List<Map<String, dynamic>> solarRadiationData,
-    PowerOutputCalculator powerOutputCalculator,
-  ) {
+      List<Map<String, dynamic>> fiveDayForecast,
+      List<Map<String, dynamic>> solarRadiationData,
+      PowerOutputCalculator powerOutputCalculator,
+      ) {
     final now = DateTime.now();
+
 
     final dailyNoonForecast = fiveDayForecast.where((forecast) {
       final forecastTime = DateTime.parse(forecast['time']);
@@ -254,104 +255,101 @@ class WeatherUIComponents {
         color: const Color(0xFF1B273D).withOpacity(0.4),
         borderRadius: BorderRadius.circular(16),
       ),
-      child: SingleChildScrollView(
-        scrollDirection: Axis.horizontal,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                buildSectionTitle('Daily Noon Forecast'),
-              ],
-            ),
-            const SizedBox(height: 16),
-            Row(
-              children: List.generate(dailyNoonForecast.length, (index) {
-                final forecast = dailyNoonForecast[index];
-                final forecastTime = DateTime.parse(forecast['time']);
-                final temperatureInCelsius =
-                    double.parse(forecast['temperature']) - 273.15;
-                final cloudCondition = forecast['cloudsValue'] ?? '';
-                final correspondingRadiationData =
-                    solarRadiationData.firstWhere(
-                  (radiation) {
-                    final radiationTime = DateTime.parse(radiation['time']);
-                    return radiationTime.year == forecastTime.year &&
-                        radiationTime.month == forecastTime.month &&
-                        radiationTime.day == forecastTime.day &&
-                        radiationTime.hour == 12;
-                  },
-                  orElse: () => {'radiation': 0.0},
-                );
-                final radiationValue = correspondingRadiationData['radiation'];
-                final powerOutput =
-                    powerOutputCalculator.calculatePowerOutput(radiationValue);
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          buildSectionTitle('Daily Noon Forecast'),
+          const SizedBox(height: 16),
+          ListView.builder(
+            shrinkWrap: true,
+            physics: const NeverScrollableScrollPhysics(),
+            itemCount: dailyNoonForecast.length,
+            itemBuilder: (context, index) {
+              final forecast = dailyNoonForecast[index];
+              final forecastTime = DateTime.parse(forecast['time']);
+              final temperatureInCelsius =
+                  double.parse(forecast['temperature']) - 273.15;
+              final cloudCondition = forecast['cloudsValue'] ?? '';
+              final correspondingRadiationData =
+              solarRadiationData.firstWhere(
+                    (radiation) {
+                  final radiationTime = DateTime.parse(radiation['time']);
+                  return radiationTime.year == forecastTime.year &&
+                      radiationTime.month == forecastTime.month &&
+                      radiationTime.day == forecastTime.day &&
+                      radiationTime.hour == 12;
+                },
+                orElse: () => {'radiation': 0.0},
+              );
+              final radiationValue = correspondingRadiationData['radiation'];
+              final powerOutput =
+              powerOutputCalculator.calculatePowerOutput(radiationValue);
 
-                return Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                  child: Card(
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(16),
-                    ),
-                    elevation: 4,
-                    color: Colors.white.withOpacity(0.7),
-                    child: Stack(
-                      children: [
-                        Positioned.fill(
-                          child: ClipRRect(
-                            borderRadius: BorderRadius.circular(16),
-                            child: WeatherAnimationManager.getCloudIcon(
-                                cloudCondition),
-                          ),
-                        ),
-                        Center(
-                          child: Padding(
-                            padding: const EdgeInsets.all(16.0),
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  'Date: ${forecastTime.toIso8601String().substring(0, 10)}',
-                                  style: const TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.white,
-                                    fontSize: 18,
-                                  ),
-                                  textAlign: TextAlign.center,
-                                ),
-                                const SizedBox(height: 8),
-                                Text(
-                                  'Temperature: ${temperatureInCelsius.toStringAsFixed(1)} °C\nClouds: ${forecast['cloudsValue']}',
-                                  style: const TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 16,
-                                  ),
-                                ),
-                                const SizedBox(height: 8),
-                                Text(
-                                  'Power Output: ${powerOutput.toStringAsFixed(2)} kW',
-                                  style: const TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                  textAlign: TextAlign.center,
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
+              return Padding(
+                padding: const EdgeInsets.symmetric(vertical: 8.0),
+                child: Card(
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(16),
                   ),
-                );
-              }),
-            ),
-          ],
-        ),
+                  elevation: 4,
+                  color: Colors.white.withOpacity(0.7),
+                  child: Stack(
+                    children: [
+                      Positioned.fill(
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(16),
+                          child: WeatherAnimationManager.getCloudIcon(
+                              cloudCondition),
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(16.0),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              'Date: ${forecastTime.toIso8601String().substring(0, 10)}',
+                              style: const TextStyle(
+                                fontWeight: FontWeight.bold,
+                                color: Colors.white,
+                                fontSize: 18,
+                              ),
+                            ),
+                            const SizedBox(height: 8),
+                            Text(
+                              'Temperature: ${temperatureInCelsius.toStringAsFixed(1)} °C',
+                              style: const TextStyle(
+                                color: Colors.white,
+                                fontSize: 16,
+                              ),
+                            ),
+                            const SizedBox(height: 8),
+                            Text(
+                              'Clouds: ${forecast['cloudsValue']}',
+                              style: const TextStyle(
+                                color: Colors.white,
+                                fontSize: 16,
+                              ),
+                            ),
+                            const SizedBox(height: 8),
+                            Text(
+                              'Power Output: ${powerOutput.toStringAsFixed(2)} kW',
+                              style: const TextStyle(
+                                color: Colors.white,
+                                fontSize: 16,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              );
+            },
+          ),
+        ],
       ),
     );
-  }
-}
+  }}
